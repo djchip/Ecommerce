@@ -1,0 +1,79 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <!-- User List -->
+        <section class="users-list-wrapper">
+            <!-- users filter start -->
+            <div class="card">
+                <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+                <div class="card-body">
+                    <div class="users-list-filter">
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="role-column">{{ 'LABEL.ROLE'| translate }}<span
+                                            style="color: red">*</span></label>
+                                    <ng-select id="role-column" [items]="listRole" bindLabel="roleName"
+                                        [loading]="roleLoading" placeholder="{{ 'LABEL.ROLE'| translate }}"
+                                        (change)="onInitTree($event, treeFilter.treeModel) ">
+                                    </ng-select>
+                                    <div *ngIf="isInvalidRole || selectedTreeList.length == 0" class="invalid-feedback">
+                                        {{'MESSAGE.USER_MANAGEMENT.ROLE_REQUIRE'| translate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" *ngIf="acceptAction.update"
+                                        style="margin-top: 22px;" (click)="callAllUpdate()">{{
+                                        'ACTION.SAVE'| translate }}</button>
+                                </div>
+                            </div>
+                            <div *ngIf="acceptAction.search" class="input-group mb-1 col-md-6">
+                                <input class="form-control" id="tree-filter" #filter
+                                    (keyup)="treeFilter.treeModel.filterNodes(filter.value)"
+                                    placeholder="{{ 'LABEL.FILTER_BY_PRIVILEGES'| translate }}" />
+                                <div class="input-group-append">
+                                    <button 
+                                        (click)="treeFilter.treeModel.clearFilter(); filter.value = ''" rippleEffect>
+                                       X
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="!acceptAction.search" class="input-group mb-1 col-md-6">
+                                <input class="form-control" id="tree-filter"
+                                    placeholder="{{ 'LABEL.FILTER_BY_PRIVILEGES'| translate }}" />
+                                <div class="input-group-append">
+                                    <button rippleEffect>
+                                       X
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- todofix -->
+
+
+
+                            <div class=" col-12 d-flex">
+
+                                <div class="col-6">
+                                    <label class="col-12 d-flex h4">{{ 'LABEL.BY_PRIVILEGES'| translate }}</label>
+                                    <tree-root #treeFilter [ngClass]="'tree-wrapper tree-checkbox'" [focused]="true"
+                                        [options]="optionsFilter" [nodes]="nodesFilter" (select)="onSelect($event)"
+                                        (deselect)="onSelect($event)">
+                                    </tree-root>
+                                </div>
+
+                                <!-- <div class="col-6 float-right mt-0">
+                                    <label class="col-12 d-flex h4">{{ 'LABEL.BY_MENU'| translate }}</label>
+                                    <tree-root #treeFilterMenu [ngClass]="'tree-wrapper tree-checkbox'" [focused]="true" [options]="optionsFilter" [nodes]="nodesMenuFilter" (select)="onselectMenu($event)" (deselect)="onselectMenu($event)">
+                                    </tree-root>
+                                </div> -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

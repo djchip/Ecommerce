@@ -1,0 +1,667 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <!-- User List -->
+    <section class="users-list-wrapper">
+      <!-- users filter start -->
+      <div class="card">
+        <div class="card-body">
+          <div class="users-list-filter">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <label>{{ 'LABEL_UNDO_LOG.TABLE_NAME'| translate }}</label>
+                <div *ngIf="acceptAction.search" class="input-group mb-2">
+                  <input type="text" class="form-control" placeholder="{{ 'LABEL_UNDO_LOG.TABLE_NAME'| translate }}"
+                    aria-label="" aria-describedby="basic-addon-search1" (keyup.enter)="search()"
+                    [(ngModel)]="tableName" />
+                  <div class="input-group-append" (click)="search()">
+                    <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                  </div>
+                </div>
+                <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                  <input type="text" class="form-control" placeholder="{{ 'LABEL_UNDO_LOG.TABLE_NAME'| translate }}"
+                    aria-label="" aria-describedby="basic-addon-search1"
+                    [(ngModel)]="tableName" />
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="acceptAction.search" class="col-12 col-md-3">
+                <label>{{ 'LABEL_UNDO_LOG.CREATED_DATE'| translate }}</label>
+                <!-- Custom Day Date Picker -->
+                <div class="form-group">
+                  <div class="input-group">
+                    <!-- <label>Từ: </label> -->
+                    <input class="form-control" placeholder="{{ 'LABEL_UNDO_LOG.FROM_DATE'| translate }}"
+                      name="Custom Day Date Picker" ngbDatepicker [dayTemplate]="customDay" [markDisabled]="isDisabled"
+                      #CustomDayDP="ngbDatepicker" (change)="onChange1()" [(ngModel)]="oker"  />
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary feather icon-calendar" (click)="CustomDayDP.toggle()"
+                        type="button" rippleEffect></button>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #customDay let-date let-currentMonth="currentMonth" let-selected="selected"
+                  let-disabled="disabled" let-focused="focused">
+                  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.focused]="focused"
+                    [class.bg-primary]="selected" [class.hidden]="date.month !== currentMonth"
+                    [class.text-muted]="disabled" (click)="changeDate(date, 'startDate')">
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+
+              <div *ngIf="acceptAction.search" class="col-12 col-md-3">
+                <label></label>
+                <div class="form-group">
+                  <div class="input-group">
+                    <!-- <label>Đến: </label> -->
+                    <input class="form-control" placeholder="{{ 'LABEL_UNDO_LOG.TO_DATE'| translate }}"
+                      name="Custom Day Date Picker" ngbDatepicker [dayTemplate]="endDay" [markDisabled]="isDisabled"
+                      #EndDayDP="ngbDatepicker" (change)="onChange1()" [(ngModel)]="oker0">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary feather icon-calendar" (click)="EndDayDP.toggle()"  
+                        type="button" rippleEffect></button>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #endDay let-date let-currentMonth="currentMonth" let-selected="selected"
+                  let-disabled="disabled" let-focused="focused">
+                  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.focused]="focused"
+                    [class.bg-primary]="selected" [class.hidden]="date.month !== currentMonth"  
+                    [class.text-muted]="disabled" (click)="changeDate(date, 'endDate')">
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+            </div>
+
+            <div *ngIf="acceptAction.search" class="row">
+              <div class="col-md-6">
+                <label>{{ 'LABEL_UNDO_LOG.METHOD'| translate }}</label>
+                <ng-select id="role-column" [items]="listAction" bindLabel="name" bindValue="value" (change)="search()"
+                  (clear)="clear()" [(ngModel)]="action" placeholder="{{ 'LABEL_UNDO_LOG.METHOD'| translate }}">
+                </ng-select>
+              </div>
+              <div class="col-md-6 col-12">
+                <label>{{ 'LABEL_UNDO_LOG.EXECUTOR'| translate }}</label>
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" placeholder="{{ 'LABEL_UNDO_LOG.EXECUTOR'| translate }}"
+                    aria-label="" aria-describedby="basic-addon-search1" (keyup.enter)="search()"
+                    [(ngModel)]="createdBy" />
+                  <div class="input-group-append" (click)="search()">
+                    <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0"></div>
+          </div>
+        </div>
+        <ngx-datatable *ngIf="acceptAction.search" [rows]="rows" [rowHeight]="50" class="bootstrap core-bootstrap" [columnMode]="ColumnMode.force"
+          [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true" [externalPaging]="true" [count]="totalRows"
+          [offset]="currentPage" [limit]="perPage" (page)="setPage($event)" [messages]="messages">
+          <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="20" [sortable]="false"
+            headerClass="header text-center width-5" cellClass="center width-5">
+            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="80" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngIf="acceptAction.update" (click)="undo(row)" ngbPopover="{{ 'ACTION.UNDO'| translate }}" triggers="mouseenter:mouseleave"
+                placement="right"><i data-feather="rotate-ccw" class="text-info cursor-pointer ml-50"></i></span>
+            </ng-template>
+          </ngx-datatable-column>
+          <!-- <ngx-datatable-column name="{{ 'LABEL_UNDO_LOG.REQUEST_OBJ'| translate }}" prop="tableName" [width]="200">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center" *ngIf="row.requestObject">
+                <div class="cell-line-height">
+                  <a *ngIf="row.tableName == 'UserInfo'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalUser)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'directory'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'criteria'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu1)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'programs'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu2)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'categories'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu5)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'software_log'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu3)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'form'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu6)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'document'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailDocument7)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'roles'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailRoles)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'unit'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailUnit)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'proof'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailProof)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'organization'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailOr)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'assessment'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailAssessment)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column> -->
+          <ngx-datatable-column name="{{ 'LABEL_UNDO_LOG.REVERT_OBJ'| translate }}" prop="tableName" [width]="200">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center" *ngIf="row.revertObject != null && acceptAction.detail">
+                <!-- *ngIf hiển thị nếu điều kiện là đúng -->
+                <div class="cell-line-height">
+                  <a *ngIf="row.tableName == 'UserInfo'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, row.revertObject, modalUser)"><span
+                      class="font-weight-bold text-primary">{{
+                      name }}</span></a>
+                  <a *ngIf="row.tableName == 'directory' && row.action != 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject,row.revertObject, modalDetailMenu)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'criteria'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject,row.revertObject, modalDetailMenu1)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'programs'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, row.revertObject, modalDetailMenu2)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'categories'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, row.revertObject,modalDetailMenu5)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'document'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, row.revertObject, modalDetailDocument7)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                </div>
+                <a *ngIf="row.tableName == 'software_log'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject,row.revertObject, modalDetailMenu3)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'form'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject, row.revertObject, modalDetailMenu6)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'unit' && row.action != 'IMPORT' " class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject,row.revertObject, modalDetailUnit)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'roles'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject, row.revertObject, modalDetailRoles)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'proof'&& row.action != 'IMPORT'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject, row.revertObject, modalDetailProof)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'organization'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject, row.revertObject, modalDetailOr)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'assessment'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject, row.revertObject, modalDetailAssessment)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+                <a *ngIf="row.tableName == 'app_param'" class="font-medium-1 d-block"
+                  (click)="openModal(row.requestObject, row.revertObject, modalDetailDocumentType)">
+                  <span class="font-weight-bold text-primary">{{ name }}
+                  </span>
+                </a>
+              </div>
+              <div class="d-flex align-items-center" *ngIf="row.revertObject == null && acceptAction.detail">
+                <div class="cell-line-height">
+                  <a *ngIf="row.tableName == 'UserInfo'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalUser)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'directory' && row.action != 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'directory' && row.action == 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject,row.revertObject, modalViewImport)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  
+                  <a *ngIf="row.tableName == 'unit'&& row.action != 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailUnit)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  
+                  <a *ngIf="row.tableName == 'unit'&& row.action == 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, row.revertObject, modalViewImportUnit)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'criteria' && row.action != 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu1)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'criteria' && row.action == 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalViewImportCriteria)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'programs'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu2)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'categories'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu5)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'software_log'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu3)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'form'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailMenu6)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'document'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailDocument7)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'roles'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailRoles)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+
+                  <a *ngIf="row.tableName == 'proof' && row.action != 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailProof)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                  <a *ngIf="row.tableName == 'proof' && row.action == 'IMPORT'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalViewImportProof)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'organization'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailOr)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'assessment'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailAssessment)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+
+                  <a *ngIf="row.tableName == 'app_param'" class="font-medium-1 d-block"
+                    (click)="openModal(row.requestObject, null, modalDetailDocumentType)">
+                    <span class="font-weight-bold text-primary">{{ name }}
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_UNDO_LOG.DESCRIPTION'| translate }}" prop="description" [width]="350">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_UNDO_LOG.CREATED_BY'| translate }}" prop="createdBy" [width]="100">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_UNDO_LOG.CREATED_DATE'| translate }}" prop="createdDate" [width]="150">
+            <ng-template let-row="row" let-createdDate="value" ngx-datatable-cell-template>
+              <span> {{ row.createdDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </section>
+  </div>
+</div>
+
+<ng-template #modalUser let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.USER_DETAIL' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-user [id]="idDetail" [obj]="objRequest" [objRevert]="objRevert"></app-detail-user>
+  </div>
+</ng-template>
+
+<!-- Modal detail directory-->
+<ng-template #modalDetailMenu let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_STA' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-directory [obj]="objRequest" [objRevert]="objRevert"></app-detail-directory>
+  </div>
+</ng-template>
+
+<!-- Modal view import directory-->
+<ng-template #modalViewImport let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.VIEW_IMPORT_DIRECTORY' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-view-import-directory [obj]="objRequest"></app-view-import-directory>
+  </div>
+</ng-template>
+
+<!-- Modal detail criteria-->
+<ng-template #modalDetailMenu1 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_CRITERIA' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-criteria [obj]="objRequest" [objRevert]="objRevert"></app-detail-criteria>
+  </div>
+</ng-template>
+
+<!-- Modal view import criteria-->
+<ng-template #modalViewImportCriteria let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.VIEW_IMPORT_CRITERIA' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-view-import-criteria [obj]="objRequest"></app-view-import-criteria>
+  </div>
+</ng-template>
+
+<!-- Modal detail Program-->
+<ng-template #modalDetailMenu2 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_PROGRAMS' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-programs [obj]="objRequest" [objRevert]="objRevert"></app-detail-programs>
+  </div>
+</ng-template>
+
+<!-- Modal detail chuyên mục-->
+<ng-template #modalDetailMenu5 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_CATEGORIES' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-categories [obj]="objRequest" [objRevert]="objRevert"></app-detail-categories>
+  </div>
+</ng-template>
+
+<!-- Modal detail nhật ký tác động-->
+<ng-template #modalDetailMenu3 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_SOFTWARE_LOG' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-software-log [obj]="objRequest" [objRevert]="objRevert"></app-detail-software-log>
+  </div>
+</ng-template>
+
+<!-- Modal detail form-->
+<ng-template #modalDetailMenu6 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">Thông tin Form</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-form [obj]="objRequest" [objRevert]="objRevert"></app-detail-form>
+  </div>
+</ng-template>
+
+<!-- Modal detail văn bản-->
+<ng-template #modalDetailDocument7 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_DOCUMENT' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-document [obj]="objRequest" [objRevert]="objRevert"></app-detail-document>
+  </div>
+</ng-template>
+<!-- / Modal -->
+
+<!-- Modal detail role-->
+<ng-template #modalDetailRoles let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_ROLE_GROUP' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-roles-group [obj]="objRequest" [objRevert]="objRevert"></app-detail-roles-group>
+  </div>
+</ng-template>
+<!-- / Modal -->
+<!-- detail unit -->
+
+<ng-template #modalDetailUnit let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UNIT_DETAIL' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-unit [obj]="objRequest" [objRevert]="objRevert"></app-detail-unit>
+  </div>
+</ng-template>
+
+<!-- Modal view import unit-->
+<ng-template #modalViewImportUnit let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.VIEW_IMPORT_UNIT' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-view-import-unit [obj]="objRequest"></app-view-import-unit>
+  </div>
+</ng-template>
+
+
+
+<!-- detail minh chứng -->
+<ng-template #modalDetailProof let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_PROOF' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-proof [obj]="objRequest" [objRevert]="objRevert"></app-detail-proof>
+  </div>
+</ng-template>
+
+<!-- detail minh chứng -->
+<ng-template #modalViewImportProof let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.VIEW_IMPORT_PROOF' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-view-import-proof [obj]="objRequest"></app-view-import-proof>
+  </div>
+</ng-template>
+
+<!-- Modal detail tổ chức-->
+<ng-template #modalDetailOr let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_ORG' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail [obj]="objRequest" [objRevert]="objRevert"></app-detail>
+  </div>
+</ng-template>
+
+
+<!-- Modal detail Assessment-->
+<ng-template #modalDetailAssessment let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_ASSESSMENT' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-assessment [obj]="objRequest" [objRevert]="objRevert"></app-detail-assessment>
+  </div>
+</ng-template>
+<!-- / Modal -->
+
+
+<!-- Modal detail Cấu hình loại văn bản -->
+
+<ng-template #modalDetailDocumentType let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_DOCUMENT_TYPE' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-documenta [obj]="objRequest" [objRevert]="objRevert"></app-detail-documenta>
+  </div>
+</ng-template>
+
+
+<ng-template #modalDetailExhCode let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_EXH_CODE' | translate}}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-detail-exh-code [obj]="objRequest" [objRevert]="objRevert"></app-detail-exh-code>
+  </div>
+</ng-template>

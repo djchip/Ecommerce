@@ -1,0 +1,278 @@
+<div class="content-wrapper p-0">
+  <div class="content-body">
+    <!-- page users view start -->
+    <section *ngIf="objRevert == null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                  <div class="user-avatar-section">
+                    <div class="d-flex justify-content-start">
+                      <div class="mr-1 ml-0">
+                        <div class="rounded-circle p-3 bg-light-success" style="height: 150px; width: 150px;">
+                          <h2 class="d-flex justify-content-center mt-1 text-success">
+                            {{ data.error | initials }}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                  <div class="user-info-wrapper">
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="menu" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_SOFTWARE_LOG.ERROR'|
+                          translate }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0"> {{ data.error }}</p> -->
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.error ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.error ? dataRevert?.error : data?.error }}
+                        <b *ngIf="dataRevert?.error">---> {{ obj?.error }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="code" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_SOFTWARE_LOG.VERSION'|
+                          translate }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0"> {{ data.version }}</p> -->
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.version ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.version ? dataRevert?.version : data?.version }}
+                        <b *ngIf="dataRevert?.version">---> {{ obj?.version }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="tag" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{
+                          'LABEL_SOFTWARE_LOG.AMENDINGCONTENT'| translate }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0">{{ data.amendingcontent }}</p> -->
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.amendingcontent ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.amendingcontent ? dataRevert?.amendingcontent : data?.amendingcontent }}
+                        <b *ngIf="dataRevert?.amendingcontent">---> {{ obj?.amendingcontent }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="tag" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{
+                          'LABEL_SOFTWARE_LOG.NOTE'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.note ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.note ? dataRevert?.note : data?.note }}
+                        <b *ngIf="dataRevert?.note">---> {{ obj?.note }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="align-center" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.STATUS'| translate
+                          }}</span>
+                      </div>
+                  <p class="card-text mb-0" *ngFor="let item of listStatus" >
+                        <span *ngIf="data.status == item.id">{{currentLang == 'vn'? item.name : item.nameEn}}</span>
+                      </p>
+
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="clock" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{
+                          'LABEL_SOFTWARE_LOG.CREATED_DATE'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0">{{ data.errorlogtime |  date: dateFormat}}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="user" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{
+                          'LABEL_SOFTWARE_LOG.CREATED_BY'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0">{{ data.createdBy }}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="user" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{
+                          'LABEL_SOFTWARE_LOG.UPDATED_BY'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.updatedBy ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.updatedBy ? dataRevert?.updatedBy : data?.updatedBy }}
+                        <b *ngIf="dataRevert?.updatedBy">---> {{ obj?.updatedBy }}</b>
+
+                      </p>
+                      <!-- <p class="card-text mb-0">{{ data.updatedBy }}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title mr-3">
+                        <i data-feather="clock" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{
+                          'LABEL_SOFTWARE_LOG.UPDATED_DATE'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.successfulrevisiontime ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.successfulrevisiontime ? dataRevert?.successfulrevisiontime : data?.successfulrevisiontime| date:dateFormat }}
+                        <b *ngIf="dataRevert?.successfulrevisiontime">---> {{ obj?.successfulrevisiontime }}</b>
+
+                      </p>
+                      <!-- <p class="card-text mb-0">{{ data.successfulrevisiontime | date:"dd-MM-yyyy HH:mm:ss"}}</p> -->
+                    </div>
+                    <!-- <div class="col-12">
+                      <form [formGroup]="editStatus" (ngSubmit)="editError">
+                          <div class="form-group col-8">
+                              <label for="company-column">{{ 'LABEL.STATUS'| translate }}<span style="color: red">*</span></label>
+                              <ng-select *ngIf="currentLang == 'vn'" [items]="listStatus" bindLabel="name" formControlName="status" bindValue="id" placeholder="{{ 'LABEL.STATUS'| translate }}" [loading]="expertLoading"> </ng-select>
+                              <ng-select *ngIf="currentLang == 'en'" [items]="listStatus" bindLabel="nameEn" formControlName="status" bindValue="id" placeholder="{{ 'LABEL.STATUS'| translate }}" [loading]="expertLoading"> </ng-select>
+                          </div>
+                          <div class="col-12 mt-1" style="margin-left:-10px">
+                              <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                          </div>
+                      </form>
+                  </div> -->
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+    <!-- page users view end -->
+
+
+    <section *ngIf="objRevert != null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+          <!-- User Card starts-->
+          <div class="col-xl-12 col-lg-12">
+              <div class="card user-card">
+                  <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+                  <div class="card-body">
+                      <table class="table table-bordered">
+                          <thead class="thead-light">
+                              <tr>
+                                  <th>{{ 'LABEL.properties'| translate }}</th>
+                                  <th>{{ 'LABEL.Before_the_update'| translate }}</th>
+                                  <th>{{ 'LABEL.After_the_update'| translate }}</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr
+                                  [ngClass]="{'table-warning': objRevert.error != obj.error }">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.ERROR'| translate }}</span>
+                                  </td>
+                                  <td>{{ objRevert?.error }} </td>
+                                  <td>{{obj?.error}} </td>
+                              </tr>
+
+                              <tr 
+                                  [ngClass]="{'table-warning': objRevert.version != obj.version }">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.VERSION'| translate }}</span>
+                                  </td>
+                                  <td>{{objRevert?.version}}</td>
+                                  <td>{{obj?.version}} </td>
+                              </tr>
+
+                              <tr 
+                                  [ngClass]="{'table-warning': objRevert.amendingcontent != obj.amendingcontent}">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.AMENDINGCONTENT'| translate }}</span>
+                                  </td>
+                                  <td>{{objRevert.amendingcontent}}</td>
+                                  <td>{{obj.amendingcontent}}</td>
+                              </tr>
+
+                              <tr 
+                                  [ngClass]="{'table-warning': objRevert.note != obj.note}">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.NOTE'| translate }}</span>
+                                  </td>
+                                  <td>{{objRevert.note}}</td>
+                                  <td>{{obj.note}}</td>
+                              </tr>
+
+                              <tr   [ngClass]="{'table-warning': objRevert.status != obj.status}" >
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL.STATUS'| translate }}</span>
+                                  </td>
+                                  <td>
+                                    <p class="card-text mb-0" *ngFor="let item of listStatus" >
+                                      <span *ngIf="objRevert.status == item.id">{{currentLang == 'vn'? item.name : item.nameEn}}</span>
+                                    </p>
+                                                                    
+                                  </td>
+                                  <td>  <p class="card-text mb-0" *ngFor="let item of listStatus" >
+                                    <span *ngIf="obj.status == item.id">{{currentLang == 'vn'? item.name : item.nameEn}}</span>
+                                  </p></td>
+                              </tr>
+
+                              <tr [ngClass]="{'table-warning': objRevert.errorlogtime != obj.errorlogtime}">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.CREATED_DATE'| translate }}</span>
+                                  </td>
+                                  <td>{{objRevert.errorlogtime|  date: dateFormat}}</td>
+                                  <td>{{obj.errorlogtime|  date: dateFormat}}</td>
+
+                              </tr>
+
+                              <tr [ngClass]="{'table-warning': objRevert.createdBy != obj.createdBy}">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.CREATED_BY'| translate }}</span>
+                                  </td>
+                                  <td>{{objRevert.createdBy}}</td>
+                                  <td>{{obj.createdBy}}</td>
+                              </tr>
+
+                              <tr [ngClass]="{'table-warning': objRevert.updatedBy != obj.updatedBy}">
+                                  <td>
+                                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                          'LABEL_SOFTWARE_LOG.UPDATED_BY'| translate }}</span>
+                                  </td>
+                                  <td>{{objRevert.updatedBy}}</td>
+                                  <td>{{obj.updatedBy}}</td>
+                              </tr>
+
+
+                              <tr [ngClass]="{'table-warning': objRevert.successfulrevisiontime != obj.successfulrevisiontime}">
+                                <td>
+                                  <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                    'LABEL_SOFTWARE_LOG.UPDATED_DATE'| translate }}</span>                                </td>
+                                <!-- <td>{{currentLang == 'vn' ? data?.entity?.criteriaName : data?.entity?.criteriaNameEn}} </td> -->
+            
+                                <td>{{ objRevert?.successfulrevisiontime |  date: dateFormat}} </td>
+                                <td>{{  obj?.successfulrevisiontime|  date: dateFormat }} </td>
+                              </tr>
+
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- /User Card Ends-->
+  </section>
+  </div>
+</div>

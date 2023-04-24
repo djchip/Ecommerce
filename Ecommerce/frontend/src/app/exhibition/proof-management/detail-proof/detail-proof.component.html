@@ -1,0 +1,428 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- page users view start -->
+    <section *ngIf="objRevert == null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                  <div class="user-avatar-section">
+                    <div class="d-flex justify-content-start">
+                      <div class="mr-1 ml-0">
+                        <div class="rounded-circle p-3 bg-light-success mt-3" style="height: 150px; width: 150px;">
+                          <h2 class="d-flex justify-content-center mt-1 text-success">
+                            <!-- {{ (id != null ? data?.entity?.proofName : data.proofName) | initials }} -->
+                            {{ data.entity?.proofCode | initials}}
+
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                  <div class="user-info-wrapper">
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="tag" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.NAME'| translate
+                          }}</span>
+                      </div>
+
+                      <p *ngIf="currentLang == 'vn'" class="card-text mb-0"
+                        [ngStyle]="{'color': dataRevert?.proofName ? 'indianred' : '#6E6B7B'}">
+                        {{currentLang == 'vn' ? data?.entity?.proofName : data?.proofNameEn }}
+                        <b *ngIf="dataRevert?.proofName">---> {{ data?.proofName }}</b>
+                      </p>
+
+                      <p *ngIf="currentLang == 'en'" class="card-text mb-0"
+                        [ngStyle]="{'color': dataRevert?.proofNameEn ? 'indianred' : '#6E6B7B'}">
+                        {{currentLang == 'en' ? data?.entity?.proofNameEn : data?.proofNameEn }}
+                        <b *ngIf="dataRevert?.proofNameEn">---> {{ data?.proofNameEn }}</b>
+                      </p>
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="package" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.PROGRAM'| translate
+                          }}</span>
+                      </div>
+
+                      <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.programName : data?.entity?.programNameEn }}</p>
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="package" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.STANDARD'|
+                          translate }}</span>
+                      </div>
+
+                      <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.standardName :
+                        data?.entity?.standardNameEn}}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="package" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.CRITERIA'|
+                          translate }}</span>
+                      </div>
+
+                      <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.criteriaName :
+                        data?.entity?.criteriaNameEn}}</p>
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="code" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.CODE'| translate
+                          }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0">{{ id != null ? data?.entity?.proofCode : data.proofCode }}</p> -->
+                      <!-- <p class="card-text mb-0" [ngStyle]="{'color': dataRevert?.proofCode ? 'indianred' : '#6E6B7B'}">
+                        {{currentLang == 'vn' ? data?.entity?.proofCode : data?.entity?.proofCode }}
+                      </p> -->
+
+                      <p class="card-text mb-0" *ngIf="id != null">{{data.entity?.proofCode }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{data?.entity?.proofCode }}</p>
+
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="type" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.DOCUMENT_TYPE'|
+                          translate }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ?
+                        data?.entity?.documentTypeName : data.entity?.documentTypeNameEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.documentTypeName :
+                        data?.documentTypeNameEn }}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="tag" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.NUMBER_SIGN'|
+                          translate }}</span>
+                      </div>
+
+
+                      <!-- <p class="card-text mb-0">{{ id != null ? data?.entity?.numberSign : data.numberSign }}</p> -->
+
+                      <p class="card-text mb-0">{{ data?.entity?.numberSign }}</p>
+
+                      <!-- <p class="card-text mb-0" [ngStyle]="{'color': dataRevert?.numberSign ? 'indianred' : '#6E6B7B'}">
+                        {{dataRevert?.numberSign ? data?.entity?.numberSign : data?.numberSign }}
+                      </p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="calendar" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.RELEASE_DATE'|
+                          translate }}</span>
+                      </div>
+                      <p class="card-text mb-0">{{ (id != null ? data?.entity?.releaseDate  : data.releaseDate) | date: dateFormat}}</p>
+
+                      <!-- <p class="card-text mb-0">{{ data?.entity?.releaseDate | date: 'dd-MM-yyyy' }}</p>                                                                 -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="user" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.SIGNER'| translate
+                          }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0">{{ id != null ? data?.entity?.signer : data.signer }}</p> -->
+                      <p class="card-text mb-0" [ngStyle]="{'color': dataRevert?.signer ? 'indianred' : '#6E6B7B'}">
+                        {{ data?.entity?.signer }}
+                      </p>
+
+                      <!-- <p class="card-text mb-0">{{ data?.entity?.signer }}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="save" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.RELEASE_BY'|
+                          translate }}</span>
+                      </div>
+
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.releaseByName :
+                        data.entity?.releaseByNameEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.entity?.releaseByName :
+                        data?.entity?.releaseByNameEn }}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="award" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.FIELD'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.fieldName :
+                        data.entity?.fieldNameEn }}</p>
+                      <!-- <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.fieldName : data?.fieldNameEn }}</p> -->
+                      <!-- <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.fieldName : data.entity?.fieldNameEn }}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="edit-3" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.DESCRIPTION'|
+                          translate }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.description :
+                        data.entity?.descriptionEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.description :
+                        data?.descriptionEn }}</p> -->
+
+                      <p *ngIf="currentLang == 'vn'" class="card-text mb-0"
+                        [ngStyle]="{'color': dataRevert?.description ? 'indianred' : '#6E6B7B'}">
+                        {{  data?.entity?.description }}
+                      </p>
+
+                      <p *ngIf="currentLang == 'en'" class="card-text mb-0"
+                        [ngStyle]="{'color': dataRevert?.descriptionEn ? 'indianred' : '#6E6B7B'}">
+                        {{  data?.entity?.descriptionEn }}
+                        <!-- {{dataRevert?.descriptionEn ? data?.entity?.descriptionEn : data?.descriptionEn }} -->
+                      </p>
+
+                      <!-- <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.description : data.entity?.descriptionEn}}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="edit-2" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.NOTE'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.note :
+                        data.entity?.noteEn }}</p>
+                      <p class="card-text mb-0">{{currentLang == 'vn' ? data?.note : data?.noteEn }}
+                      </p>
+                      <!-- <p class="card-text mb-0">{{currentLang == 'vn' ? data?.entity?.note : data.entity?.noteEn}}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="link" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">File</span>
+                      </div>
+                      <a (click)="onDownloadFile()" ngbPopover="{{ 'LABEL.DOWNLOAD'| translate }}"
+                        triggers="mouseenter:mouseleave" placement="right">
+                        <i data-feather="download" class="mr-1"></i>
+                      </a>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <ng-container *ngFor="let item of data.file; let i = index;">
+                        <div class="col-12 ml-1">
+                          <span>{{item.fileName}}</span>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+
+    <section *ngIf="objRevert != null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th>{{ 'LABEL.properties'| translate }}</th>
+                    <th>{{ 'LABEL.Before_the_update'| translate }}</th>
+                    <th>{{ 'LABEL.After_the_update'| translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="currentLang == 'vn'" [ngClass]="{'table-warning': objRevert.proofName != obj.proofName }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.NAME'| translate }}</span>
+                    </td>
+                    <td>{{ objRevert?.proofName }} </td>
+                    <td>{{obj?.proofName}} </td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.proofNameEn != obj.proofNameEn }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.NAME'| translate }}</span>
+                    </td>
+                    <td>{{objRevert?.proofNameEn}}</td>
+                    <td>{{obj?.proofNameEn}} </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.PROGRAM'| translate }}</span>
+                    </td>
+                    <td>{{currentLang == 'vn' ? data?.entity?.programName : data?.entity?.programNameEn}} </td>
+                    <td>{{currentLang == 'vn' ? obj?.programName : obj?.programNameEn}} </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.STANDARD'| translate }}</span>
+                    </td>
+                    <td>{{currentLang == 'vn' ? data?.entity?.standardName : data?.entity?.standardNameEn}} </td>
+                    <td>{{currentLang == 'vn' ? obj?.standardName : obj?.standardNameEn}} </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.CRITERIA'| translate }}</span>
+                    </td>
+                    <td>{{currentLang == 'vn' ? data?.entity?.criteriaName : data?.entity?.criteriaNameEn}} </td>
+                    <td>{{currentLang == 'vn' ? obj?.criteriaName : obj?.criteriaNameEn}} </td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.proofCode != obj.proofCode}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.CODE'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.proofCode}}</td>
+                    <td>{{obj.proofCode}}</td>
+
+                  </tr>
+                  <!-- 
+
+                  <tr [ngClass]="{'table-warning': objRevert.documentTypeName != obj.documentTypeName}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.DOCUMENT_TYPE'| translate }}</span>
+                    </td>
+
+                    <td>{{objRevert.documentTypeName}}</td>
+                    <td>{{obj.documentTypeName}}</td>
+                  </tr> -->
+
+                  <tr [ngClass]="{'table-warning': objRevert.numberSign != obj.numberSign}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.NUMBER_SIGN'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.numberSign}}</td>
+                    <td>{{obj.numberSign}}</td>
+                  </tr>
+
+                  <tr >
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.RELEASE_DATE'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.releaseDate  }} </td>
+                    <td>{{obj.releaseDate}}</td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.signer != obj.signer}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.SIGNER'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.signer}}</td>
+                    <td>{{obj.signer}}</td>
+                  </tr>
+                  <tr [ngClass]="{'table-warning': data.entity?.releaseByName != obj.releaseByName}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.RELEASE_BY'| translate }}</span>
+                    </td>
+                    <td>{{currentLang == 'vn' ? data?.entity?.releaseByName : data?.entity?.releaseByNameEn}} </td>
+                    <td>{{currentLang == 'vn' ? obj?.releaseByName : obj?.releaseByNameEn}} </td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'vn'"
+                    [ngClass]="{'table-warning': objRevert.description != obj.description}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.description'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.description}}</td>
+                    <td>{{obj.description}}</td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.descriptionEn != obj.descriptionEn}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.description'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.descriptionEn}}</td>
+                    <td>{{obj.descriptionEn}}</td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.note != obj.note}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.NOTE'| translate }}</span>
+                    </td>
+                    <td>
+                      {{currentLang == 'vn' ? objRevert.note :
+                      objRevert.noteEn }}
+
+                    </td>
+                    <td> {{currentLang == 'vn' ? obj.note :
+                      obj.noteEn }}</td>
+                  </tr>
+
+                  <!-- <tr [ngClass]="{'table-warning': objRevert.fieldName != obj.fieldName}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">File</span>
+                    </td>
+                    <td>
+                      <ul *ngFor="let item of objRevert.field" class="card-text mb-0">
+                        <li>{{item.fileName}}</li>
+                    </ul>
+      
+                    </td>
+                    <td>  
+                      <ul *ngFor="let item of objRevert?.file" class="card-text mb-0">
+
+                      <li>{{ role?.roleName }}</li>
+                    </ul>
+                 </td> -->
+                  <!-- </tr> -->
+                  <tr>
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.CREATED_DATE'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.createdDate}}</td>
+                    <td>{{obj.createdDate}}</td>
+                  </tr>
+                  <tr [ngClass]="{'table-warning': objRevert.updatedDate != obj.updatedDate}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.CATEGORIES_UPDATED'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.updatedDate}}</td>
+                    <td>{{obj.updatedDate}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+    <!-- page users view end -->
+  </div>
+</div>

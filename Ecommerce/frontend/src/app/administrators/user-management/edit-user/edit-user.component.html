@@ -1,0 +1,130 @@
+<div class="content-wrapper container-xxl p-0">
+    <!-- / Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <!-- <h5 class="card-header">Cập nhật người dùng</h5> -->
+                    <div class="card-body">
+                        <form [formGroup]="addUserForm" (ngSubmit)="editUser()">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="login-name-column">{{ 'LABEL.USERNAME'| translate }} <span
+                                                style="color: red">*</span></label>
+                                        <input type="text" id="login-name-column" class="form-control"
+                                            placeholder="{{ 'LABEL.USERNAME'| translate }}" name="login-column"
+                                            formControlName="username" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="full-name-column">{{ 'LABEL.FULLNAME'| translate }} <span
+                                                style="color: red">*</span></label>
+                                        <input type="text" id="full-name-column" class="form-control"
+                                            placeholder="{{ 'LABEL.FULLNAME'| translate }}" name="fname-column"
+                                            formControlName="fullname"
+                                            [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.fullname.errors }" />
+                                        <div *ngIf="addUserFormSubmitted && AddUserForm.fullname.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="AddUserForm.fullname.errors.required">{{
+                                                'MESSAGE.USER_MANAGEMENT.FULLNAME_REQUIRE'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="email-column">{{ 'LABEL.EMAIL'| translate }} <span
+                                                style="color: red">*</span></label>
+                                        <input type="text" id="email-column" class="form-control"
+                                            placeholder="{{ 'LABEL.EMAIL'| translate }}" name="email-column"
+                                            formControlName="email"
+                                            [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.email.errors }" />
+                                        <div *ngIf="addUserFormSubmitted && AddUserForm.email.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="AddUserForm.email.errors.required">{{
+                                                'MESSAGE.USER_MANAGEMENT.EMAIL_REQUIRE'| translate }}</div>
+                                            <div *ngIf="AddUserForm.email.errors.pattern">{{
+                                                'MESSAGE.USER_MANAGEMENT.EMAIL_PARTERN'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="phone-column">{{ 'LABEL.PHONE'| translate }}</label>
+                                        <input type="text" id="phone-column" class="form-control"
+                                            placeholder="{{ 'LABEL.PHONE'| translate }}" name="phone-column"
+                                            [maxlength]="10" formControlName="phoneNumber"
+                                            [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.phoneNumber.errors }" />
+                                        <div *ngIf="addUserFormSubmitted && AddUserForm.phoneNumber.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="AddUserForm.phoneNumber.errors.pattern">{{
+                                                'MESSAGE.USER_MANAGEMENT.PHONE_PARTERN'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="company-column">{{ 'LABEL.ROLE'| translate }}<span
+                                                style="color: red">*</span></label>
+                                        <ng-select *ngIf="currentLang == 'vn'" [items]="listRole" bindLabel="roleName" [loading]="roleLoading"
+                                            formControlName="role" [multiple]="true"
+                                            placeholder="{{ 'LABEL.ROLE'| translate }}"
+                                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.role.errors }">
+                                        </ng-select>
+                                        <ng-select *ngIf="currentLang == 'en'" [items]="listRole" bindLabel="roleNameEn" [loading]="roleLoading"
+                                            formControlName="role" [multiple]="true"
+                                            placeholder="{{ 'LABEL.ROLE'| translate }}"
+                                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.role.errors }">
+                                        </ng-select>
+                                        <div *ngIf="addUserFormSubmitted && AddUserForm.role.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="AddUserForm.role.errors.required">{{
+                                                'MESSAGE.USER_MANAGEMENT.ROLE_REQUIRE'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                      <label for="unit-column">{{ 'LABEL.UNIT'| translate }}<span style="color: red">*</span></label>
+                                      <ng-select *ngIf="currentLang == 'vn'" id="unit-column"
+                                                 [items]="listUnit" 
+                                                 bindLabel="unitName"
+                                                 notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                 formControlName="unit" 
+                                                 placeholder="{{ 'LABEL.UNIT'| translate }}"
+                                                 [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.unit.errors }">
+                                      </ng-select>
+                                      <ng-select *ngIf="currentLang == 'en'" id="unit-column"
+                                                 [items]="listUnit" 
+                                                 bindLabel="unitNameEn"
+                                                 notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                 formControlName="unit" 
+                                                 placeholder="{{ 'LABEL.UNIT'| translate }}"
+                                                 [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.unit.errors }">
+                                      </ng-select>
+                                      <div *ngIf="addUserFormSubmitted && AddUserForm.unit.errors" class="invalid-feedback">
+                                          <div *ngIf="AddUserForm.unit.errors.required">{{ 'MESSAGE.USER_MANAGEMENT.UNIT_REQUIRE'| translate }}</div>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'|
+                                        translate
+                                        }}</button>
+                                    <button type="button" rippleEffect class="btn btn-outline-secondary"
+                                        (click)="resetForm()">{{
+                                        'ACTION.RESET'| translate }}</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Basic multiple Column Form section end -->
+</div>

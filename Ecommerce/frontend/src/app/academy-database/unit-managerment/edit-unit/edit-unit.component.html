@@ -1,0 +1,112 @@
+<div class="content-wrapper container-xxl p-0">
+  <!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Cập nhật người dùng</h5> -->
+          <div class="card-body">
+            <form [formGroup]="addUnitForm" (ngSubmit)="editUnit()">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.UNITNAME_VN'| translate }}<span
+                        style="color: red">*</span></label>
+                    <input type="text" id="login-name-column" class="form-control"
+                      placeholder="{{ 'LABEL.UNITNAME_VN'| translate }}" name="login-column" [maxlength]="256"
+                      formControlName="unitName"
+                      [ngClass]="{ 'is-invalid': addUnitFormSubmitted && AddUnitForm.unitName.errors }" />
+                    <div *ngIf="addUnitFormSubmitted && AddUnitForm.unitName.errors" class="invalid-feedback">
+                      <div *ngIf="AddUnitForm.unitName.errors.required">{{
+                        'MESSAGE.UNIT_MANAGERMENT.UNITNAME_REQUIRE'| translate }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.UNITNAME_EN'| translate }}</label>
+                    <input type="text" id="login-name-column" class="form-control"
+                      placeholder="{{ 'LABEL.UNITNAME_EN'| translate }}" name="login-column" [maxlength]="256"
+                      formControlName="unitNameEn"
+                      />
+                    <!-- <div *ngIf="addUnitFormSubmitted && AddUnitForm.unitName.errors" class="invalid-feedback">
+                      <div *ngIf="AddUnitForm.unitName.errors.required">{{
+                        'MESSAGE.UNIT_MANAGERMENT.UNITNAME_REQUIRE'| translate }}</div>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="full-name-column">{{ 'LABEL.UNIT_CODE'| translate }} <span
+                        style="color: red">*</span></label>
+                    <input type="text" id="full-name-column" class="form-control" [maxlength]="100"
+                      placeholder="{{ 'LABEL.UNIT_CODE'| translate }}" name="fname-column" formControlName="unitCode"
+                      [ngClass]="{ 'is-invalid': addUnitFormSubmitted && AddUnitForm.unitCode.errors }" />
+                    <div *ngIf="addUnitFormSubmitted && AddUnitForm.unitCode.errors" class="invalid-feedback">
+                      <div *ngIf="AddUnitForm.unitCode.errors.required">{{ 'MESSAGE.UNIT_MANAGERMENT.UNIT_CODE_REQUIRE'|
+                        translate }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="classify">{{ 'LABEL.CLASSIFY'| translate }}<span
+                        style="color: red">*</span></label>
+                        <ng-select *ngIf="currentLang == 'vn'" id="classify" [items]="listClassify" bindLabel="name" formControlName="classify"
+                        placeholder="{{ 'LABEL.CLASSIFY'| translate }}" bindValue="id"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        [ngClass]="{ 'is-invalid': addUnitFormSubmitted && AddUnitForm.classify.errors }">
+                        </ng-select>
+                        <ng-select *ngIf="currentLang == 'en'" id="classify" [items]="listClassify" bindLabel="nameEn" formControlName="classify"
+                        placeholder="{{ 'LABEL.CLASSIFY'| translate }}" bindValue="id"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        [ngClass]="{ 'is-invalid': addUnitFormSubmitted && AddUnitForm.classify.errors }">
+                        </ng-select>
+                    <div *ngIf="addUnitFormSubmitted && AddUnitForm.classify.errors" class="invalid-feedback">
+                      <div *ngIf="AddUnitForm.classify.errors.required">{{
+                        'MESSAGE.UNIT_MANAGERMENT.CLASSIFY'| translate }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="email-column">{{ 'LABEL.EMAIL'| translate }} 
+                      <span style="color: red">*</span></label>
+                    <input type="text" id="email-column" class="form-control" [maxlength]="256"
+                      placeholder="{{ 'LABEL.EMAIL'| translate }}" name="email-column"
+                      formControlName="email" [ngClass]="{ 'is-invalid': addUnitFormSubmitted && AddUnitForm.email.errors }"/>
+                      <div *ngIf="addUnitFormSubmitted && AddUnitForm.email.errors" class="invalid-feedback">
+                        <div *ngIf="AddUnitForm.email.errors.pattern">{{ 'MESSAGE.USER_MANAGEMENT.EMAIL_PARTERN'| translate }}</div>
+                        <div *ngIf="AddUnitForm.email.errors.required">{{ 'MESSAGE.USER_MANAGEMENT.EMAIL_REQUIRED'| translate }}</div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="email-column">{{ 'LABEL.FORM_DES_VN'| translate }} <span
+                        style="color: red"></span></label>
+                        <textarea class="form-control" id="basicTextarea" rows="1" [maxlength]="2000"
+                        placeholder="{{ 'LABEL.FORM_DES_VN'| translate }}" formControlName="description"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="email-column">{{ 'LABEL.FORM_DES_EN'| translate }} <span
+                        style="color: red"></span></label>
+                        <textarea class="form-control" id="basicTextarea" rows="1" [maxlength]="2000"
+                        placeholder="{{ 'LABEL.FORM_DES_EN'| translate }}" formControlName="descriptionEn"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate
+                    }}</button>
+                  <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{
+                    'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>

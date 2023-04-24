@@ -1,0 +1,116 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- page users view start -->
+      <section class="app-user-view">
+        <!-- User Card & Plan Starts -->
+        <div class="row">
+          <!-- User Card starts-->
+          <div class="col-xl-12 col-lg-12">
+            <div class="card user-card">
+              <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                    <div class="user-avatar-section">
+                      <div class="d-flex justify-content-start">
+                        <div class="mr-1 ml-0">
+                            <div
+                              class="rounded-circle p-3 bg-light-success mt-4" style="height: 150px; width: 150px;"
+                            >
+                              <h2
+                                class="d-flex justify-content-center mt-1 text-success"
+                              >
+                                {{ data.name | initials }}
+                              </h2>
+                            </div>
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                    <div class="user-info-wrapper">
+                      <div class="d-flex flex-wrap">
+                        <div class="user-info-title">
+                          <i data-feather="star" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_ASSESSMENT.NAME'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ data.name }}</p>
+                      </div>
+                      <div class="d-flex flex-wrap my-50">
+                        <div class="user-info-title">
+                          <i data-feather="twitch" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.DESCRIPTION'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ data.description}}</p>
+                      </div>
+                      <div class="d-flex flex-wrap my-50">
+                        <div class="user-info-title">
+                          <i data-feather="user" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.CREATED_BY'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ data.createdBy}}</p>
+                      </div>
+                      <div class="d-flex flex-wrap my-50">
+                        <div class="user-info-title">
+                          <i data-feather="calendar" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.CREATED_DATE'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ data.createdDate | date: dateFormat}}</p>
+                      </div>
+                      <div class="d-flex flex-wrap my-50">
+                        <div class="user-info-title">
+                          <i data-feather="user" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.UPDATE_BY'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ data.updatedBy}}</p>
+                      </div>
+                      <div class="d-flex flex-wrap my-50">
+                        <div class="user-info-title">
+                          <i data-feather="calendar" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.UPDATE_DATE'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0" *ngIf="data.updatedBy">{{ data.updatedDate | date: dateFormat}}</p>
+                      </div>
+                      <div class="d-flex flex-wrap my-50">
+                        <div class="user-info-title">
+                          <i data-feather="link" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">File</span>
+                        </div>
+                        <p class="card-text mb-0" (click)="openAssessment()"
+                        ngbPopover="{{ 'ACTION.EDITOR'| translate }}" triggers="mouseenter:mouseleave" placement="right">
+                          {{ data.file}} &nbsp; <i class="text-info cursor-pointer" data-feather="eye"></i></p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <form [formGroup]="editAssessmentForm"t (ngSubmit)="editExpert()">
+                      <div class="form-group col-8">
+                        
+                          <label for="company-column">{{ 'LABEL.STATUS'| translate }}<span style="color: red">*</span></label>
+                          <ng-select *ngIf="currentLang == 'vn'" [items]="listEvaluate" bindLabel="name" formControlName="evaluated" bindValue="id" placeholder="{{ 'LABEL.STATUS'| translate }}" [loading]="expertLoading"> </ng-select>
+                          <ng-select *ngIf="currentLang == 'en'" [items]="listEvaluate" bindLabel="nameEn" formControlName="evaluated" bindValue="id" placeholder="{{ 'LABEL.STATUS'| translate }}" [loading]="expertLoading"> </ng-select>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for="login-name-column">{{ 'LABEL.COMMENT'| translate }}</label>
+                          <textarea class="form-control" id="basicTextarea" rows="3" [maxlength]="2000"
+                            placeholder="{{ 'LABEL.COMMENT'| translate }}" formControlName="comment"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-1" style="margin-left:-10px">
+                          <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                      </div>
+                  </form>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- /User Card Ends-->
+      </section>
+      <!-- page users view end -->
+    </div>
+  </div>
+  

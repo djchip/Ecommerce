@@ -1,0 +1,118 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <!-- User List -->
+        <section class="users-list-wrapper">
+            <!-- users filter start -->
+            <div class="card">
+                <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+                <div class="card-body">
+                    <form [formGroup]="privilegesForm">
+                        <div class="users-list-filter">
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="role-column">{{ 'LABEL.ORG'| translate }}<span
+                                                style="color: red">*</span></label>
+                                        <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listOrg"
+                                            bindLabel="name" formControlName="organizationId" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            placeholder="{{ 'LABEL.ORG'| translate }}" (change)="onChange($event, treeFilter.treeModel)"
+                                            (clear)="resetPro()"
+                                            [ngClass]="{ 'is-invalid': privilegesFormSubmitted && PrivilegesForm.organizationId.errors }">
+                                        </ng-select>
+                                        <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listOrg"
+                                            bindLabel="nameEn" formControlName="organizationId" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            placeholder="{{ 'LABEL.ORG'| translate }}" (change)="onChange($event, treeFilter.treeModel)"
+                                            (clear)="resetPro()"
+                                            [ngClass]="{ 'is-invalid': privilegesFormSubmitted && PrivilegesForm.organizationId.errors }">
+                                        </ng-select>
+
+                                        <div *ngIf="privilegesFormSubmitted && PrivilegesForm.organizationId.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="PrivilegesForm.organizationId.errors.required">{{
+                                                'MESSAGE.DIRECTORY.REQUIRE_ORG'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="role-column">{{ 'LABEL_CATE.CATEGORIES_NAME'| translate }}<span
+                                                style="color: red">*</span></label>
+                                        <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listCategory" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            bindLabel="name" [loading]="roleLoading" formControlName="categoryId"
+                                            [readonly]="disable" (change)="onChangeCategory($event, treeFilter.treeModel)" [(ngModel)]="cateId"
+                                            placeholder="{{ 'LABEL_CATE.CATEGORIES_NAME'| translate }}"
+                                            [ngClass]="{ 'is-invalid': privilegesFormSubmitted && PrivilegesForm.categoryId.errors }">
+                                        </ng-select>
+                                        <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listCategory" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            bindLabel="nameEn" [loading]="roleLoading" formControlName="categoryId"
+                                            [readonly]="disable" (change)="onChangeCategory($event, treeFilter.treeModel)" [(ngModel)]="cateId"
+                                            placeholder="{{ 'LABEL_CATE.CATEGORIES_NAME'| translate }}"
+                                            [ngClass]="{ 'is-invalid': privilegesFormSubmitted && PrivilegesForm.categoryId.errors }">
+                                        </ng-select>
+
+                                        <div *ngIf="privilegesFormSubmitted && PrivilegesForm.categoryId.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="PrivilegesForm.categoryId.errors.required">{{
+                                                'MESSAGE.DIRECTORY.REQUIRE_CAT'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label for="role-column">{{ 'LABEL.BY_USERS'| translate }}<span
+                                                style="color: red">*</span></label>
+                                        <ng-select id="role-column" [items]="listUser" bindLabel="email" [(ngModel)]="usersId"
+                                            formControlName="userInfos" placeholder="{{ 'LABEL.BY_USERS'| translate }}" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                            [multiple]="false" (change)="onInitTree($event, treeFilter.treeModel)" [readonly]="disableUserId"
+                                            [ngClass]="{ 'is-invalid': privilegesFormSubmitted && PrivilegesForm.userInfos.errors }">
+                                        </ng-select>
+
+                                        <div *ngIf="privilegesFormSubmitted && PrivilegesForm.userInfos.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="PrivilegesForm.userInfos.errors.required">{{
+                                                'MESSAGE.DIRECTORY.USER_EMAIL_RQ'| translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="acceptAction.search" class="input-group mb-1 col-md-6">
+                                    <input class="form-control" id="tree-filter" #filter
+                                        (keyup)="treeFilter.treeModel.filterNodes(filter.value)"
+                                        placeholder="{{ 'LABEL.FILTER_BY_STA'| translate }}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary"
+                                            (click)="treeFilter.treeModel.clearFilter(); filter.value = ''"
+                                            rippleEffect>
+                                            X
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- todofix -->
+                                <div class=" col-12 d-flex">
+                                    <div class="col-md-6 col-12">
+                                        <label class="col-12 d-flex h4">{{ 'MENU.PRIVILEGES_PRO_STA_CRI'| translate }}</label>
+                                        <tree-root #treeFilter [ngClass]="'tree-wrapper tree-checkbox'" [focused]="true"
+                                            [options]="optionsDisabledCheckbox" [nodes]="nodesFilter"
+                                            (select)="onSelect($event)" (deselect)="onSelect($event)">
+                                        </tree-root>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <button *ngIf="acceptAction.update" class="btn btn-primary" (click)="doSave()">{{'ACTION.SAVE'|
+                                                translate }}</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

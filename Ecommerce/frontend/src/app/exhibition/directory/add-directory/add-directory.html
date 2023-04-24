@@ -1,0 +1,155 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- / Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+            <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+            <div class="card-body">
+              <form [formGroup]="addnewDirectory" (ngSubmit)="addDirectory()">
+                <div class="row">
+
+                  
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="code-column">{{ 'LABEL.CODE'| translate }}<span style="color: red">*</span></label>
+                      <input type="text" id="code-column" class="form-control"
+                        placeholder="{{ 'LABEL.CODE'| translate }}" name="login-column" [maxlength]="50" readonly
+                        formControlName="code"
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.code.errors }" />
+
+                      <div *ngIf="addDirectorySubmitted && AddNewDirectory.code.errors" class="invalid-feedback">
+
+                        <div *ngIf="AddNewDirectory.code.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_CODE'| translate
+                          }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL.ORG'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listOrg" bindLabel="name"
+                        formControlName="organizationId" placeholder="{{ 'LABEL.ORG'| translate }}"
+                        (change)="onChange()" (clear)="resetPro()"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.organizationId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listOrg" bindLabel="nameEn"
+                        formControlName="organizationId" placeholder="{{ 'LABEL.ORG'| translate }}"
+                        (change)="onChange()" (clear)="resetPro()"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.organizationId.errors }">
+                      </ng-select>
+
+                      <div *ngIf="addDirectorySubmitted && AddNewDirectory.organizationId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddNewDirectory.organizationId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_ORG'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'MENU.CATEGORIES'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'"  [readonly]="disableCat" id="role-column" [items]="listCat" bindLabel="name"
+                        formControlName="categoryId" placeholder="{{ 'MENU.CATEGORIES'| translate }}"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                      
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.categoryId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'"  [readonly]="disableCat" id="role-column" [items]="listCat" bindLabel="nameEn"
+                        formControlName="categoryId" placeholder="{{ 'MENU.CATEGORIES'| translate }}"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                      
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.categoryId.errors }">
+                      </ng-select>
+
+                      <div *ngIf="addDirectorySubmitted && AddNewDirectory.categoryId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddNewDirectory.categoryId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_CAT'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL.NAME_VN'| translate }}<span
+                          style="color: red">*</span></label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL.NAME_VN'| translate }}" name="login-column" [maxlength]="256"
+                        (change)="onChangeName()" formControlName="name"
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.name.errors }" />
+                      <div *ngIf="addDirectorySubmitted && AddNewDirectory.name.errors" class="invalid-feedback">
+                        <div *ngIf="AddNewDirectory.name.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_NAME'| translate }}</div>
+                        <div *ngIf="AddNewDirectory.name.errors.invalidName">
+                          {{ 'MESSAGE.DIRECTORY.INVALID_NAME'| translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL.NAME_EN'| translate }}</label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL.NAME_EN'| translate }}" name="login-column" [maxlength]="256"
+                        formControlName="nameEn"
+                        />
+                      <!-- <div *ngIf="addDirectorySubmitted && AddNewDirectory.nameEn.errors" class="invalid-feedback">
+                        <div *ngIf="AddNewDirectory.nameEn.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_NAME'|
+                          translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+     
+                  <!-- <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL.BY_USERS'| translate }}</label>
+                      <ng-select id="role-column" [items]="listUser" bindLabel="email"
+                        formControlName="userInfos" placeholder="{{ 'LABEL.BY_USERS'| translate }}" [multiple]="true" 
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.userInfos.errors }">
+                      </ng-select>
+                    </div>
+                  </div> -->
+
+
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{'LABEL.DES_VN'| translate }}</label>
+                      <textarea type="text" placeholder="{{ 'LABEL.DES_VN'| translate }}" class="form-control"
+                        formControlName="description" [maxlength]="2000"
+                        [ngClass]="{ 'is-invalid': addDirectorySubmitted && AddNewDirectory.description.errors }">
+                      </textarea>
+                      <div *ngIf="addDirectorySubmitted && AddNewDirectory.description.errors" class="invalid-feedback">
+                        <div *ngIf="AddNewDirectory.description.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_DES'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{'LABEL.DES_EN'| translate }}</label>
+                      <textarea type="text" placeholder="{{ 'LABEL.DES_EN'| translate }}" class="form-control"
+                        formControlName="descriptionEn" [maxlength]="2000">
+                      </textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'LABEL.SAVE'| translate
+                      }}</button>
+                    <button type="reset" rippleEffect class="btn btn-outline-secondary">{{ 'LABEL.RESET'| translate
+                      }}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Basic multiple Column Form section end -->
+  </div>
+</div>

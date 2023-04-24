@@ -1,0 +1,145 @@
+<div class="content-wrapper p-0">
+  <!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+          <div class="card-body">
+            <form [formGroup]="addErrorLogForm" (ngSubmit)="editError()">
+              <div class="row">
+                <div class="col-md-6 col-12" style="display: none;">
+                  <div class="form-group">
+                    <label for="error-column">id<span style="color: red">*</span></label>
+                    <input
+                      type="text"
+                      id="login-name-column"
+                      class="form-control"
+                      placeholder="{{ 'LABEL_SOFTWARE_LOG.ERROR' | translate }}"
+                      name="error-column"
+                      [maxlength]="250"
+                      formControlName="id"
+                      [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.id.errors }"
+                    />
+                    <div *ngIf="addErrorLogSubmitted && AddErrorLogForm.id.errors" 
+                      class="invalid-feedback">
+                      <div *ngIf="AddErrorLogForm.id.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.ERROR_REQUIRE'| translate }}</div>
+                    </div>
+                  </div>
+              </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="error-column">{{ 'LABEL_SOFTWARE_LOG.ERROR'| translate }}<span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="login-name-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL_SOFTWARE_LOG.ERROR' | translate }}"
+                        name="error-column"
+                        [maxlength]="250"
+                        formControlName="error"
+                        [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.error.errors }"
+                      />
+                      <div *ngIf="addErrorLogSubmitted && AddErrorLogForm.error.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddErrorLogForm.error.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.ERROR_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                </div>
+                
+                
+                <!-- <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="version-column">{{ 'LABEL_SOFTWARE_LOG.VERSION'| translate }} <span style="color: red">*</span></label>
+                      <input 
+                        type="text" 
+                        id="version-column" 
+                        class="form-control" 
+                        placeholder="{{ 'LABEL_SOFTWARE_LOG.VERSION'| translate }}" 
+                        name="version-column" 
+                        formControlName="version"
+                        [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.version.errors }"
+                      />
+                      <div *ngIf="addErrorLogSubmitted && AddErrorLogForm.version.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddErrorLogForm.version.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.VERSION_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                </div> -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="amendingcontent-column">{{'LABEL_SOFTWARE_LOG.AMENDINGCONTENT'| translate }}<span
+                        style="color: red">*</span></label>
+                      <textarea 
+                      type="text" 
+                      id="amendingcontent-column" 
+                      placeholder="{{ 'LABEL_SOFTWARE_LOG.AMENDINGCONTENT'| translate }}" 
+                      class="form-control" 
+                      formControlName="amendingcontent"
+                      [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.amendingcontent.errors}">
+                      </textarea>
+                    <div *ngIf="addErrorLogSubmitted && AddErrorLogForm.amendingcontent.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddErrorLogForm.amendingcontent.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.AMENDING_CONTENT_REQUIRE'| translate }}</div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="note-column">{{'LABEL_SOFTWARE_LOG.NOTE'| translate }}<span
+                        style="color: red">*</span></label>
+                      <textarea 
+                      type="text" 
+                      id="note-column" 
+                      placeholder="{{ 'LABEL_SOFTWARE_LOG.NOTE'| translate }}" 
+                      class="form-control" 
+                      formControlName="note"
+                      [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.note.errors}">
+                      </textarea>
+                    <div *ngIf="addErrorLogSubmitted && AddErrorLogForm.note.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddErrorLogForm.note.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.NOTE_REQUIRE'| translate }}</div>
+                      </div>
+                  </div>
+                </div>
+                <!-- nếu là obj thì bỏ bindValue="id" đi  -->
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="status">{{ 'LABEL.STATUS'| translate }}<span
+                        style="color: red">*</span></label>
+                        <ng-select *ngIf="currentLang == 'vn'" 
+                        [items]="listStatus" 
+                        bindLabel="name" 
+                        formControlName="status"
+                        placeholder="{{ 'LABEL.STATUS'| translate }}"
+                        [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.status.errors}"
+                        >
+                      </ng-select>
+                      <ng-select 
+                      *ngIf="currentLang == 'en'" 
+                      [items]="listStatus" 
+                      bindLabel="nameEn" 
+                      formControlName="status"
+                      placeholder="{{ 'LABEL.STATUS'| translate }}"
+                      [ngClass]="{ 'is-invalid': addErrorLogSubmitted && AddErrorLogForm.status.errors}"
+                      >
+                      </ng-select>
+                    <div *ngIf="addErrorLogSubmitted && AddErrorLogForm.status.errors" class="invalid-feedback">
+                      <div *ngIf="AddErrorLogForm.status.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.STATUS_REQUIRE'| translate }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                  <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  </div>

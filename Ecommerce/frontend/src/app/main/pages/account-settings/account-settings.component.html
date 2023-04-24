@@ -1,0 +1,264 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- account setting page -->
+    <section id="page-account-settings">
+      <div class="row nav-vertical d-flex">
+        <div class="col-md-3 mb-2 mb-md-0">
+          <ul ngbNav #navVertical="ngbNav" class="nav nav-pills flex-column nav-left">
+            <!-- th�ng tin ngu?i d�ng -->
+            <li class="nav-item" ngbNavItem>
+              <a ngbNavLink class="nav-link d-flex py-75" id="account-pill-general" data-toggle="pill"
+                href="#account-vertical-general" aria-expanded="true">
+                <i data-feather="user" class="font-medium-3 mr-1"></i>
+                <span class="font-weight-bold">{{ 'LABEL.GENERAL'| translate }}</span>
+              </a>
+              <ng-template ngbNavContent>
+                <div class="card">
+                  <div class="card-body">
+                    <!-- header media -->
+                    <div class="media">
+
+                      <div class="user-nav d-sm-flex d-none">
+                        <h1 style="text-transform: uppercase;" class="user-name font-weight-bolder">
+                          {{ this.currentUserName }}
+                        </h1>
+                      </div>
+
+                    </div>
+                    <!--/ header media -->
+
+                    <!-- form -->
+
+                    <form class="validate-form mt-2" [formGroup]="addUserForm" (ngSubmit)="editUser()">
+                      <!-- <form class="validate-form mt-2"> -->
+                      <div class="row">
+                        <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="login-name-column">{{ 'LABEL.USERNAME'| translate }} <span
+                                style="color: red">*</span></label>
+                            <input type="text" id="login-name-column" class="form-control"
+                              placeholder="{{ 'LABEL.USERNAME'| translate }}" name="login-column"
+                              formControlName="username" [readonly]="true" />
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="email-column">{{ 'LABEL.EMAIL'| translate }} <span
+                                style="color: red">*</span></label>
+                            <input type="text" id="email-column" class="form-control"
+                              placeholder="{{ 'LABEL.EMAIL'| translate }}" name="email-column" formControlName="email"
+                              [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.email.errors }" />
+                            <div *ngIf="addUserFormSubmitted && AddUserForm.email.errors" class="invalid-feedback">
+                              <div *ngIf="AddUserForm.email.errors.required">{{
+                                'MESSAGE.USER_MANAGEMENT.EMAIL_REQUIRE'| translate }}</div>
+                              <div *ngIf="AddUserForm.email.errors.pattern">{{
+                                'MESSAGE.USER_MANAGEMENT.EMAIL_PARTERN'| translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="company-column">{{ 'LABEL.ROLE'| translate }}<span
+                                style="color: red">*</span></label>
+                            <ng-select [items]="listRole" bindLabel="roleName" [loading]="roleLoading" [readonly]="true"
+                              formControlName="role" [multiple]="true" placeholder="{{ 'LABEL.ROLE'| translate }}"
+                              [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.role.errors }">
+                            </ng-select>
+                            <div *ngIf="addUserFormSubmitted && AddUserForm.role.errors" class="invalid-feedback">
+                              <div *ngIf="AddUserForm.role.errors.required">{{
+                                'MESSAGE.USER_MANAGEMENT.ROLE_REQUIRE'| translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="unit-column">{{ 'LABEL.UNIT'| translate }}<span style="color: red">*</span></label>
+                            <ng-select  *ngIf="currentLang == 'vn'"   id="unit-column"
+                                       [items]="listUnit" 
+                                       bindLabel="unitName"
+                                       [readonly]="true"
+                                       notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                       formControlName="unit" 
+                                       placeholder="{{ 'LABEL.UNIT'| translate }}"
+                                       [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.unit.errors }">
+                            </ng-select>
+                            <ng-select *ngIf="currentLang == 'en'" id="unit-column"
+                                       [items]="listUnit" 
+                                       bindLabel="unitNameEn"
+                                       notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                       formControlName="unit" 
+                                       placeholder="{{ 'LABEL.UNIT'| translate }}"
+                                       [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.unit.errors }">
+                            </ng-select>
+                            <div *ngIf="addUserFormSubmitted && AddUserForm.unit.errors" class="invalid-feedback">
+                                <div *ngIf="AddUserForm.unit.errors.required">{{ 'MESSAGE.USER_MANAGEMENT.UNIT_REQUIRE'| translate }}</div>
+                            </div>
+                          </div>
+                      </div>
+
+                        <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="full-name-column">{{ 'LABEL.FULLNAME'| translate }} <span
+                                style="color: red">*</span></label>
+                            <input type="text" id="full-name-column" class="form-control"
+                              placeholder="{{ 'LABEL.FULLNAME'| translate }}" name="fname-column"
+                              formControlName="fullname"
+                              [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.fullname.errors }" />
+                            <div *ngIf="addUserFormSubmitted && AddUserForm.fullname.errors" class="invalid-feedback">
+                              <div *ngIf="AddUserForm.fullname.errors.required">{{
+                                'MESSAGE.USER_MANAGEMENT.FULLNAME_REQUIRE'| translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="phone-column">{{ 'LABEL.PHONE'| translate }}</label>
+                            <input type="text" id="phone-column" class="form-control"
+                              placeholder="{{ 'LABEL.PHONE'| translate }}" name="phone-column" [maxlength]="10"
+                              formControlName="phoneNumber"
+                              [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddUserForm.phoneNumber.errors }" />
+                            <div *ngIf="addUserFormSubmitted && AddUserForm.phoneNumber.errors"
+                              class="invalid-feedback">
+                              <div *ngIf="AddUserForm.phoneNumber.errors.pattern">{{
+                                'MESSAGE.USER_MANAGEMENT.PHONE_PARTERN'| translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'|
+                            translate
+                            }}</button>
+                          <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{
+                            'ACTION.RESET'| translate }}</button>
+                        </div>
+                      </div>
+                    </form>
+                    <!--/ form -->
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+
+            <!-- thay d?i pass word -->
+            <li class="nav-item" ngbNavItem>
+              <a ngbNavLink class="nav-link d-flex py-75" id="account-pill-password" data-toggle="pill"
+                href="#account-vertical-password" aria-expanded="false">
+                <i data-feather="lock" class="font-medium-3 mr-1"></i>
+                <span class="font-weight-bold">{{ 'LABEL.CHANGE_PASSWORD'| translate }}</span>
+              </a>
+              <ng-template ngbNavContent>
+                <div class="card">
+                  <div class="card-body">
+                    <!-- form -->
+                    <form class="validate-form mt-2" [formGroup]="passswordForm" (ngSubmit)="editPassword()">
+                      <div class="row">
+                        <div class="col-12 col-sm-6">
+                          <div class="form-group">
+                            <label for="account-old-password">{{ 'LABEL.OLD_PASSWORD'| translate }}</label>
+                            <div class="input-group form-password-toggle input-group-merge">
+                              <input [type]="passwordTextTypeOld ? 'text' : 'password'" class="form-control"
+                                id="account-old-password" name="oldPassword"
+                                placeholder="{{ 'LABEL.OLD_PASSWORD'| translate }}" formControlName="oldPassword"
+                                [ngClass]="{ 'is-invalid': passwordSubmitted && changePassForm.oldPassword.errors }" />
+                              <div class="input-group-append">
+                                <span class="input-group-text cursor-pointer"><i class="feather font-small-4" [ngClass]="{
+                                      'icon-eye-off': passwordTextTypeOld,
+                                      'icon-eye': !passwordTextTypeOld
+                                    }" (click)="togglePasswordTextTypeOld()"></i></span>
+                              </div>
+
+                              <div *ngIf="passwordSubmitted && changePassForm.oldPassword.errors"
+                                class="invalid-feedback">
+                                <div *ngIf="changePassForm.oldPassword.errors.required">{{
+                                  'MESSAGE.USER_MANAGEMENT.PASSWORD_REQUIRE'| translate }}</div>
+                                <div *ngIf="changePassForm.oldPassword.errors.pattern">{{
+                                  'MESSAGE.USER_MANAGEMENT.PASSWORD_PARTERN'| translate }}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-sm-6">
+                          <div class="form-group">
+                            <label for="account-retype-new-password">{{ 'LABEL.NEW_PASSWORD'| translate }}</label>
+                            <div class="input-group form-password-toggle input-group-merge">
+                              <input [type]="passwordTextTypeRetype ? 'text' : 'password'" class="form-control"
+                                id="account-retype-new-password" name="newPassword"
+                                placeholder="{{ 'LABEL.NEW_PASSWORD'| translate }}" formControlName="newPassword"
+                                [ngClass]="{ 'is-invalid': passwordSubmitted && changePassForm.newPassword.errors }" />
+                              <div class="input-group-append">
+                                <span class="input-group-text cursor-pointer"><i class="feather font-small-4" [ngClass]="{
+                                      'icon-eye-off': passwordTextTypeRetype,
+                                      'icon-eye': !passwordTextTypeRetype
+                                    }" (click)="togglePasswordTextTypeRetype()"></i></span>
+                              </div>
+
+                              <div *ngIf="passwordSubmitted && changePassForm.newPassword.errors"
+                                class="invalid-feedback">
+                                <div *ngIf="changePassForm.newPassword.errors.required">{{
+                                  'MESSAGE.USER_MANAGEMENT.PASSWORD_REQUIRE'| translate }}</div>
+                                <div *ngIf="changePassForm.newPassword.errors.pattern">{{
+                                  'MESSAGE.USER_MANAGEMENT.PASSWORD_PARTERN'| translate }}</div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                          <div class="form-group">
+                            <label for="account-retype-new-password">{{ 'LABEL.RETYPE_PASSWORD'| translate }}</label>
+                            <div class="input-group form-password-toggle input-group-merge">
+                              <input [type]="passwordTextTypeRetype ? 'text' : 'password'" class="form-control"
+                                id="account-retype-new-password" name="confirmPassword"
+                                placeholder="{{ 'LABEL.RETYPE_PASSWORD'| translate }}" formControlName="confirmPassword"
+                                [ngClass]="{ 'is-invalid': passwordSubmitted && changePassForm.confirmPassword.errors }" />
+                              <div class="input-group-append">
+                                <span class="input-group-text cursor-pointer"><i class="feather font-small-4" [ngClass]="{
+                                      'icon-eye-off': passwordTextTypeRetype,
+                                      'icon-eye': !passwordTextTypeRetype
+                                    }" (click)="togglePasswordTextTypeRetype()"></i></span>
+                              </div>
+
+                              <div *ngIf="passwordSubmitted && changePassForm.confirmPassword.errors"
+                                class="invalid-feedback">
+                                <div *ngIf="changePassForm.confirmPassword.errors.required">{{
+                                  'MESSAGE.USER_MANAGEMENT.PASSWORD_REQUIRE'| translate }}</div>
+                                <div *ngIf="changePassForm.confirmPassword.errors.pattern">{{
+                                  'MESSAGE.USER_MANAGEMENT.PASSWORD_PARTERN'| translate }}</div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <button type="submit" rippleEffect class="btn btn-primary mr-1">{{
+                            'ACTION.SAVE'|translate}}</button>
+                          <button type="button" rippleEffect class="btn btn-outline-secondary"
+                            (click)="resetFormtPassword()">{{
+                            'ACTION.RESET'| translate }}</button>
+                        </div>
+                      </div>
+                    </form>
+                    <!--/ form -->
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+
+          
+          </ul>
+        </div>
+        <div [ngbNavOutlet]="navVertical" class="col-12 col-md-9"></div>
+      </div>
+    </section>
+    <!--/ account setting page -->
+  </div>
+</div>

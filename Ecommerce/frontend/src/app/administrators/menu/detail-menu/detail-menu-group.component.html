@@ -1,0 +1,89 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+    <section class="app-user-view">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="card user-card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                                <div class="user-avatar-section">
+                                    <div class="d-flex justify-content-start">
+                                        <div class="mr-1 ml-0">
+                                            <div
+                                                    [ngClass]="{
+                                                        'bg-light-success': data.status == '1',
+                                                        'bg-light-secondary': data.status == '0',
+                                                        'bg-light-warning': data.status == '2'
+                                                      }"
+                                                    class="rounded-circle p-3" style="height: 150px; width: 150px;"
+                                            >
+                                                <h2
+                                                        [ngClass]="{
+                                                          'text-success': data.status == '1',
+                                                          'text-secondary': data.status == '0',
+                                                          'text-warning': data.status == '2'
+                                                        }"
+                                                        class="d-flex justify-content-center mt-1"
+                                                >
+                                                    {{ data.menuCode | initials }}
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                                <div class="user-info-wrapper">
+                                    <div class="d-flex flex-wrap">
+                                        <div class="user-info-title">
+                                            <i data-feather="code" class="mr-1"></i>
+                                            <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.MENU_CODE'| translate }}</span>
+                                        </div>
+                                        <p class="card-text mb-0"> &nbsp;&nbsp;&nbsp;&nbsp;{{ data.menuCode }}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="user-info-title">
+                                            <i data-feather="menu" class="mr-1"></i>
+                                            <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.MENU_NAME'| translate }}</span>
+                                        </div>
+                                        <p class="card-text mb-0"> &nbsp;&nbsp;&nbsp;&nbsp;{{ data.menuName }}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="user-info-title">
+                                            <i data-feather="folder-minus" class="mr-1"></i>
+                                            <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.MENU_FATHER'| translate }}</span>
+                                        </div>
+                                        <p class="card-text mb-0"  >&nbsp;&nbsp;&nbsp;&nbsp;{{ menuParrentName}}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="user-info-title">
+                                            <i data-feather="link" class="mr-1"></i>
+                                            <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.PATH'| translate }}</span>
+                                        </div>
+                                        <p class="card-text mb-0">&nbsp;&nbsp;&nbsp;&nbsp; {{ data.url }}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="user-info-title">
+                                            <i data-feather="link" class="mr-1"></i>
+                                            <span class="card-text user-info-title font-weight-bold mb-0">TRANSLATE</span>
+                                        </div>
+                                        <p class="card-text mb-0">&nbsp;&nbsp;&nbsp;&nbsp; {{ data.translate }}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="user-info-title">
+                                            <i data-feather="image" class="mr-1"></i>
+                                            <span class="card-text user-info-title font-weight-bold mb-0">Icon</span>
+                                        </div>
+                                        <p class="card-text mb-0">&nbsp;&nbsp;&nbsp;&nbsp; {{ data.icon }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</div>

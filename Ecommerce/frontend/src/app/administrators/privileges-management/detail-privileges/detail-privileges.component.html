@@ -1,0 +1,83 @@
+<div class="content-wrapper container-xxl p-0" *ngIf="detailData">
+    <div class="content-body">
+      <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+      <!-- page users view start -->
+      <section class="app-user-view">
+        <!-- User Card & Plan Starts -->
+        <div class="row">
+          <!-- User Card starts-->
+          <div class="col-xl-12 col-lg-12">
+            <div class="card user-card">
+              <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                    <div class="user-avatar-section">
+                      <div class="d-flex justify-content-start">
+                        <div class="mr-1 ml-0">
+                            <div
+                              [ngClass]="{
+                                'bg-light-success': '1',
+                                'bg-light-secondary':  '0',
+                                'bg-light-warning':  '2'
+                              }"
+                              class="rounded-circle p-3" style="height: 150px; width: 150px;"
+                            >
+                              <h2
+                                [ngClass]="{
+                                  'text-success':  '1',
+                                  'text-secondary':  '0',
+                                  'text-warning': '2'
+                                }"
+                                class="d-flex justify-content-center mt-1"
+                              >
+                                {{ detailData.code | initials }}
+                              </h2>
+                            </div>
+                        </div>  
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                    <div class="user-info-wrapper">
+                      <div class="d-flex flex-wrap">
+                        <div class="user-info-title">
+                          <i data-feather="code" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PRI.PRIVILEGESCODE'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ detailData.code }}</p>
+                      </div>
+                      <div class="d-flex flex-wrap">
+                        <div class="user-info-title">
+                          <i data-feather="user" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PRI.PRIVILEGESNAME'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ detailData.name }}</p>
+                      </div>
+                      <div class="d-flex flex-wrap">
+                        <div class="user-info-title">
+                          <i data-feather="settings" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PRI.METHOD'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ detailData.method }}</p>
+                      </div>
+                      <div class="d-flex flex-wrap">
+                        <div class="user-info-title">
+                          <i data-feather="tag" class="mr-1"></i>
+                          <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PRI.URL'| translate }}</span>
+                        </div>
+                        <p class="card-text mb-0">{{ detailData.url }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- /User Card Ends-->
+      </section>
+      <!-- page users view end -->
+    </div>
+</div>
+  

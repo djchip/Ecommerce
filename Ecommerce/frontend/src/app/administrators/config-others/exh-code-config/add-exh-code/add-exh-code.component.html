@@ -1,0 +1,82 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="addExhCodeForm" (ngSubmit)="addExhCode()">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'MENU.ORGANIZATION'| translate }}<span
+                          style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listOrg" bindLabel="name"
+                      notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        formControlName="organizationId" placeholder="{{ 'MENU.ORGANIZATION'| translate }}"
+                        [ngClass]="{ 'is-invalid': addExhCodeFormSubmitted && AddExhCodeForm.organizationId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listOrg" bindLabel="nameEn"
+                      notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        formControlName="organizationId" placeholder="{{ 'MENU.ORGANIZATION'| translate }}"
+                        [ngClass]="{ 'is-invalid': addExhCodeFormSubmitted && AddExhCodeForm.organizationId.errors }">
+                      </ng-select>
+
+                      <div *ngIf="addExhCodeFormSubmitted && AddExhCodeForm.organizationId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddExhCodeForm.organizationId.errors.required">{{
+                          'MESSAGE.DIRECTORY.REQUIRE_ORGANIZATION'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_APP_PARAM.EXH_CODE_NAME'| translate }}<span
+                          style="color: red">*</span></label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL_APP_PARAM.EXH_CODE_NAME'| translate }}" name="login-column"
+                        [maxlength]="50" formControlName="name"
+                        [ngClass]="{ 'is-invalid': addExhCodeFormSubmitted && AddExhCodeForm.name.errors }" />
+                      <div *ngIf="addExhCodeFormSubmitted && AddExhCodeForm.name.errors" class="invalid-feedback">
+                        <div *ngIf="AddExhCodeForm.name.errors.required">{{
+                          'MESSAGE.CONFIG_OTHERS.EXH_CODE_NAME_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-group">
+                        <label class="d-block mb-1">{{ 'LABEL_APP_PARAM.Organizational_encryption'| translate }}<span
+                                style="color: red">*</span></label>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input type="radio" id="male" name="enCode" class="custom-control-input"
+                          value="true" formControlName="enCode" checked />
+                            <label class="custom-control-label" for="male">{{ 'LABEL_APP_PARAM.With_0'| translate }}</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                          <input type="radio" id="female" name="enCode"
+                          class="custom-control-input" value="false"
+                          formControlName="enCode" />
+                            <label class="custom-control-label" for="female">{{ 'LABEL_APP_PARAM.None_0'| translate }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="col-12">
+                    <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate
+                      }}</button>
+                    <button type="reset" rippleEffect class="btn btn-outline-secondary">{{ 'ACTION.RESET'| translate
+                      }}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Basic multiple Column Form section end -->
+  </div>
+</div>

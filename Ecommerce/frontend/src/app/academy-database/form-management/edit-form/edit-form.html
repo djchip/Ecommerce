@@ -1,0 +1,158 @@
+<div class="content-wrapper container-xxl p-0">
+  <!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Cập nhật người dùng</h5> -->
+          <div class="card-body">
+            <form [formGroup]="editFG" (ngSubmit)="uploadForm()">
+
+              <div class="col-md-6 col-12" hidden="true">
+                <div class="form-group">
+                  <input type="text" class="form-control" formControlName="id" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.FORM_NAME'| translate }} <span
+                        style="color: red">*</span></label>
+                    <input type="text" class="form-control" placeholder="{{ 'LABEL.FORM_NAME'| translate }}"
+                      formControlName="name"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.name.errors }" />
+                    <div *ngIf="addUserFormSubmitted && EditForm.name.errors" class="invalid-feedback">
+                      <div *ngIf="EditForm.name.errors.required">{{ 'MESSAGE.FORM.FORM_NAME'| translate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.FORM_NAME_EN'| translate }}</label>
+                    <input type="text" class="form-control" formControlName="nameEn"
+                      placeholder="{{ 'LABEL.FORM_NAME_EN'| translate }}" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.FORM_YEAR'| translate }}<span
+                        style="color: red">*</span></label>
+                    <input type="number" class="form-control" placeholder="{{ 'LABEL.FORM_YEAR'| translate }}" [maxlength]="4" mask="0000"
+                      formControlName="yearOfApplication"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.yearOfApplication.errors }" />
+                    <div *ngIf="addUserFormSubmitted && EditForm.yearOfApplication.errors" class="invalid-feedback">
+                      <div *ngIf="EditForm.yearOfApplication.errors.required">{{ 'MESSAGE.FORM.YEAR'| translate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="units">{{ 'LABEL.FORM_UNIT'| translate }}</label>
+                    <ng-select *ngIf="currentLang == 'vn'" name="units" formControlName="units" [items]="listUnit"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                      [closeOnSelect]="false" [loading]="unitLoading" [multiple]="true" [searchable]="true"
+                      bindLabel="unitName" placeholder="{{ 'LABEL.FORM_UNIT'| translate }}"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.units.errors }">
+                    </ng-select>
+                    <ng-select *ngIf="currentLang == 'en'" name="units" formControlName="units" [items]="listUnit"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                      [closeOnSelect]="false" [loading]="unitLoading" [multiple]="true" [searchable]="true"
+                      bindLabel="unitNameEn" placeholder="{{ 'LABEL.FORM_UNIT'| translate }}"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.units.errors }">
+                    </ng-select>
+                    <div *ngIf="addUserFormSubmitted && EditForm.units.errors" class="invalid-feedback">
+                      <div *ngIf="EditForm.units.errors.required">{{ 'MESSAGE.FORM.UNIT'| translate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="email-column">{{ 'LABEL.FORM_TIME_UPLOAD_DB'| translate }}<span
+                        style="color: red">*</span></label>
+                    <input type="date" class="form-control" placeholder="Thời hạn tải cơ sở dữ liệu"
+                      formControlName="uploadTime"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.uploadTime.errors }" />
+                    <div *ngIf="addUserFormSubmitted && EditForm.uploadTime.errors" class="invalid-feedback">
+                      <div *ngIf="EditForm.uploadTime.errors.required">{{ 'MESSAGE.FORM.FORM_TIME_UPLOAD_DB'| translate
+                        }} </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-12">
+                  <label for="attachments-column">{{ 'LABEL_PROOF.ATTACHMENTS'| translate}}<span
+                      style="color: red">*</span></label>
+                  <div class="form-group file-input">
+                    <input type="file" #attachments id="attachments-column"
+                      accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" class="form-control-file"
+                      placeholder="{{ 'LABEL_PROOF.ATTACHMENTS'| translate }}" name="attachments-column"
+                      (change)="onFileChange($event)" />
+                  </div>
+                  <div class="file-upload">
+                    <div class="col-12">
+                      <label for="login-name-column"><span [data-feather]="'paperclip'"></span>{{EditForm.fileName.value
+                        || "File not found !!!"}}</label>
+                    </div>
+                    <button type="button" class="btn btn-icon rounded-circle btn-outline-primary ml-1"
+                      (click)="attachments.click()" rippleEffect ngbPopover="{{ 'LABEL_ASSESSMENT.FILE'| translate }}"
+                      triggers="mouseenter:mouseleave" placement="right">
+                      <span [data-feather]="'paperclip'"></span></button>
+                    <span (click)="onDownloadFile()" ngbPopover="{{ 'ACTION.EXPORT'| translate }}"
+                      triggers="mouseenter:mouseleave" placement="right"><i data-feather="download"
+                        class="text-success cursor-pointer ml-50"></i></span>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-12" *ngIf="changeFile">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.ROW_START'| translate }}<span
+                        style="color: red">*</span></label>
+                    <input type="number" id="login-name-column" class="form-control"
+                      placeholder="{{ 'LABEL.ROW_START'| translate }}" name="login-column" formControlName="startTitle"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.startTitle.errors }" />
+                    <div *ngIf="addUserFormSubmitted && EditForm.startTitle.errors" class="invalid-feedback">
+                      <div *ngIf="EditForm.startTitle.errors.required">{{ 'MESSAGE.FORM.ROW_START_RQ'| translate }}</div>
+                      <div *ngIf="EditForm.startTitle.errors.pattern">{{ 'MESSAGE.FORM.ONLY_POSITIVE_INTEGER'| translate }} </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-12" *ngIf="changeFile">
+                  <div class="form-group">
+                    <label for="login-name-column">{{ 'LABEL.NUM_TITLE'| translate }}<span
+                        style="color: red">*</span></label>
+                    <input type="number" id="login-name-column" class="form-control"
+                      placeholder="{{ 'LABEL.NUM_TITLE'| translate }}" name="login-column" formControlName="numTitle"
+                      [ngClass]="{ 'is-invalid': addUserFormSubmitted && EditForm.numTitle.errors }" />
+
+                      <div *ngIf="addUserFormSubmitted && EditForm.numTitle.errors" class="invalid-feedback">
+                        <div *ngIf="EditForm.numTitle.errors.required">{{ 'MESSAGE.FORM.ROW_START_RQ'| translate }}</div>
+                        <div *ngIf="EditForm.numTitle.errors.pattern">{{ 'MESSAGE.FORM.ONLY_POSITIVE_INTEGER'| translate }} </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-1">
+                <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{
+                  'ACTION.RESET'| translate }}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>

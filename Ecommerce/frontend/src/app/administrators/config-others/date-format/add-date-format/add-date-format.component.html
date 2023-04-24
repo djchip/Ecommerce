@@ -1,0 +1,42 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="addDateFormatForm" (ngSubmit)="addDateFormat()">
+              <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_APP_PARAM.FORMAT'| translate }}<span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="login-name-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL_APP_PARAM.FORMAT'| translate }}"
+                        name="login-column"
+                        [maxlength]="50"
+                        formControlName="name"
+                        [ngClass]="{ 'is-invalid': addDateFormatFormSubmitted && AddDateFormatForm.name.errors }"
+                      />
+                      <div *ngIf="addDateFormatFormSubmitted && AddDateFormatForm.name.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddDateFormatForm.name.errors.required">{{ 'MESSAGE.CONFIG_OTHERS.FORMAT_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                  <button type="reset" rippleEffect class="btn btn-outline-secondary">{{ 'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>
+</div>

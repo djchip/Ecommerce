@@ -1,0 +1,60 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- / Basic multiple Column Form section start -->
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+                        <div class="card-body">
+                            <form [formGroup]="addCategoryForm" (ngSubmit)="addCategory()">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'Tên danh mục' }}<span
+                                                    style="color: red">*</span></label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'Tên danh mục' }}" name="login-column" [maxlength]="256"
+                                                formControlName="categoryName"
+                                                [ngClass]="{ 'is-invalid': addCategoryFormSubmitted && AddCategoryForm.categoryName.errors }" />
+                                            <div *ngIf="addCategoryFormSubmitted && AddCategoryForm.categoryName.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="AddCategoryForm.categoryName.errors.required">{{ 'Tên danh
+                                                    mục bắt buộc nhập' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="classify">{{ 'Danh mục cha (nếu có)' }}</label>
+                                            <ng-select id="parent-category" [items]="listCategory"
+                                                bindLabel="categoryName" formControlName="parentCategory"
+                                                placeholder="{{ 'Danh mục cha (nếu có)' }}"
+                                                notFoundText="{{ 'Not found' }}">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="email-column">{{ 'Mô tả' }} </label>
+                                            <textarea class="form-control" id="basicTextarea" rows="1"
+                                                [maxlength]="2000" placeholder="{{ 'Mô tả' }}"
+                                                formControlName="description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" rippleEffect class="btn btn-primary mr-1">{{'Lưu'}}</button>
+                                        <button type="reset" rippleEffect class="btn btn-outline-secondary">{{'Nhập lại'}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Basic multiple Column Form section end -->
+    </div>
+</div>

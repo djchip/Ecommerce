@@ -1,0 +1,82 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+<!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <form [formGroup]="addVersionForm" (ngSubmit)="addVersion()">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="verison-column">{{ 'LABEL.VERSION'| translate }} <span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="role-group-code-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL.VERSION' | translate }}"
+                        name="version-column"
+                        [maxlength]="50"
+                        formControlName="version"
+                        [ngClass]="{ 'is-invalid': addVersionFormSubmitted && AddVersionForm.version.errors }"
+                      />
+                      <div *ngIf="addVersionFormSubmitted && AddVersionForm.version.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddVersionForm.version.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.VERSION_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="verison-column">{{ 'LABEL.CHANGE_LOGS'| translate }} <span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="verison-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL.CHANGE_LOGS' | translate }}"
+                        name="verison-column"
+                        [maxlength]="100"
+                        formControlName="changeLogs"
+                        [ngClass]="{ 'is-invalid': addVersionFormSubmitted && AddVersionForm.changeLogs.errors }"
+                      />
+                      <div *ngIf="addVersionFormSubmitted && AddVersionForm.changeLogs.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddVersionForm.changeLogs.errors.required">{{ 'MESSAGE.SOFTWARE_LOG.CHANGE_LOGS_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="verison-column">{{ 'LABEL.LASTEST_VERSION'| translate }} <span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="verison-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL.LASTEST_VERSION'| translate }}"
+                        name="verison-column"
+                        [maxlength]="100"
+                        formControlName="lastestVersion"
+                        [ngClass]="{ 'is-invalid': addVersionFormSubmitted && AddVersionForm.lastestVersion.errors }"
+                      />
+                      <div *ngIf="addVersionFormSubmitted && AddVersionForm.lastestVersion.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddVersionForm.lastestVersion.errors.required">{{ 'MESSAGE.LABEL.LASTEST_VERSION_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div> -->
+                <div class="col-12">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                  <button type="reset" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>
+</div>

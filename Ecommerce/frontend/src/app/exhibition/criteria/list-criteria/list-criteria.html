@@ -1,0 +1,279 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <!-- User List -->
+    <section class="users-list-wrapper">
+      <!-- users filter start -->
+      <div class="card">
+        <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+        <div class="card-body">
+          <div class="users-list-filter">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group ml-1">
+                  <label>{{ 'MESSAGE.CRITERIA.SEARCHBOX'| translate }}</label>
+                  <div *ngIf="acceptAction.search" class="input-group mb-2">
+                    <input type="text" class="form-control" placeholder="{{ 'MESSAGE.CRITERIA.SEARCHBOX'| translate }}"
+                      aria-label="Nhập stt tiêu chí, mô tả" aria-describedby="basic-addon-search1"
+                      (keyup.enter)="searchDirectory()" [(ngModel)]="keyword" />
+                    <div class="input-group-append" (click)="searchDirectory()">
+                      <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                    </div>
+                  </div>
+                  <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                    <input type="text" class="form-control" placeholder="{{ 'MESSAGE.CRITERIA.SEARCHBOX'| translate }}"
+                      aria-label="Nhập stt tiêu chí, mô tả" aria-describedby="basic-addon-search1" [(ngModel)]="keyword" />
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="acceptAction.search" class="col-12">
+              <div class="row">
+                <div class="col-md-4 col-12">
+                  <label>{{ 'LABEL.ORG'| translate }}</label>
+                  <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listOrg" bindLabel="name"
+                    bindValue="id" (change)="onChangeOrg()" (clear)="resetOrg()" [(ngModel)]="orgId" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    placeholder="{{ 'LABEL.ORG'| translate }}">
+                  </ng-select>
+                  <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listOrg" bindLabel="nameEn"
+                    bindValue="id" (change)="onChangeOrg()" (clear)="resetOrg()" [(ngModel)]="orgId" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    placeholder="{{ 'LABEL.ORG'| translate }}">
+                  </ng-select>
+                </div>
+                 <div class="col-md-4 col-12">
+                  <label>{{ 'LABEL.PROGRAMS'| translate }}</label>
+                  <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listPrograms" bindLabel="name" [readonly]="disablePro"
+                    bindValue="id" (change)="onChangePro()" (clear)="resetProgram()" [(ngModel)]="programId" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    placeholder="{{ 'LABEL.PROGRAM'| translate }}">
+                  </ng-select>
+                  <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listPrograms" bindLabel="nameEn" [readonly]="disablePro"
+                    bindValue="id" (change)="onChangePro()" (clear)="resetProgram()" [(ngModel)]="programId" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    placeholder="{{ 'LABEL.PROGRAM'| translate }}">
+                  </ng-select>
+                </div>
+
+                <div class="col-md-4 col-12">
+                  <label>{{ 'LABEL.STANDARD'| translate }}</label>
+                  <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listStandard" bindLabel="name"
+                    bindValue="id" (change)="onChange()" [readonly]="disableSta" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    [(ngModel)]="standardId" placeholder="{{ 'LABEL.STANDARD'| translate }}">
+                  </ng-select>
+                  <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listStandard" bindLabel="nameEn"
+                    bindValue="id" (change)="onChange()" [readonly]="disableSta" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    [(ngModel)]="standardId" placeholder="{{ 'LABEL.STANDARD'| translate }}">
+                  </ng-select>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- users filter end -->
+
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button *ngIf="acceptAction.delete" class="btn btn-danger ml-1" [disabled]="deleted" rippleEffect (click)="onDeleteMulti()">
+                <span [data-feather]="'trash'" [class]="'mr-25'"></span>{{'ACTION.DELETE' | translate}}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalAddMenus(modalAddMenus)">
+                <span [data-feather]="'aperture'" [class]="'mr-25'"></span>{{ 'LABEL.ADD'| translate }}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalImport(modalImport)">
+                <span [data-feather]="'upload'" [class]="'mr-25'"></span>{{ 'LABEL.IMPORT'| translate }}
+              </button>
+              <button class="btn btn-primary ml-1" rippleEffect (click)="getAllCriteria()">
+                <span [data-feather]="'download'" [class]="'mr-25'"></span>{{ 'LABEL.DOWNLOAD'| translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <ngx-datatable *ngIf="acceptAction.search" [rows]="listMenu" [rowHeight]="50" class="bootstrap core-bootstrap" [messages]="messages"
+          [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="80" [scrollbarH]="true"
+          [externalPaging]="true" [count]="totalRows" [offset]="currentPage" [limit]="perPage" (page)="setPage($event)"
+          (select)="onSelect($event)" (select)="customChkboxOnSelect($event)" [selectionType]="SelectionType.checkbox">
+
+          <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="50" headerClass="header text-center width-5"
+            cellClass="center width-5">
+            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+            [resizeable]="false">
+            <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+              let-selectFn="selectFn">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+                <label class="custom-control-label" for="headerChkbxRef"></label>
+              </div>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+              let-isSelected="isSelected" let-row="row" let-onCheckboxChangeFn="onCheckboxChangeFn">
+              <!-- <div *ngIf="roleAdmin === 'false'">
+                <ng-container *ngFor="let id of listCriId">
+                  <div *ngIf="id == row.id" class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+                    <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+                  </div>
+                </ng-container>
+              </div> -->
+              <div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                    (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+                  <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+                </div>
+              </div>
+
+
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="100" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <!-- <div *ngIf="roleAdmin === 'false'">
+                <ng-container *ngFor="let id of listCriId">
+                  <span *ngIf="id == row.id" (click)="editDirectory(row.id, modalEditDirectory)" ngbPopover="{{ 'ACTION.UPDATE'| translate }}"
+                  triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit"
+                    class="text-primary cursor-pointer ml-50"></i></span>
+                <span *ngIf="id == row.id" (click)="deletelDirector(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                  triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                    class="text-danger cursor-pointer ml-50"></i></span>
+                </ng-container>
+              </div> -->
+              <div>
+                <span *ngIf="acceptAction.update" (click)="editDirectory(row.id, modalEditDirectory)" ngbPopover="{{ 'ACTION.UPDATE'| translate }}"
+                  triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit"
+                    class="text-primary cursor-pointer ml-50"></i></span>
+                <span *ngIf="acceptAction.delete" (click)="deletelDirector(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                  triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                    class="text-danger cursor-pointer ml-50"></i></span>
+              </div>
+              <!-- <span (click)="undo(row.id)" ngbPopover="{{ 'ACTION.UNDO'| translate }}" *ngIf="row.undoStatus == 1"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="rotate-ccw"
+                  class="text-info cursor-pointer ml-50"></i></span> -->
+
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_CRITERIA.NAME_VNN'| translate }}" prop="name" [width]="200">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <div class="cell-line-height">
+                  <a *ngIf="acceptAction.detail" class="font-medium-1 d-block" (click)="detailDirectory(row, modalDetailMenu1)"><span
+                      class="font-weight-bold text-primary">{{ name }}</span></a>
+                  <a *ngIf="!acceptAction.detail" class="font-medium-1 d-block"><span
+                      class="font-weight-bold text-primary">{{ name }}</span></a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_CRITERIA.CODE'| translate }}" prop="code" [width]="170">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'MENU.CATEGORIES'| translate }}" prop="categoryName"
+          [width]="200"></ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.ORG'| translate }}" prop="orgramName" [width]="200">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.STANDARD'| translate }}" prop="standarName" [width]="200">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_CRITERIA.DESCRIPTION_VNN'| translate }}" prop="description" [width]="200">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_CRITERIA.CREATED_DATE'| translate }}" prop="createdDate" [width]="200">
+            <ng-template let-createdDate="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{createdDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_CRITERIA.CREATED_BY'| translate }}" prop="create_by" [width]="200">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UPDATE_DATE'| translate }}" prop="updatedDate" [width]="200">
+            <ng-template let-updatedDate="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{updatedDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UPDATE_BY'| translate }}" prop="update_by" [width]="200">
+          </ngx-datatable-column>
+
+
+        </ngx-datatable>
+
+
+      </div>
+    </section>
+
+
+
+    <!--/ User List -->
+    <ng-template #modalAddMenus let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_CRITERIA' | translate}}</h5>
+        <button type="button" class="close" (click)="afterCreateDirectory()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-criteria (afterCreateDirectory)="afterCreateDirectory()"></app-criteria>
+      </div>
+    </ng-template>
+
+    <!-- Modal detail criteria-->
+    <ng-template #modalDetailMenu1 let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_CRITERIA' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-detail-criteria [id]="idDetail" [obj]="ObjDetail"></app-detail-criteria>
+      </div>
+    </ng-template>
+
+
+    <!-- Modal edit user-->
+    <ng-template #modalEditDirectory let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel161">{{'CONTENT_HEADER.UPDATE_CRITERIA' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-edit-criteria (afterEditDirectory)="afterEditDirectory()"></app-edit-criteria>
+      </div>
+    </ng-template>
+
+    <!--/ Import -->
+    <ng-template #modalImport let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.IMPORT_CRITERIA' | translate}}</h5>
+        <button type="button" class="close" (click)="afterCreateDirectory()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-import-criteria></app-import-criteria>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- / Basic multiple Column Form section start -->
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+                        <div class="card-body">
+                            <form [formGroup]="addForm" (ngSubmit)="add()">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'LABEL_PRO.ORGANIZATION'| translate
+                                                }}<span style="color: red">*</span></label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'LABEL_PRO.ORGANIZATION'| translate }}"
+                                                name="login-column" [maxlength]="50" formControlName="name"
+                                                [ngClass]="{ 'is-invalid': addFormSubmitted && AddForm.name.errors }" />
+                                            <div *ngIf="addFormSubmitted && AddForm.name.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="AddForm.name.errors.required">{{
+                                                    'MESSAGE.PROGRAM_MANAGEMENT.ORGANIZATION_REQUIRE'| translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="">{{ 'LABEL_PRO.CATEGORIESEN'| translate }}</label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'LABEL_PRO.CATEGORIESEN'| translate }}"
+                                                name="login-column" [maxlength]="50" formControlName="nameEn"
+                                              />
+                                            <!-- <div *ngIf="addFormSubmitted && AddForm.nameEn.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="AddForm.nameEn.errors.required">{{
+                                                    'MESSAGE.PROGRAM_MANAGEMENT.ORGANIZATION_REQUIRE'| translate }}
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">{{ 'LABEL_CATE.CATEGORIES_NAME'| translate }}<span
+                                                    style="color: red">*</span></label>
+                                            <ng-select *ngIf="currentLang == 'vn'" id="role-column"
+                                                [items]="listCategory" bindLabel="name" [loading]="roleLoading"
+                                                formControlName="categories"
+                                                [multiple]="true"
+                                                notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                placeholder="{{ 'LABEL_CATE.CATEGORIES_NAME'| translate }}"
+                                                [ngClass]="{ 'is-invalid': addFormSubmitted && AddForm.categories.errors }">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'en'" id="role-column"
+                                                [items]="listCategory" bindLabel="nameEn" [loading]="roleLoading"
+                                                formControlName="categories"
+                                                [multiple]="true"
+                                                notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                placeholder="{{ 'LABEL_CATE.CATEGORIES_NAME'| translate }}"
+                                                [ngClass]="{ 'is-invalid': addFormSubmitted && AddForm.categories.errors }">
+                                            </ng-select>
+                                            <div *ngIf="addFormSubmitted && AddForm.categories.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="AddForm.categories.errors.required">{{
+                                                    'MESSAGE.PROGRAM_MANAGEMENT.CATEGORIES_REQUIRE'| translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label class="d-block mb-1">{{ 'LABEL.ENCODE'| translate }} <span
+                                                    style="color: red">*</span></label>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="male" name="encode" class="custom-control-input"
+                                                    value="true" formControlName="encode" checked />
+                                                <label class="custom-control-label" for="male">{{
+                                                    'LABEL_PROOF.STANDARD'| translate }}</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="female" name="encode"
+                                                    class="custom-control-input" value="false"
+                                                    formControlName="encode" />
+                                                <label class="custom-control-label" for="female">{{
+                                                    'LABEL_PROOF.CRITERIA'| translate }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">{{ 'LABEL.DESCRIPTION'| translate }}</label>
+                                            <!-- <input type="text" placeholder="{{ 'LABEL.DESCRIPTION'| translate }}" [maxlength]="2000" class="form-control" formControlName="description" /> -->
+                                            <textarea type="text" placeholder="{{ 'LABEL.DESCRIPTION'| translate }}"
+                                                class="form-control" formControlName="description" [maxlength]="2000">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">{{ 'LABEL_PRO.DESCRIPTION_EN'| translate }}</label>
+                                            <!-- <input type="text" class="form-control" [maxlength]="2000" placeholder="{{ 'LABEL_ASSESSMENT.DESCRIPTION_EN'| translate }}" formControlName="descriptionEn" /> -->
+                                            <textarea type="text"
+                                                placeholder="{{ 'LABEL_PRO.DESCRIPTION_EN'| translate }}"
+                                                class="form-control" formControlName="descriptionEn" [maxlength]="2000">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" rippleEffect class="btn btn-primary mr-1">{{
+                                            'ACTION.SAVE'| translate }}</button>
+                                        <button type="reset" rippleEffect class="btn btn-outline-secondary">{{
+                                            'ACTION.RESET'| translate }}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Basic multiple Column Form section end -->
+    </div>
+</div>

@@ -1,0 +1,22 @@
+@import "@core/scss/angular/libs/datatables.component.scss";
+@import "@core/scss/base/pages/app-user.scss";
+@import "@core/scss/angular/libs/select.component.scss";
+@import "@core/scss/angular/libs/date-time-picker.component.scss";
+.wraper-picker {
+  justify-content: center;
+  gap: 1%;
+  .wrap-date-time-picker {
+    align-items: center;
+    padding-left: 0;
+    label {
+      margin-right: 2%;
+    }
+    .date-picker-custom {
+      width: 88%;
+    }
+  }
+}
+.validate-message {
+  color: #ea5455;
+  font-size: 0.875rem;
+}

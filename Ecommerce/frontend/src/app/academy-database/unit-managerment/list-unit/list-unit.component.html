@@ -1,0 +1,221 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <!-- User List -->
+    <section class="users-list-wrapper">
+      <!-- users filter start -->
+      <div class="card">
+        <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+        <div class="card-body">
+          <div class="users-list-filter">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label>{{ 'MESSAGE.UNIT_MANAGERMENT.SEARCHBOX'| translate }}</label>
+                  <div *ngIf="acceptAction.search" class="input-group mb-2">
+                    <input type="text" class="form-control"
+                      placeholder="{{ 'MESSAGE.UNIT_MANAGERMENT.SEARCHBOX'| translate }}" aria-label=""
+                      aria-describedby="basic-addon-search1" (keyup.enter)="searchUnit()" [(ngModel)]="keyword" />
+                    <div class="input-group-append" (click)="searchUnit()">
+                      <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                    </div>
+                  </div>
+                  <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                    <input type="text" class="form-control"
+                      placeholder="{{ 'MESSAGE.UNIT_MANAGERMENT.SEARCHBOX'| translate }}" aria-label=""
+                      aria-describedby="basic-addon-search1" [(ngModel)]="keyword" />
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="acceptAction.search" class="col-md-6 col-12">
+                <div class="col-md-6 col-12">
+                  <label>{{ 'LABEL.CLASSIFY' | translate }}</label>
+                  <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listClassify" bindLabel="name" bindValue="id" (change)="onChange()"
+                    [(ngModel)]="classify" placeholder="{{ 'LABEL.CLASSIFY'| translate }}">
+                  </ng-select>
+                  <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listClassify" bindLabel="nameEn" bindValue="id" (change)="onChange()"
+                    [(ngModel)]="classify" placeholder="{{ 'LABEL.CLASSIFY'| translate }}">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- users filter end -->
+
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button *ngIf="acceptAction.delete" class="btn btn-danger ml-1" [disabled]="deleted" rippleEffect (click)="onDeleteMulti()">
+                <span [data-feather]="'trash'" [class]="'mr-25'"></span>{{'ACTION.DELETE' | translate}}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalAddUnit(modalAddUnit)">
+                <span [data-feather]="'aperture'" [class]="'mr-25'"></span>{{'ACTION.ADD' | translate}}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalImportUnit(modalImportUnit)">
+                <span [data-feather]="'upload'" [class]="'mr-25'"></span>{{'LABEL.IMPORT' | translate}}
+              </button>
+              <button class="btn btn-primary ml-1" rippleEffect (click)="exportToExcel()">
+                <span [data-feather]="'download'" [class]="'mr-25'"></span>{{'LABEL.DOWNLOAD' | translate}}
+              </button>
+              
+            </div>
+          </div>
+        </div>
+        <ngx-datatable *ngIf="acceptAction.search" [rows]="rows" [rowHeight]="50" class="bootstrap core-bootstrap" [columnMode]="ColumnMode.force"
+          [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true" [externalPaging]="true" [count]="totalRows"
+          [offset]="currentPage" [limit]="perPage" (page)="setPage($event)" [messages]="messages"
+          (select)="onSelect($event)" (select)="customChkboxOnSelect($event)" [selectionType]="SelectionType.checkbox">
+          <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="50" [sortable]="false"
+            headerClass="header text-center width-5" cellClass="center width-5">
+            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+            [resizeable]="false">
+            <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+              let-selectFn="selectFn">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+                <label class="custom-control-label" for="headerChkbxRef"></label>
+              </div>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+              let-isSelected="isSelected" let-row="row" let-onCheckboxChangeFn="onCheckboxChangeFn">
+              <div>
+                <ng-container >
+                  <div  class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+                    <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="80" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngIf="acceptAction.update" (click)="editUnit(row.id, modalEditUnit)" ngbPopover="{{ 'ACTION.UPDATE'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit"
+                  class="text-primary cursor-pointer ml-50"></i></span>
+              <span *ngIf="acceptAction.delete" (click)="deleteUnit(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                  class="text-danger cursor-pointer ml-50"></i></span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UNITNAME'| translate }}" prop="unitName" [width]="200">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <div class="cell-line-height">
+                  <a *ngIf="acceptAction.detail" class="font-medium-1 d-block" (click)="detailUnit(row, modalDetailUnit)"><span
+                      class="font-weight-bold text-primary">{{currentLang == 'vn'? row.unitName :
+                      row.unitNameEn}}</span></a>
+                  <a *ngIf="!acceptAction.detail" class="font-medium-1 d-block"><span
+                      class="font-weight-bold text-primary">{{currentLang == 'vn'? row.unitName :
+                      row.unitNameEn}}</span></a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UNIT_CODE'| translate }}" prop="unitCode"
+            [width]="200"></ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.CLASSIFY'| translate }}" prop="classify" [width]="200">
+            <ng-template let-role="value" let-row="row" ngx-datatable-cell-template>
+              <span *ngFor="let item of listClassify"> <span *ngIf="row.classify == item.id">{{currentLang == 'vn'?
+                  item.name : item.nameEn}}</span></span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.DESCRIPTION'| translate }}" prop="description" [width]="200">
+            <ng-template let-role="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{currentLang == 'vn'? row.description : row.descriptionEn}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.CREATED_DATE'| translate }}" prop="createdDate" [width]="200">
+            <ng-template let-createdDate="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{createdDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.CREATED_BY'| translate }}" prop="createdBy"
+            [width]="200"></ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UPDATED_DATE'| translate }}" prop="updatedDate" [width]="200">
+            <ng-template let-updatedDate="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{updatedDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UPDATE_BY'| translate }}" prop="updatedBy"
+            [width]="200"></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </section>
+    <!--/ User List -->
+    <!-- Modal add user-->
+    <ng-template #modalAddUnit let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_UNIT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-add-unit (afterCreateUnit)="afterCreateUnit()"></app-add-unit>
+      </div>
+    </ng-template>
+    <!--/ Import List -->
+    <ng-template #modalImportUnit let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.IMPORT_STA' | translate}}</h5>
+        <button type="button" class="close" (click)="afterImportUnit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-import (afterImportUnit)="afterImportUnit()"></app-import>
+      </div>
+    </ng-template>
+    <ng-template #modalDetailUnit let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UNIT_DETAIL' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-detail-unit [id]="idDetail" [obj]="objDetail"></app-detail-unit>
+      </div>
+    </ng-template>
+    <!-- / Modal -->
+    <!-- Modal edit user-->
+    <ng-template #modalEditUnit let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_UNIT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-edit-unit (afterEditUnit)="afterEditUnit()"></app-edit-unit>
+      </div>
+    </ng-template>
+    <!-- / Modal -->
+  </div>
+</div>

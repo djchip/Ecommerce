@@ -1,0 +1,189 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+<!--      <app-content-header [contentHeader]="contentHeader"></app-content-header>-->
+<!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+          <div class="card-body">
+            <form [formGroup]="menuForm" (ngSubmit)="addMenu()">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="menu-code-column">{{ 'LABEL.MENU_CODE'| translate }}<span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="menu-code-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL.MENU_CODE'| translate }}"
+                        name="menu-code-column"
+                        formControlName="menuCode"
+                        [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddMenuFrom.menuCode.errors }"
+                      />
+                        <div *ngIf="addUserFormSubmitted && AddMenuFrom.menuCode.errors" class="invalid-feedback">
+                            <div *ngIf="AddMenuFrom.menuCode.errors.required">{{ 'MESSAGE.MENU.MENU_CODE'| translate }}</div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="menu-name-column">{{ 'LABEL.MENU_NAME'| translate }}<span style="color: red">*</span></label>
+                      <input
+                        type="text"
+                        id="menu-name-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL.MENU_NAME'| translate }}"
+                        name="menu-name-column"
+                        formControlName="menuName"
+                        [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddMenuFrom.menuName.errors }"
+                      />
+                        <div *ngIf="addUserFormSubmitted && AddMenuFrom.menuName.errors" class="invalid-feedback">
+                            <div *ngIf="AddMenuFrom.menuName.errors.required">{{ 'MESSAGE.MENU.MENU_NAME'| translate }}</div>
+                        </div>
+                    </div>
+                </div>    
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label for="role-column">{{ 'LABEL.MENU_FATHER'| translate }}<span style="color: red">*</span></label>
+                        <ng-select id="role-column"
+                                   [items]="listMenu" 
+                                   bindLabel="menuName" 
+                                   formControlName="menuParentId" 
+                                   placeholder="{{ 'LABEL.MENU_FATHER'| translate }}"
+                                   [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddMenuFrom.menuParentId.errors }"
+                                   (change)="onChange($event)"
+                                   (clear)="resetCalculations()"
+
+
+                        >
+                        </ng-select>
+                        <div *ngIf="addUserFormSubmitted && AddMenuFrom.menuParentId.errors" class="invalid-feedback">
+                            <div *ngIf="AddMenuFrom.menuParentId.errors.required">{{ 'MESSAGE.MENU.MENU_FATHER'| translate }}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label for="url-column">{{ 'LABEL.PATH'| translate }}<span style="color: red">*</span></label>
+                        <input
+                          type="text"
+                          id="url-column"
+                          class="form-control"
+                          placeholder="{{ 'LABEL.PATH'| translate }}"
+                          name="url-column"
+                          formControlName="url"
+                          [readonly]="disableUrl"
+                          [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddMenuFrom.url.errors }"
+                        />
+                        <div *ngIf="addUserFormSubmitted && AddMenuFrom.url.errors" class="invalid-feedback">
+                            <div *ngIf="AddMenuFrom.url.errors.required">{{ 'MESSAGE.MENU.PATH'| translate }}</div>
+                        </div>
+                    </div>    
+                </div>
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <label for="translate-column">TRANSLATE<span style="color: red">*</span></label>
+                          <input
+                                  type="text"
+                                  id="translate-column"
+                                  class="form-control"
+                                  placeholder="TRANSLATE"
+                                  name="translate-column"
+                                  formControlName="translate"
+                                  [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddMenuFrom.translate.errors }"
+                          />
+                          <div *ngIf="addUserFormSubmitted && AddMenuFrom.translate.errors" class="invalid-feedback">
+                              <div *ngIf="AddMenuFrom.translate.errors.required">translate  bat buoc</div>
+                          </div>
+                      </div>
+                  </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label for="url-column">Icon<span style="color: red">*</span></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{{ 'LABEL.SEARCH_ICON'| translate }}" formControlName="icon"  readonly
+                                   [ngClass]="{ 'is-invalid': addUserFormSubmitted && AddMenuFrom.icon.errors }"
+                            />
+                            <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="button" rippleEffect (click)="modalOpenSM(modalSM)">{{ 'LABEL.SEARCH_ICON'| translate }}</button>
+                            </div>
+                            <div *ngIf="addUserFormSubmitted && AddMenuFrom.icon.errors" class="invalid-feedback">
+                                <div *ngIf="AddMenuFrom.icon.errors.required">{{ 'MESSAGE.MENU.SEARCH_ICON'| translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'LABEL.SAVE'| translate
+                  }}</button>
+                  <button type="reset" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'LABEL.RESET'| translate
+                  }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+  <!-- Modal -->
+  <ng-template #modalSM let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="myModalLabel160">Chọn Icon</h5>
+      <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+        <section id="feather-icons">
+            <div class="row">
+              <div class="col-12">
+                <div class="icon-search-wrapper my-3 mx-auto">
+                  <div class="form-group input-group input-group-merge">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i data-feather="search"></i></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="icons-search"
+                      [(ngModel)]="searchText"
+                      placeholder="Search Icons..."
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap" id="icons-container">
+              <div
+                (click)="copy(dat.key); modal.dismiss('Cross click')"
+                [id]="i"
+                container="body"
+                placement="top"
+                [ngbTooltip]="dat.key"
+                class="card icon-card cursor-pointer text-center mb-2 mx-50"
+                *ngFor="let dat of data | keyvalue | filter: searchText:'key'; let i = index"
+              >
+                <div class="card-body">
+                  <div class="icon-wrapper">
+                    <i [data-feather]="dat.key" [size]="24"></i>
+                  </div>
+                  <p class="icon-name text-truncate mb-0 mt-1">{{ dat.key }}</p>
+                </div>
+              </div>
+            </div>
+        </section>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary"
+        (click)="modal.close('Accept click')">Accept</button>
+    </div>
+  </ng-template>
+  <!-- / Modal -->
+</div>
+</div>

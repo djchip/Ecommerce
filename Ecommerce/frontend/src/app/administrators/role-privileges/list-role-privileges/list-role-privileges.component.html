@@ -1,0 +1,144 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+      <!-- User List -->
+      <section class="users-list-wrapper">
+        <!-- users filter start -->
+        <div class="card">
+          <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+          <div class="card-body">
+            <div class="users-list-filter">
+              <div class="col-md-6 col-12">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" aria-describedby="basic-addon-search1"
+                    (keyup.enter)="searchRolePrivileges()" [(ngModel)]="keyword" />
+                  <div class="input-group-append" (click)="searchRolePrivileges()">
+                    <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- users filter end -->
+  
+        <div class="card">
+          <div class="row">
+            <div class="col-md-6 col-12">
+              <div class="d-flex align-items-center m-1">
+                <label class="d-flex align-items-center">Xem
+                  <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </label>
+                <label>bản ghi/trang</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+              <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+                <button class="btn btn-primary ml-1" rippleEffect (click)="openModalAddRolePrivileges(modalAddRolePrivileges)">
+                  <span [data-feather]="'user-plus'" [class]="'mr-25'"></span>Thêm mới
+                </button>
+              </div>
+            </div>
+          </div>
+          <ngx-datatable [rows]="rows" [rowHeight]="50" class="bootstrap core-bootstrap" [columnMode]="ColumnMode.force"
+            [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true" [externalPaging]="true" [count]="totalRows"
+            [offset]="currentPage" [limit]="perPage" (page)="setPage($event)">
+            <ngx-datatable-column name="STT" [width]="30" headerClass="header text-center width-5"
+              cellClass="center width-5">
+              <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Thao tác" [width]="50" [sortable]="false">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span (click)="editRolePrivileges(row.rolesPrivilegesId, modalEditRolePrivileges)" ngbPopover="Cập nhật"
+                  triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit"
+                    class="text-primary cursor-pointer ml-50"></i></span>
+                <span (click)="deleteRolePrivileges(row.rolesPrivilegesId)" ngbPopover="Xóa" triggers="mouseenter:mouseleave"
+                  placement="right"><i data-feather="trash" class="text-danger cursor-pointer ml-50"></i></span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Tên nhóm quyền" prop="email" [width]="200">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                <div class="d-flex align-items-center">
+                  <div class="cell-line-height">
+                    <span class="font-weight-bold text-primary">{{ row.roleName }}</span>
+                  </div>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Tên quyền" [width]="200">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                <div class="d-flex align-items-center">
+                  <div class="cell-line-height">
+                    <a class="font-medium-1 d-block" (click)="detailRolePrivileges(row.rolesPrivilegesId, modalDetailRolePrivileges)"><span
+                        class="font-weight-bold text-primary">{{ row.name }}</span></a>
+                  </div>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Menu" [width]="200">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                <div class="d-flex align-items-center">
+                  <div class="cell-line-height">
+                    <a class="font-medium-1 d-block" (click)="detailRolePrivileges(row.rolesPrivilegesId, modalDetailRolePrivileges)"><span
+                        class="font-weight-bold text-primary">{{ row.menuID.menuName }}</span></a>
+                  </div>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+  
+           
+          </ngx-datatable>
+        </div>
+      </section>
+      <!--/ User List -->
+      <!-- Modal add user-->
+      <ng-template #modalAddRolePrivileges let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">Thêm mới phân quyền nhóm quyền</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-add-role-privileges (afterCreateRolePrivileges)="afterCreateRolePrivileges()"></app-add-role-privileges>
+        </div>
+      </ng-template>
+      <!-- / Modal -->
+      <!-- Modal detail role menu-->
+      <ng-template #modalDetailRolePrivileges let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">Chi tiết phân quyền nhóm quyền</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-detail-role-privileges></app-detail-role-privileges>
+        </div>
+      </ng-template>
+      <!-- / Modal -->
+      <!-- Modal edit role menu-->
+      <ng-template #modalEditRolePrivileges let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">Cập nhật phân quyền nhóm quyền</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-edit-role-privileges (afterEditRolePrivileges)="afterEditRolePrivileges()"></app-edit-role-privileges>
+        </div>
+      </ng-template>
+      <!-- / Modal -->
+    </div>
+  </div>

@@ -1,0 +1,94 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- File Uploader -->
+    <section id="file-upload">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-10 col-12">
+              <fieldset class="form-group">
+                <label for="file-upload-multiple">{{ 'LABEL.MULTIPLE'| translate }}</label>
+                <div class="custom-file">
+                  <input *ngIf="mySwitch" type="file" class="custom-file-input" ng2FileSelect [uploader]="uploader" webkitdirectory multiple
+                    id="file-upload-multiple" (change)="onFolderSelected($event)" />
+                  <input *ngIf="!mySwitch" type="file" class="custom-file-input" ng2FileSelect [uploader]="uploader" multiple
+                    id="file-upload-multiple"/>
+                  <label class="custom-file-label">{{ 'LABEL.CHOOSE_FILE'| translate }}</label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="col-md-2 col-12">
+              <div class="custom-control custom-switch custom-switch-success">
+                <p class="mb-50">Folder</p>
+                <input type="checkbox" [ngModelOptions]="{standalone: true}" (change)="changeCheckbox($event)"
+                  [(ngModel)]="mySwitch" class="custom-control-input" id="customSwitch111" />
+                <label class="custom-control-label" for="customSwitch111">
+                  <span class="switch-icon-left"><i data-feather="check"></i></span>
+                  <span class="switch-icon-right"><i data-feather="x"></i></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 overflow-auto">
+              <div class="d-flex justify-content-between mb-1">
+                <h4>{{ 'LABEL.UPLOAD_QUEUE'| translate }}</h4>
+                <p>{{ 'LABEL.QUEUE_LENGHT'| translate }}: {{ uploader?.queue?.length }}</p>
+              </div>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th width="50%">{{ 'LABEL.FILE_NAME'| translate }}</th>
+                    <th>{{ 'LABEL.FILE_SIZE'| translate }}</th>
+                    <th>{{ 'LABEL.PROGRESS'| translate }}</th>
+                    <th>{{ 'LABEL.STATUS'| translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of uploader.queue">
+                    <td>
+                      <strong>{{ item?.file?.name }}</strong>
+                    </td>
+                    <td *ngIf="uploader.options.isHTML5" nowrap>
+                      {{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB
+                    </td>
+                    <td *ngIf="uploader.options.isHTML5">
+                      <ngb-progressbar type="primary" [value]="item.progress"></ngb-progressbar>
+                    </td>
+                    <td class="text-center">
+                      <span *ngIf="item.isSuccess"><i data-feather="check"></i></span>
+                      <span *ngIf="item.isCancel"><i data-feather="slash"></i></span>
+                      <span *ngIf="item.isError"><i data-feather="x-circle"></i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div id="">
+                <p class="mt-1">{{ 'LABEL.QUEUE_PROGRESS'| translate }}</p>
+                <ngb-progressbar class="mb-1" type="primary" [value]="uploader.progress"></ngb-progressbar>
+                <button type="button" class="btn mr-1 btn-primary mb-1 mb-sm-0" (click)="updateModal()"
+                  [disabled]="!uploader.getNotUploadedItems().length" rippleEffect>
+                  <span data-feather="upload" class="mr-25"></span> {{ 'LABEL.UPLOAD_ALL'| translate }}
+                </button>
+                <button type="button" class="btn btn-outline-danger mb-1 mb-sm-0" (click)="uploader.clearQueue()"
+                  [disabled]="!uploader.queue.length" rippleEffect>
+                  <span data-feather="trash" class="mr-25"></span> {{ 'LABEL.REMOVE_ALL'| translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="listErrors.length > 0">
+            <div class="col-12 mt-1" style="background-color: black; border-radius: 2%;">
+              <span class="text-danger"  *ngFor="let error of listErrors">
+                {{error}}<br>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/ File Uploader -->
+  </div>
+</div>

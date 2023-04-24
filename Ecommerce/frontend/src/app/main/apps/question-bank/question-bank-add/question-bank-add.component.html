@@ -1,0 +1,324 @@
+<form action="#" [formGroup]="addFG">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <div class="form-group">
+        <label for="first-name-column">Tên ý định (*)</label>
+        <input
+          type="text"
+          id="first-name-column"
+          class="form-control"
+          placeholder="Nhập tên ý định"
+          formControlName="intentName"
+          name="name-column"
+        />
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="form-group">
+        <label for="city-column">Mã ý định (*)</label>
+        <input
+          type="text"
+          id="city-column"
+          class="form-control"
+          placeholder="Nhập mã ý định"
+          formControlName="intentCode"
+          name="city-column"
+        />
+      </div>
+    </div>
+    <div class="col-md-12 col-12">
+      <div class="card">
+        <div class="card-header justify-content-start">
+          <h5>Thêm mới câu hỏi</h5>
+          <h5 class="text-danger ml-2">Thêm câu hỏi chưa được xử lý</h5>
+        </div>
+        <div class="card-body">
+          <div
+            class="row my-20"
+            *ngFor="let question of questions; let i = index"
+          >
+            <div class="col-12 col-md-9">
+              <div class="form-group row">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  [(ngModel)]="question.questionName"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="changeQuestion(i, $event)"
+                  name="itemName{{ i }}"
+                  id="itemName{{ i }}"
+                  placeholder="Nhập câu hỏi"
+                />
+              </div>
+            </div>
+            <div
+              class="col-12 col-md-3 d-flex justify-content-center"
+              style="display: flex; align-items: center; gap: 10px"
+              *ngIf="question.questionName != ''"
+            >
+              <div
+                ngbDropdown
+                [placement]="'left'"
+                class="btn-group dropup dropdown-icon-wrapper"
+                [autoClose]="false"
+              >
+                <button
+                  class="btn btn-icon btn-icon rounded-circle btn-secondary"
+                  ngbDropdownToggle
+                  (mousedown)="$event.preventDefault()"
+                  (mouseup)="$event.stopPropagation(); shareSelection(i)"
+                >
+                  <i data-feather="database" class="mr-25"></i>
+                </button>
+                <div ngbDropdownMenu style="width: 300px">
+                  <div class="px-2 py-2">
+                    <div class=""><b>Từ bôi đen:&nbsp;</b> {{ text }}</div>
+                    <div class="pb-1 validate-message">
+                      {{ messageText }}
+                    </div>
+                    <ng-select
+                      [items]="customTag"
+                      [addTag]="selectAddTagMethod"
+                      addTagText="Thêm mới thực thể"
+                      [closeOnSelect]="true"
+                      [searchable]="true"
+                      bindLabel="entityName"
+                      bindValue="entityName"
+                      notFoundText="Không có thực thể"
+                      [(ngModel)]="entitySelected"
+                      (change)="changeEntity($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                    ></ng-select>
+                    <div class="validate-message">
+                      {{ messageEntity }}
+                    </div>
+                    <div class="my-1">
+                      <button
+                        type="button"
+                        class="btn btn-icon rounded-circle btn-outline-primary mr-2"
+                        rippleEffect
+                        (click)="share(i)"
+                      >
+                        <span [data-feather]="'check'"></span>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-icon rounded-circle btn-outline-danger"
+                        rippleEffect
+                        (click)="closeDropdown(i)"
+                      >
+                        <span [data-feather]="'x'"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                ngbDropdown
+                [placement]="'left'"
+                class="btn-group dropup dropdown-icon-wrapper"
+              >
+                <button
+                  class="btn btn-icon btn-icon rounded-circle btn-success"
+                  rippleEffect
+                  ngbDropdownToggle
+                  (click)="getQuestionSimlilar(i)"
+                >
+                  <i data-feather="help-circle" class="mr-25"></i>
+                </button>
+                <div
+                  ngbDropdownMenu
+                  *ngIf="question.questionName != ''"
+                  style="width: 700px"
+                >
+                  <form class="px-2 py-2">
+                    <ul
+                      class="list-group"
+                      style="overflow-y: scroll; height: 200px"
+                    >
+                      <li
+                        class="row align-items-center"
+                        *ngFor="let s of simililarQuestion; let j = index"
+                      >
+                        <div
+                          class="col align-items-center d-flex justify-content-start"
+                          *ngFor="let q of simililarQuestion[j]; let z = index"
+                          [ngClass]="{
+                            'badge-secondary': this.wordLine[j] == z
+                          }"
+                          (click)="getWord(i, j, z)"
+                        >
+                          <div
+                            [ngClass]="{
+                              'badge-primary': z == 0,
+                              'badge-info': z == 1,
+                              'badge-success': z == 2,
+                              'badge-danger': z == 3
+                            }"
+                            class="badge"
+                          >
+                            {{ z + 1 }}
+                          </div>
+                          <div class="mx-1">{{ q }}</div>
+                        </div>
+                      </li>
+                    </ul>
+                    <div class="my-1">
+                      <button
+                        type="button"
+                        class="btn btn-icon rounded-circle btn-outline-primary mr-2"
+                        rippleEffect
+                        (click)="saveQuestion(i)"
+                      >
+                        <span [data-feather]="'check'"></span>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-icon rounded-circle btn-outline-danger"
+                        rippleEffect
+                        (click)="closeDropdown(i)"
+                      >
+                        <span [data-feather]="'x'"></span>
+                      </button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+              <button
+                class="btn btn-icon btn-icon rounded-circle btn-danger"
+                rippleEffect
+                (click)="deleteQuestion(i)"
+              >
+                <i data-feather="trash" class="mr-25"></i>
+              </button>
+            </div>
+            <div
+              (textSelect)="renderRectangles($event)"
+              class="col-12 col-md-9"
+            >
+              <p>Câu hỏi {{ i + 1 }}: {{ question.questionName }}</p>
+            </div>
+            <div
+              class="col-12 col-md-9 row mb-1"
+              *ngFor="let u of question.entity; let w = index"
+            >
+              <div class="col text-success d-flex align-items-center">
+                <b>Thực thể</b>
+              </div>
+              <div class="col d-flex align-items-center">
+                {{ u.entityName }}
+              </div>
+              <div class="col text-primary d-flex align-items-center">
+                {{ u.content }}
+              </div>
+              <div class="col text-warning d-flex align-items-center" >
+                Từ đồng nghĩa
+              </div>
+              <div class="col d-flex align-items-center flex-column">
+               <p 
+               *ngFor="let bs of u.botSynonymPy">
+                {{bs.synonymContent}}
+               </p>
+              </div>
+
+              <div
+                ngbDropdown
+                [placement]="'right'"
+                class="btn-group dropup dropdown-icon-wrapper"
+              >
+                <button
+                  class="btn btn-icon rounded-circle btn-flat-info"
+                  ngbDropdownToggle
+                  rippleEffect
+                >
+                  <i data-feather="book" class="mr-25"></i>
+                </button>
+                <div ngbDropdownMenu style="width: 300px">
+                  <form class="px-2 py-2">
+                    <div class="form-group">
+                      <input
+                        class="form-control"
+                        placeholder=" Nhập từ đồng nghĩa"
+                        [(ngModel)]="symphon"
+                        [ngModelOptions]="{ standalone: true }"
+                        (keyup.enter)="setSymphon()"
+                      />
+                    </div>
+                    <ul
+                      class="list-group"
+                      style="overflow-y: scroll; height: 150px"
+                    >
+                      <li
+                        class="d-flex justify-content-between align-items-center"
+                        *ngFor="let s of listSymphon; let u = index"
+                      >
+                        {{ s }}
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-icon rounded-circle btn-warning"
+                          (click)="deleteSynonym(u)"
+                          rippleEffect
+                        >
+                          <span [data-feather]="'minus'"></span>
+                        </button>
+                      </li>
+                    </ul>
+                    <div class="my-1">
+                      <button
+                        type="button"
+                        class="btn btn-icon rounded-circle btn-outline-primary mr-2"
+                        rippleEffect
+                        (click)="saveSynonym(i, w)"
+                      >
+                        <span [data-feather]="'check'"></span>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-icon rounded-circle btn-outline-danger"
+                        rippleEffect
+                        (click)="closeDropdown()"
+                      >
+                        <span [data-feather]="'x'"></span>
+                      </button>
+                    </div>
+                  </form>
+                  <div class="dropdown-divider"></div>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn btn-icon btn-flat-danger rounded-circle"
+                rippleEffect
+                width="4px"
+                height="4px"
+                (click)="subEntity(i, w)"
+              >
+                <span [data-feather]="'minus'"></span>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <button
+              class="btn btn-icon btn-flat-primary"
+              rippleEffect
+              (click)="addQuestion()"
+            >
+              <i data-feather="plus" class="mr-25"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      type="submit"
+      rippleEffect
+      class="btn btn-primary mr-1"
+      rippleEffect
+      (click)="saveIntent()"
+    >
+      Tạo mới
+    </button>
+  </div>
+</form>

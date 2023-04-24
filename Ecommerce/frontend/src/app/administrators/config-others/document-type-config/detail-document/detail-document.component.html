@@ -1,0 +1,188 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <section *ngIf="objRevert == null"  class="app-user-view">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card user-card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                                    <div class="user-avatar-section">
+                                        <div class="d-flex justify-content-start">
+                                            <div class="mr-1 ml-0">
+                                                <div class="rounded-circle p-3 bg-light-success" style="height: 150px; width: 150px;">
+                                                    <h2 class="d-flex justify-content-center mt-1">
+                                                        {{ data?.name | initials }}
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                                    <div class="user-info-wrapper">
+                                        <!-- <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="code" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_CATE.CATEGORIES_CODE'| translate }}</span>
+                                            </div>
+                                            <p class="card-text mb-0"> &nbsp;&nbsp;&nbsp;&nbsp;{{ data?.id }}</p>
+                                        </div> -->
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="frown" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_APP_PARAM.DOCUMENT_TYPE_NAME'| translate }}</span>
+                                            </div>
+                                            <p class="card-text mb-0" *ngIf="currentLang == 'vn'"
+                                            [ngStyle]="{'color': dataRevert?.name ? 'indianred' : '#6E6B7B'}"> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            {{ dataRevert?.name ? dataRevert?.name : data?.name }}
+                                            <b *ngIf="dataRevert?.name">---> {{ obj?.name }}</b>
+
+                                          </p>
+                                          <p class="card-text mb-0" *ngIf="currentLang == 'en'"
+                                            [ngStyle]="{'color': dataRevert?.nameEn ? 'indianred' : '#6E6B7B'}"> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            {{ dataRevert?.nameEn ? dataRevert?.nameEn : data?.nameEn }}
+                                            <b *ngIf="dataRevert?.nameEn">---> {{ obj?.nameEn }}</b>
+
+                                          </p>                                  
+                                             
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="clock" class=" mr-1 "></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0 ">{{ 'LABEL_PROOF.CREATED_DATE'| translate }}: </span>
+                                            </div>
+                                            <p class="card-text mb-0 ">&nbsp;&nbsp;&nbsp;&nbsp;{{ data?.createdDate  |  date: dateFormat }}</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="clock" class=" mr-1 "></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0 ">{{ 'LABEL_PROOF.UPDATED_DATE'| translate }}</span>
+                                            </div>
+
+                                            <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.updatedDate ? 'indianred' : '#6E6B7B'}">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {{ dataRevert?.updatedDate ? dataRevert?.updatedDate : data?.updatedDate |  date: dateFormat }}
+                                                <b *ngIf="dataRevert?.updatedDate">---> {{ obj?.updatedDate }}</b>
+
+                                              </p>
+                                        </div>
+                              
+                                  
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="user" class=" mr-1 "></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0 ">{{ 'LABEL_PROOF.CREATED_BY'| translate }}</span>
+                                            </div>
+                                            <p class="card-text mb-0 ">&nbsp;&nbsp;&nbsp;&nbsp;{{ data?.createdBy}}</p>
+                                            <b *ngIf="dataRevert?.createdBy">---> {{ obj?.createdBy }}</b>
+
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div class="user-info-title">
+                                                <i data-feather="user" class=" mr-1 "></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0 ">{{ 'LABEL_PROOF.UPDATED_BY'| translate }}</span>
+                                            </div>
+                                            <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.updatedBy ? 'indianred' : '#6E6B7B'}">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {{ dataRevert?.updatedBy ? dataRevert?.updatedBy : data?.updatedBy }}
+                                                <b *ngIf="dataRevert?.updatedBy">---> {{ obj?.updatedBy }}</b>
+
+                                              </p>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section *ngIf="objRevert != null" class="app-user-view">
+            <!-- User Card & Plan Starts -->
+            <div class="row">
+              <!-- User Card starts-->
+              <div class="col-xl-12 col-lg-12">
+                <div class="card user-card">
+                  <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+                  <div class="card-body">
+                    <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>{{ 'LABEL.properties'| translate }}</th>
+                          <th>{{ 'LABEL.Before_the_update'| translate }}</th>
+                          <th>{{ 'LABEL.After_the_update'| translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr  *ngIf="currentLang == 'vn'" [ngClass]="{'table-warning': objRevert.name != obj.name }">
+                          <td>
+                            <span class="card-text user-info-title font-weight-bold mb-0">{{
+                              'LABEL_APP_PARAM.DOCUMENT_TYPE_NAME'| translate }}</span>
+                          </td>
+                          <td>{{ objRevert?.name }} </td>
+                          <td>{{obj?.name}} </td>
+                        </tr>
+      
+                        <tr *ngIf="currentLang == 'en'"
+                          [ngClass]="{'table-warning': objRevert.nameEn != obj.nameEn }">
+                          <td>
+                            <span class="card-text user-info-title font-weight-bold mb-0">{{
+                              'LABEL_APP_PARAM.DOCUMENT_TYPE_NAME'| translate }}</span>
+                          </td>
+                          <td>{{objRevert?.nameEn}}</td>
+                          <td>{{obj?.nameEn}} </td>
+                        </tr>
+    
+                        <tr >
+                          <td>
+                              <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                  'LABEL_CATE.CREATED_DATE'| translate }}</span>
+                          </td>
+                          <td>{{objRevert.createdDate |  date: dateFormat}}</td>
+                          <td>{{objRevert.createdDate |  date: dateFormat}}</td>
+                      </tr>
+                      <tr [ngClass]="{'table-warning': objRevert.updatedDate != obj.updatedDate}">
+                          <td>
+                              <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                  'LABEL_CATE.CATEGORIES_UPDATED'| translate }}</span>
+                          </td>
+                          <td>{{objRevert.updatedDate |  date: dateFormat}}</td>
+                          <td>{{obj.updatedDate |  date: dateFormat}}</td>
+                      </tr>
+                  
+
+                      <tr >
+                          <td>
+                              <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                  'LABEL_CATE.CREATED_BY'| translate }}</span>
+                          </td>
+                          <td>{{objRevert.createdBy}}</td>
+                          <td>{{obj.createdBy}}</td>
+
+                      </tr>
+
+
+                      <tr [ngClass]="{'table-warning': objRevert.updatedBy != obj.updatedBy}">
+                          <td>
+                              <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                  'LABEL_CATE.UPDATED_BY'| translate }}</span>
+                          </td>
+                          <td>{{objRevert.updatedBy}}</td>
+                          <td>{{obj.updatedBy}}</td>
+
+                      </tr>
+      
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /User Card Ends-->
+          </section>
+    </div>
+</div>

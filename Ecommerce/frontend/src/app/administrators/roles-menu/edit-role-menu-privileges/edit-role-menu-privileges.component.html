@@ -1,0 +1,54 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+        <!-- / Basic multiple Column Form section start -->
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+                        <div class="card-body">
+                            <form [formGroup]="editRoleMenuForm" (ngSubmit)="editRoleMenu()">
+                                <div class="row">
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">Menu <span style="color: red">*</span></label>
+
+                                            <ng-select [items]="rows" bindLabel="menuName" placeholder="Select menu"
+                                                formControlName="menu"
+                                                [(ngModel)]="selectedMenu">
+                                            </ng-select>
+                                            <!-- <p>
+                                                Selected city: {{selectedMenu | json}}
+                                            </p> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">Nhóm quyền <span style="color: red">*</span></label>
+
+                                            <ng-select [items]="roles" bindLabel="roleName" placeholder="Select role"
+                                                formControlName="roles"
+                                                [(ngModel)]="selectedRole">
+                                            </ng-select>
+                                            <!-- <p>
+                                                Selected city: {{selectedRole | json}}
+                                            </p> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" rippleEffect class="btn btn-primary mr-1">Lưu</button>
+                                        <button type="reset" rippleEffect
+                                            class="btn btn-outline-secondary">Reset</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Basic multiple Column Form section end -->
+    </div>
+</div>

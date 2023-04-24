@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="core-service:war">
+    <output-path>$PROJECT_DIR$/../core-service/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>core-service</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="core-service-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="core-service:war exploded" />
+    </root>
+  </artifact>
+</component>

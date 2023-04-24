@@ -1,0 +1,194 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section class="users-list-wrapper">
+      <div class="card">
+        <div class="card-body">
+          <div class="users-list-filter">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label>{{ 'LABEL.RP_SEARCHBOX'| translate }}</label>
+                  <div *ngIf="acceptAction.search" class="input-group mb-2">
+                    <input type="text" class="form-control" placeholder="{{ 'LABEL.RP_SEARCHBOX'| translate }}"
+                      aria-label="Nhập tên báo cáo thống kê" aria-describedby="basic-addon-search1"
+                      (keyup.enter)="searchReport()" [(ngModel)]="keyword" />
+                    <div class="input-group-append" (click)="searchReport()">
+                      <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                    </div>
+                  </div>
+                  <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                    <input type="text" class="form-control" placeholder="{{ 'LABEL.RP_SEARCHBOX'| translate }}"
+                      aria-label="Nhập tên báo cáo thống kê" aria-describedby="basic-addon-search1" [(ngModel)]="keyword" />
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <!-- <h4>{{ 'LABEL.QUANTITY'| translate }}: {{totalRowsForm}}</h4> -->
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalAddReport(modalAddReport)">
+                <span [data-feather]="'aperture'" [class]="'mr-25'"></span>{{'ACTION.ADD' | translate}}
+              </button>
+              <button *ngIf="acceptAction.detail" class="btn btn-success ml-1" [disabled]="disabled" (click)="exportReport(modalExport)" rippleEffect>
+                <span [data-feather]="'download'" [class]="'mr-25'"></span>{{ 'ACTION.EXPORT_REPORT'| translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <ngx-datatable *ngIf="acceptAction.search" [rows]="rows" [rowHeight]="50" class="bootstrap core-bootstrap"
+          [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true"
+          [externalPaging]="true" [count]="totalRows" [offset]="currentPage" [limit]="perPage"
+          [messages]="messages"
+          (page)="setPage($event)" (select)="onSelect($event)" (select)="customChkboxOnSelect($event)" [selectionType]="SelectionType.checkbox">
+          <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="50" headerClass="header text-center width-5"
+            cellClass="center width-5">
+            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              <strong>{{ (currentPageForm * perPageForm) + rowIndex + 1 }}</strong>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+          [resizeable]="false">
+          <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+            let-selectFn="selectFn">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+              <label class="custom-control-label" for="headerChkbxRef"></label>
+            </div>
+          </ng-template>
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+            let-isSelected="isSelected" let-row="row" let-onCheckboxChangeFn="onCheckboxChangeFn">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+              <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="135" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngIf="acceptAction.update" (click)="editReport(row.id, modalAddReport)" ngbPopover="{{ 'ACTION.UPDATE'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit"
+                  class="text-primary cursor-pointer ml-50"></i></span>
+              <span *ngIf="acceptAction.add" (click)="copyReport(row.id, modalCopyReport)" ngbPopover="{{ 'ACTION.COPY'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right">
+                <i data-feather="copy" class="text-success cursor-pointer ml-50"></i>
+              </span>
+              <span *ngIf="acceptAction.delete" (click)="deleteReport(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                  class="text-danger cursor-pointer ml-50"></i>
+              </span>
+              <span *ngIf="acceptAction.detail" (click)="export(row.id, row.name)" ngbPopover="{{ 'ACTION.EXPORT_REPORT'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="download-cloud"
+                  class="text-secondary cursor-pointer ml-50"></i></span>
+              <span *ngIf="acceptAction.detail" (click)="exportForm(row.id)" ngbPopover="{{ 'ACTION.DOWNLOAD_FORM'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="download"
+                  class="text-info cursor-pointer ml-50"></i></span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.STATISTICAL'| translate }}" [width]="300">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <div class="cell-line-height">
+                  <a *ngIf="acceptAction.detail" class="font-medium-1 d-block" (click)="detailReport(row.id, modalDetail)"><span
+                      class="font-weight-bold text-primary">{{currentLang == 'vn'? row.name :
+                      row.nameEn}}</span></a>
+                  <a *ngIf="!acceptAction.detail" class="font-medium-1 d-block"><span
+                      class="font-weight-bold text-primary">{{currentLang == 'vn'? row.name :
+                      row.nameEn}}</span></a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL_ASSESSMENT.CREATED_BY'| translate }}" prop="createdBy" [width]="200">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.CREATE_DATE'| translate }}" prop="createdDate" [width]="200">
+            <ng-template let-role="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{row.createdDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UPDATE_BY'| translate }}" prop="updatedBy" [width]="200">
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.UPDATE_DATE'| translate }}" prop="updatedDate" [width]="200">
+            <ng-template let-role="value" let-row="row" ngx-datatable-cell-template>
+              <span> {{row.updatedDate | date: dateFormat}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable>
+      </div>
+    </section>
+    <!-- Modal Add -->
+    <ng-template #modalAddReport let-modal>
+      <div class="modal-header">
+        <h5 *ngIf="isTitle" class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_REPORT' | translate}}</h5>
+        <h5 *ngIf="!isTitle" class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_REPORT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" (click)="onClose()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-add-statistical (afterSaveReport)="afterSaveReport()"></app-add-statistical>
+      </div>
+    </ng-template>
+    <!-- Modal Copy -->
+    <ng-template #modalCopyReport let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'LABEL.COPY_STATISTICAL_REPORT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" (click)="onClose()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-copy-statistical (afterSaveReport)="afterSaveReport()"></app-copy-statistical>
+      </div>
+    </ng-template>
+    <!-- Modal Detail -->
+    <ng-template #modalDetail let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_ASSESSMENT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-detail-statistical></app-detail-statistical>
+      </div>
+    </ng-template>
+    <!-- Modal Export -->
+    <ng-template #modalExport let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.EXPORT_REPORT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-export-statistical [select]="selected"></app-export-statistical>
+      </div>
+    </ng-template>
+  </div>
+</div>

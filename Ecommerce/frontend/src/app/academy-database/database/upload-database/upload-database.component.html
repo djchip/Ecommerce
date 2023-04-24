@@ -1,0 +1,139 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <section class="app-user-view">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card user-card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div
+                                    class="col-xl-3 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                                    <div class="user-avatar-section">
+                                        <div class="d-flex justify-content-start">
+                                            <div class="mr-1 ml-0">
+                                                <div [ngClass]="{
+                                                        'bg-light-success': data?.status == 0,
+                                                        'bg-light-secondary': data?.status == 1
+                                                    }" class="rounded-circle p-3" style="height: 150px; width: 150px;">
+                                                    <h2 [ngClass]="{
+                                                        'text-success': data?.status == 0,
+                                                        'text-secondary': data?.status == 1
+                                                        }" class="d-flex justify-content-center mt-1">
+                                                        {{ data?.name | initials }}
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-lg-12 mt-2 mt-xl-0">
+                                    <div class="user-info-wrapper">
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="layout" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                                    'LABEL.FORM_NAME'| translate }}</span>
+                                            </div>
+                                            <p class="card-text mb-0">
+                                                {{currentLang == 'vn' ? data?.name : data?.nameEn }}
+                                            </p>
+                                        </div>
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="clock" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                                    'LABEL.FORM_YEAR'| translate }}</span>
+                                            </div>
+                                            <p class="card-text mb-0">{{ data?.yearOfApplication }}</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                                    'LABEL.FORM_TIME_UPLOAD_DB'| translate }}</span>
+                                            </div>
+                                            <p class="card-text">{{ data?.uploadTime | date: "dd-MM-yyyy" }}</p>
+                                        </div>
+                                        <div class="d-flex flex-wrap mb-1" *ngIf="data?.units as units">
+                                            <div class="user-info-title">
+                                                <i data-feather="codesandbox" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold">{{
+                                                    'LABEL.FORM_UNIT'| translate }}</span>
+                                            </div>
+                                        </div>
+                                        <ul *ngFor="let a of data.units" class="card-text mb-0 "
+                                            style="margin-left: 140px">
+                                            <li>{{currentLang == 'vn'? a.unitName : a.unitNameEn}}</li>
+                                        </ul>
+
+                                        <div class="d-flex flex-wrap mb-1 mt-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="file" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold">{{
+                                                    'LABEL.FORM_FILE'| translate }}</span>
+                                            </div>
+                                            <p class="card-text">{{ data?.fileName }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="upload" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold">{{
+                                                    'LABEL_PROOF.FILE_DATABASE'| translate}}</span>
+                                            </div>
+                                            <div class="form-group file-input">
+                                                <input type="file" #attachments id="attachments-column"
+                                                    accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                                    class="form-control-file"
+                                                    [(ngModel)]="file"
+                                                    placeholder="{{ 'LABEL_PROOF.FILE_DATABASE'| translate }}"
+                                                    name="attachments-column" (change)="onFileChange($event)" />
+                                            </div>
+                                            <div class="file-upload mr-3">
+                                                <div class="col-12" *ngIf="currentLang == 'en'">
+                                                    <label id="fileNameUpload" for="login-name-column"><span
+                                                            [data-feather]="'paperclip'"></span>{{ filenameUploaded
+                                                        || "File not found!"}}</label>
+                                                </div>
+                                                <div class="col-12" *ngIf="currentLang == 'vn'">
+                                                    <label id="fileNameUpload" for="login-name-column"><span
+                                                            [data-feather]="'paperclip'"></span>{{ filenameUploaded
+                                                        || "Không tìm thấy tệp!"}}</label>
+                                                </div>
+                                                <button type="button"
+                                                    class="btn btn-icon rounded-circle btn-outline-primary ml-1"
+                                                    (click)="attachments.click()" rippleEffect
+                                                    ngbPopover="{{ 'LABEL_ASSESSMENT.FILE'| translate }}"
+                                                    triggers="mouseenter:mouseleave" placement="right">
+                                                    <span [data-feather]="'paperclip'"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="d-flex flex-wrap mb-3">
+                                            <div class="user-info"
+                                                style="background-color: #00CC00; padding: 4px; border-radius: 6px;"
+                                                (click)="openDatabase()">
+                                                <i data-feather="edit"
+                                                    class="text-primary cursor-pointer ml-50 mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold">{{
+                                                    'LABEL_PROOF.MANUAL_UPDATE'| translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <button type="submit" (click)="uploadForm()" rippleEffect 
+                                        class="btn btn-primary mr-1">{{ 'LABEL.SAVE'| translate }}</button>
+                                    <!-- <button type="button" (click)="clearFileInput(attachments)" rippleEffect class="btn btn-outline-secondary">{{
+                                        'LABEL.RESET'| translate }}</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

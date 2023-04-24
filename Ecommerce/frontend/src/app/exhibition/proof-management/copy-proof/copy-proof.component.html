@@ -1,0 +1,137 @@
+<div class="content-wrapper p-0">
+    <div class="content-body">
+        <!-- / Basic multiple Column Form section start -->
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+                        <div class="card-body">
+                            <form [formGroup]="copyProofForm">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="standard-column">{{ 'LABEL_PROOF.PROGRAM'| translate }}
+                                                <span style="color: red">*</span></label>
+                                            <ng-select *ngIf="currentLang == 'vn'" id="standard-column"
+                                                [items]="listPrograms" bindLabel="name" formControlName="programId"
+                                                (change)="onChange()"
+                                                placeholder="{{ 'LABEL_PROOF.PROGRAM'| translate }}"
+                                                [ngClass]="{ 'is-invalid': copyProofFormSubmitted && CopyProofForm.programId.errors }">
+                                            </ng-select>
+
+                                            <ng-select *ngIf="currentLang == 'en'" id="standard-column"
+                                                [items]="listPrograms" bindLabel="nameEn" formControlName="programId"
+                                                (change)="onChange()"
+                                                placeholder="{{ 'LABEL_PROOF.PROGRAM'| translate }}"
+                                                [ngClass]="{ 'is-invalid': copyProofFormSubmitted && CopyProofForm.programId.errors }">
+                                            </ng-select>
+
+                                            <div *ngIf="copyProofFormSubmitted && CopyProofForm.programId.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="CopyProofForm.programId.errors.required">{{
+                                                    'MESSAGE.PROOF_MANAGEMENT.PROGRAM_REQUIRE'| translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-12" *ngIf="encodeBy">
+                                        <div class="col-12" >
+                                            <div class="input-group mb-1 mt-2">
+                                                <input class="form-control" id="tree-filter-sta" #filterSta
+                                                    (keyup)="treeFilterSta.treeModel.filterNodes(filterSta.value)"
+                                                    placeholder="{{ 'LABEL_PROOF.FILTER_STANDARD'| translate }}" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary"
+                                                        (click)="treeFilter.treeModel.clearFilterSta(); filterSta.value = ''"
+                                                        rippleEffect>
+                                                        {{ 'ACTION.CLEAR_FILTER'| translate }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <tree-root #treeFilterSta [ngClass]="'tree-wrapper tree-checkbox'"
+                                                [focused]="true" [options]="optionsFilter" [nodes]="nodesFilterSta"
+                                                (select)="onSelectSta($event)" (deselect)="onSelectSta($event)">
+                                            </tree-root>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12" *ngIf="!encodeBy">
+                                        <div class="col-12" >
+                                            <div class="input-group mb-1 mt-2">
+                                                <input class="form-control" id="tree-filter" #filter
+                                                    (keyup)="treeFilter.treeModel.filterNodes(filter.value)"
+                                                    placeholder="{{ 'LABEL_PROOF.FILTER_CRITERIA'| translate }}" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary"
+                                                        (click)="treeFilter.treeModel.clearFilter(); filter.value = ''"
+                                                        rippleEffect>
+                                                        {{ 'ACTION.CLEAR_FILTER'| translate }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <tree-root #treeFilter [ngClass]="'tree-wrapper tree-checkbox'"
+                                                [focused]="true" [options]="optionsFilter" [nodes]="nodesFilter"
+                                                (select)="onSelect($event)" (deselect)="onSelect($event)">
+                                            </tree-root>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="proof-name-column">{{ 'LABEL_PROOF.PROOF_CODE'|
+                                                        translate }}<span style="color: red">*</span></label>
+                                                    <button class="btn btn-primary" style="width:100%" rippleEffect
+                                                        (click)="openModalInputProofCode(modalInput)">
+                                                        <span [data-feather]="'file-plus'" [class]="'mr-25'"></span>{{
+                                                        'LABEL_PROOF.INPUT_CODE'|
+                                                        translate }}
+                                                    </button>
+                                                    <div *ngIf="copyProofFormSubmitted && list.length == 0"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="list.length == 0">{{
+                                                            'MESSAGE.PROOF_MANAGEMENT.PROOFNAME_REQUIRE'| translate }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <ng-container *ngFor="let item of list; let i = index;">
+                                                    <div class="row">
+                                                        <div class="col-12 ml-1">
+                                                            <h6>{{item.exhibitionCode}}</h6>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                            <div class="col-12">
+
+                                                <button type="submit"  rippleEffect (click)="copyProof()"
+                                                    class="btn btn-primary mr-1">{{
+                                                    'ACTION.SAVE'| translate }}</button>
+                                                <button type="reset" rippleEffect class="btn btn-outline-secondary">{{
+                                                    'ACTION.RESET'| translate
+                                                    }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <ng-template #modalInput let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel160">{{ 'LABEL_PROOF.INPUT_CODE'| translate }}</h5>
+                <button type="button" id="closebutton" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div class="modal-body" tabindex="0" ngbAutofocus>
+                <app-input-proof-code (emitEvent)="reloadListCode($event)"></app-input-proof-code>
+            </div>
+        </ng-template>
+
+    </div>
+</div>

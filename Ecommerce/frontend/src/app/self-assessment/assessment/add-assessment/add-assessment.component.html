@@ -1,0 +1,126 @@
+<div class="content-wrapper p-0">
+  <div class="content-body">
+    <!-- / Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+            <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+            <div class="card-body">
+              <div class="custom-control custom-switch-success custom-switch col-md-6 col-12">
+                <p class="mb-50">{{ 'LABEL.ASSESMENT_REPORT1'| translate }}</p>
+                <input type="checkbox" [(ngModel)]="mySwitch" class="custom-control-input" id="customSwitch111"
+                  (change)="onChange()" />
+                  <label class="custom-control-label" for="customSwitch111">
+                    <span class="switch-icon-left"><i data-feather="check"></i></span>
+                    <span class="switch-icon-right"><i data-feather="x"></i></span>
+                  </label>
+              </div>
+              <form [formGroup]="addAssessmentForm" (ngSubmit)="addAssessment()"
+                enctype="multipart/form-data; charset=utf-8">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="">{{ 'LABEL_ASSESSMENT.NAME_VN'| translate }}<span style="color: red">*</span></label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL_ASSESSMENT.NAME_VN'| translate }}" name="login-column" [maxlength]="256"
+                        formControlName="name"
+                        [ngClass]="{ 'is-invalid': addAssessmentFormSubmitted && AddAssessmentForm.name.errors }" />
+                      <div *ngIf="addAssessmentFormSubmitted && AddAssessmentForm.name.errors" class="invalid-feedback">
+                        <div *ngIf="AddAssessmentForm.name.errors.required">{{ 'MESSAGE.ASSESSMENT.NAME_REQUIRE'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="">{{ 'LABEL_ASSESSMENT.NAME_EN'| translate }}</label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL_ASSESSMENT.NAME_EN'| translate }}" name="login-column" [maxlength]="256"
+                        formControlName="nameEn" />
+                      <!-- <div *ngIf="addAssessmentFormSubmitted && AddAssessmentForm.nameEn.errors" class="invalid-feedback">
+                        <div *ngIf="AddAssessmentForm.nameEn.errors.required">{{ 'MESSAGE.ASSESSMENT.NAME_REQUIRE'|
+                          translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL.PROGRAM'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listPrograms" bindLabel="name" formControlName="programId"
+                        placeholder="{{ 'LABEL.PROGRAM'| translate }}" 
+                        [ngClass]="{ 'is-invalid': addAssessmentFormSubmitted && AddAssessmentForm.programId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listPrograms" bindLabel="nameEn" formControlName="programId"
+                        placeholder="{{ 'LABEL.PROGRAM'| translate }}"
+                        [ngClass]="{ 'is-invalid': addAssessmentFormSubmitted && AddAssessmentForm.programId.errors }">
+                      </ng-select>
+                      <div *ngIf="addAssessmentFormSubmitted && AddAssessmentForm.programId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddAssessmentForm.programId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_PROGRAM'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="expert">{{ 'LABEL_ASSESSMENT.EXPERT'| translate }}</label>
+                      <ng-select name="expert" formControlName="user" [items]="listUserExpert" [closeOnSelect]="false"
+                        [loading]="userLoading" [multiple]="true" [searchable]="true" bindLabel="email" bindValue="id"
+                        placeholder="{{ 'LABEL_ASSESSMENT.EXPERT'| translate }}">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="expert">{{ 'LABEL_ASSESSMENT.VIEWERS'| translate }}</label>
+                      <ng-select name="expert" formControlName="viewers" [items]="listUser" [closeOnSelect]="false"
+                        [loading]="viewersLoading" [multiple]="true" [searchable]="true" bindLabel="email" bindValue="id"
+                        placeholder="{{ 'LABEL_ASSESSMENT.VIEWERS'| translate }}">
+                      </ng-select>
+                    </div>
+                  </div> -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_ASSESSMENT.DESCRIPTION_VN'| translate }}<span
+                          style="color: red"></span></label>
+                      <textarea class="form-control" id="basicTextarea" rows="1" [maxlength]="2000"
+                        placeholder="{{ 'LABEL_ASSESSMENT.DESCRIPTION_VN'| translate }}" formControlName="description"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_ASSESSMENT.DESCRIPTION_EN'| translate }}<span
+                          style="color: red"></span></label>
+                      <textarea class="form-control" id="basicTextarea" rows="1" [maxlength]="2000"
+                        placeholder="{{ 'LABEL_ASSESSMENT.DESCRIPTION_EN'| translate }}"
+                        formControlName="descriptionEn"></textarea>
+
+                    </div>
+                  </div>
+                  <div *ngIf="!mySwitch" class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL.FILE'| translate }}<span
+                          style="color: red">*</span></label>
+                      <input type="file" id="login-name-column" class="form-control-file"
+                        placeholder="{{ 'LABEL.FILE'| translate }}" name="login-column" accept=".docx, .doc"
+                        (change)="onFileChange($event)" [ngClass]="{ 'is-invalid': !maxSize }"/>
+                        <div class="invalid-feedback" *ngIf="!maxSize">{{
+                          'MESSAGE.ASSESSMENT.MAXSIZE'| translate }}
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate}}</button>
+                    <button type="reset" (click)="onClick()" rippleEffect class="btn btn-outline-secondary">{{ 'ACTION.RESET'| translate}}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Basic multiple Column Form section end -->
+  </div>
+</div>

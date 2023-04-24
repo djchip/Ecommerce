@@ -1,0 +1,186 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <section id="file-upload">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <fieldset class="form-group">
+                                <label for="file-upload-multiple">{{ 'LABEL_PRO.ORGANIZATION'| translate }}<span style="color: red">*</span></label>
+                                <div class="custom-file">
+                                    <ng-select [multiple]="false" [closeOnSelect]="true" [searchable]="true"
+                                        #organization [notFoundText]="messageNotFound" [(ngModel)]="organizationId"
+                                        placeholder="{{ 'LABEL_PRO.ORGANIZATION'| translate }}" 
+                                        (change)="onChange(organizationId)" (clear)="getPrograms()">
+                                        <ng-option *ngFor="let e of listOrganization" [value]="e.id">
+                                            <a *ngIf="currentLang == 'vn'">{{e.name}}</a>
+                                            <a *ngIf="currentLang == 'en'">{{e.nameEn}}</a>
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-6">
+                            <fieldset class="form-group">
+                                <label for="file-upload-multiple">{{ 'LABEL.PROGRAM'| translate }}<span style="color: red">*</span></label>
+                                <div class="custom-file">
+                                    <ng-select [multiple]="false" [closeOnSelect]="true" [searchable]="true" #program
+                                        [notFoundText]="messageNotFound" (change)="changeProgram()"
+                                        [(ngModel)]="programId" (clear)="onClear()"
+                                        placeholder="{{ 'LABEL.PROGRAM'| translate }}">
+                                        <ng-option *ngFor="let e of programs" [value]="e.id">
+                                            <a *ngIf="currentLang == 'vn'">{{e.name}}</a>
+                                            <a *ngIf="currentLang == 'en'">{{e.nameEn}}</a>
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Vertical Wizard -->
+        <section class="vertical-wizard">
+            <div id="stepper2" class="bs-stepper vertical vertical-wizard-example">
+                <div class="bs-stepper-header">
+                    <div class="step" data-target="#auto-import">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box">1</span>
+                            <span class="bs-stepper-label">
+                                <span class="bs-stepper-title">{{ 'MENU.AUTO_IMPORT'| translate }}</span>
+                                <!-- <span class="bs-stepper-subtitle">Setup Account Details</span> -->
+                            </span>
+                        </button>
+                    </div>
+                    <div class="step" data-target="#collect-exhibition">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box">2</span>
+                            <span class="bs-stepper-label">
+                                <span class="bs-stepper-title">{{'MENU.UPLOAD_EXHIBITION' | translate}}</span>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="step" data-target="#automatic-upload">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box">3</span>
+                            <span class="bs-stepper-label">
+                                <span class="bs-stepper-title">{{'LABEL.AUTO_UPLOAD_EXHIBITION' |translate}}</span>
+                                <!-- <span class="bs-stepper-subtitle">Add Address</span> -->
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bs-stepper-content">
+                    <div id="auto-import" class="content">
+                        <!-- <ul ngbNav #nav="ngbNav" class="nav nav-pills" >
+                            <li ngbNavItem  *ngIf="!encodeBy">
+                                <a ngbNavLink>{{'LABEL.POOF_FOR_CRITERIA' |translate}}</a>
+                                <ng-template ngbNavContent>
+                                    <app-auto-import [organizationId]="organizationId" [programId]="programId"
+                                        [forWhat]="'standard'"></app-auto-import>
+                                </ng-template>
+                            </li>
+                            <li ngbNavItem  *ngIf="encodeBy">
+                                <a ngbNavLink>{{'LABEL.POOF_FOR_STANDARD' |translate}}</a>
+                                <ng-template ngbNavContent>
+                                    <app-auto-import [organizationId]="organizationId" [programId]="programId"
+                                        [forWhat]="'criteria'"></app-auto-import>
+                                </ng-template>
+                            </li>
+                        </ul> -->
+                        <div *ngIf="!encodeBy">
+                            <h2  style="font-weight: bold;">{{'LABEL.POOF_FOR_CRITERIA' |translate}}</h2>
+                            <!-- <ng-template ngbNavContent> -->
+                                <app-auto-import [organizationId]="organizationId" [programId]="programId"
+                                    [forWhat]="'standard'"></app-auto-import>
+                            <!-- </ng-template> -->
+                        </div>
+                        <div *ngIf="encodeBy">
+                            <h2  style="font-weight: bold;">{{'LABEL.POOF_FOR_STANDARD' |translate}}</h2>
+                            <!-- <ng-template ngbNavContent> -->
+                                <app-auto-import [organizationId]="organizationId" [programId]="programId"
+                                    [forWhat]="'criteria'"></app-auto-import>
+                            <!-- </ng-template> -->
+                        </div>
+                        <!-- <div [ngbNavOutlet]="nav" class="mt-1"></div> -->
+
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-prev" disabled rippleEffect>
+                                <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                                <span class="align-middle d-sm-inline-block d-none">{{ 'LABEL.PREVIOUS'| translate
+                                    }}</span>
+                            </button>
+                            <button class="btn btn-primary btn-next" (click)="verticalWizardNext()" rippleEffect>
+                                <span class="align-middle d-sm-inline-block d-none">{{ 'LABEL.NEXT'| translate }}</span>
+                                <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="collect-exhibition" class="content">
+                        <app-auto-upload></app-auto-upload>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-primary btn-prev" (click)="verticalWizardPrevious()" rippleEffect>
+                                <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                                <span class="align-middle d-sm-inline-block d-none">{{ 'LABEL.PREVIOUS'| translate
+                                    }}</span>
+                            </button>
+                            <button class="btn btn-primary btn-next" (click)="verticalWizardNext()" rippleEffect>
+                                <span class="align-middle d-sm-inline-block d-none">{{ 'LABEL.NEXT'| translate }}</span>
+                                <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="automatic-upload" class="content">
+                        <div class="row" style="margin-bottom: 25px;">
+                            <div class="col-md-6 col-12">
+                                <h4>{{'LABEL.AUTOMATIC_UPLOAD' |translate}}</h4>
+                            </div>
+                            <div class="col-md-6 col-12" style="display: flex; justify-content: end;">
+                                <button class="btn btn-primary ml-1" rippleEffect (click)="autoUploadExhibition()"
+                                    [disabled]="!programId">
+                                    <span [data-feather]="'upload-cloud'"
+                                        [class]="'mr-25'"></span>{{'LABEL.AUTO_UPLOAD_EXHIBITION' |translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row overflow-auto" style="margin-bottom: 50px;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'LABEL.NO'| translate }}</th>
+                                        <th width="30%">{{ 'LABEL_PROOF.NAME'| translate }}</th>
+                                        <th>{{ 'LABEL_PROOF.PROOF_CODE'| translate }}</th>
+                                        <th>{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}</th>
+                                        <th>{{ 'LABEL_PROOF.NUMBER_SIGN'| translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of proofList; let i = index">
+                                        <td>{{ i+1 }}</td>
+                                        <td><strong>{{ item.proofName }}</strong></td>
+                                        <td>{{ item.proofCode }}</td>
+                                        <td>{{currentLang == 'vn'? item.documentTypeName: item.documentTypeNameEn}}</td>
+                                        <td>{{ item.numberSign }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-primary btn-prev" (click)="verticalWizardPrevious()" rippleEffect>
+                                <i data-feather="arrow-left" class="align-middle mr-sm-25 mr-0"></i>
+                                <span class="align-middle d-sm-inline-block d-none">{{ 'LABEL.PREVIOUS'| translate
+                                    }}</span>
+                            </button>
+                            <button class="btn btn-outline-secondary btn-prev" disabled rippleEffect>
+                                <span class="align-middle d-sm-inline-block d-none">{{ 'LABEL.NEXT'| translate }}</span>
+                                <i data-feather="arrow-right" class="align-middle ml-sm-25 ml-0"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

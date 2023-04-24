@@ -1,0 +1,111 @@
+<div class="content-wrapper container-xxl p-0">
+    <!-- / Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <!-- <h5 class="card-header">Cập nhật người dùng</h5> -->
+                    <div class="card-body">
+                        <form [formGroup]="editEmailConfig" (ngSubmit)="editUser()">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="mailTo">EMAIL<span
+                                                style="color: red">*</span></label>
+                                        <input type="text"
+                                               id="mailTo"
+                                               class="form-control"
+                                               placeholder="EMAIL"
+                                               formControlName="email"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="host">HOST<span
+                                                style="color: red">*</span></label>
+                                        <input type="text"
+                                               id="host"
+                                               class="form-control"
+                                               placeholder="HOST"
+                                               formControlName="host"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="port">PORT<span
+                                                style="color: red">*</span></label>
+                                        <input type="text"
+                                               id="port"
+                                               class="form-control"
+                                               placeholder="PORT"
+                                               formControlName="port"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="username">USERNAME<span
+                                                style="color: red">*</span></label>
+                                        <input type="text"
+                                               id="username"
+                                               class="form-control"
+                                               placeholder="USERNAME"
+                                               formControlName="username"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="password">PASSWORD<span
+                                                style="color: red">*</span></label>
+                                        <input type="text"
+                                               id="password"
+                                               class="form-control"
+                                               placeholder="PASSWORD"
+                                               formControlName="password"
+                                               type="password"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               id="id"
+                                               class="form-control"
+                                               placeholder="ID"
+                                               formControlName="id"
+                                               hidden
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit"
+                                            rippleEffect
+                                            class="btn btn-primary mr-1">
+                                        Lưu
+                                    </button>
+                                    <button type="button"
+                                            rippleEffect
+                                            class="btn btn-outline-secondary"
+                                            (click)="resetForm()">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Basic multiple Column Form section end -->
+</div>

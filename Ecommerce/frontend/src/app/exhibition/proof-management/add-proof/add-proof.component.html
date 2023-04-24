@@ -1,0 +1,513 @@
+<div class="content-wrapper p-0">
+  <div class="content-body">
+    <!-- / Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+
+            <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+            <div class="card-body">
+              <form [formGroup]="addProofForm">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="standard-column">{{ 'LABEL_PROOF.PROGRAM'| translate }}
+                        <span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="standard-column" [items]="listPrograms"
+                        notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" bindLabel="name"
+                        formControlName="programId" (change)="onChange()"
+                        placeholder="{{ 'LABEL_PROOF.PROGRAM'| translate }}"
+                        [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.programId.errors }">
+                      </ng-select>
+
+                      <ng-select *ngIf="currentLang == 'en'" id="standard-column" [items]="listPrograms"
+                        notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" bindLabel="nameEn"
+                        formControlName="programId" (change)="onChange()"
+                        placeholder="{{ 'LABEL_PROOF.PROGRAM'| translate }}"
+                        [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.programId.errors }">
+                      </ng-select>
+
+                      <div *ngIf="addProofFormSubmitted && AddProofForm.programId.errors" class="invalid-feedback">
+                        <div *ngIf="AddProofForm.programId.errors.required">{{
+                          'MESSAGE.PROOF_MANAGEMENT.PROGRAM_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="col-12" *ngIf="encodeBy">
+                      <div class="input-group mb-1 mt-2">
+                        <input class="form-control" id="tree-filter-sta" #filterSta
+                          (keyup)="treeFilterSta.treeModel.filterNodes(filterSta.value)"
+                          placeholder="{{ 'LABEL_PROOF.FILTER_STANDARD'| translate }}" />
+                        <div class="input-group-append">
+                          <button class="btn btn-primary"
+                            (click)="treeFilter.treeModel.clearFilterSta(); filterSta.value = ''" rippleEffect>
+                            {{ 'ACTION.CLEAR_FILTER'| translate }}
+                          </button>
+                        </div>
+                      </div>
+                      <tree-root #treeFilterSta [ngClass]="'tree-wrapper tree-checkbox'" [focused]="true"
+                        [options]="optionsFilter" [nodes]="nodesFilterSta" (select)="onSelectSta($event)"
+                        (deselect)="onSelectSta($event)">
+                      </tree-root>
+                    </div>
+
+                    <div class="col-12" *ngIf="!encodeBy">
+                      <div class="input-group mb-1 mt-2">
+                        <input class="form-control" id="tree-filter" #filter
+                          (keyup)="treeFilter.treeModel.filterNodes(filter.value)"
+                          placeholder="{{ 'LABEL_PROOF.FILTER_CRITERIA'| translate }}" />
+                        <div class="input-group-append">
+                          <button class="btn btn-primary"
+                            (click)="treeFilter.treeModel.clearFilter(); filter.value = ''" rippleEffect>
+                            {{ 'ACTION.CLEAR_FILTER'| translate }}
+                          </button>
+                        </div>
+                      </div>
+                      <tree-root #treeFilter [ngClass]="'tree-wrapper tree-checkbox'" [focused]="true"
+                        [options]="optionsFilter" [nodes]="nodesFilter" (select)="onSelect($event)"
+                        (deselect)="onSelect($event)">
+                      </tree-root>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for="proof-name-column">{{ 'LABEL_PROOF.PROOF_CODE'| translate }}<span
+                              style="color: red">*</span></label>
+                          <button class="btn btn-primary" style="width:100%" rippleEffect
+                            (click)="openModalInputProofCode(modalInput)">
+                            <span [data-feather]="'file-plus'" [class]="'mr-25'"></span>{{ 'LABEL_PROOF.INPUT_CODE'|
+                            translate }}
+                          </button>
+                          <div *ngIf="addProofFormSubmitted && list.length == 0" class="invalid-feedback">
+                            <div *ngIf="list.length == 0">{{ 'MESSAGE.PROOF_MANAGEMENT.PROOFNAME_REQUIRE'| translate }}
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container *ngFor="let item of list; let i = index;">
+                          <div class="row">
+                            <div class="col-12 ml-1">
+                              <h6>{{item.exhibitionCode}}</h6>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for="proof-name-column">{{ 'LABEL_PROOF.NAME'| translate }}<span
+                              style="color: red">*</span></label>
+                          <textarea id="proof-name-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.NAME'| translate }}" name="name-column" [maxlength]="255"
+                            rows="1" formControlName="proofName"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.proofName.errors }"></textarea>
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.proofName.errors" class="invalid-feedback">
+                            <div *ngIf="AddProofForm.proofName.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.PROOFNAME_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for="proof-name-column">{{ 'LABEL_PROOF.NAME_EN'| translate }}</label>
+                          <textarea id="proof-name-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.NAME_EN'| translate }}" name="name-column" [maxlength]="50"
+                            rows="1" formControlName="proofNameEn"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.proofNameEn.errors }"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="documentType-column">{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}
+                            <span style="color: red">*</span> </label>
+
+                          <ng-select *ngIf="currentLang == 'vn'" name="documentType-column"
+                            formControlName="documentType" [items]="listDocumentType" [closeOnSelect]="true"
+                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" [loading]="unitLoading"
+                            [searchable]="true" bindLabel="name" bindValue="id"
+                            placeholder="{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.documentType.errors }">
+                          </ng-select>
+
+                          <ng-select *ngIf="currentLang == 'en'" name="documentType-column"
+                            formControlName="documentType" [items]="listDocumentType" [closeOnSelect]="true"
+                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" [loading]="unitLoading"
+                            [searchable]="true" bindLabel="nameEn" bindValue="id"
+                            placeholder="{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.documentType.errors }">
+                          </ng-select>
+
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.documentType.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="AddProofForm.documentType.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.DOCUMENT_TYPE_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12 hidden">
+                        <div class="form-group">
+                          <input type="text" id="documentType-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}" name="documentType-column"
+                            formControlName="exhFile" />
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12 hidden">
+                        <div class="form-group">
+                          <input type="text" id="documentType-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}" name="documentType-column"
+                            formControlName="listExhFile" />
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="numberSign-column">{{ 'LABEL_PROOF.NUMBER_SIGN'| translate }} </label>
+                          <input type="text" id="numberSign-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.NUMBER_SIGN'| translate }}" name="numberSign-column"
+                            formControlName="numberSign"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.numberSign.errors }" />
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.numberSign.errors" class="invalid-feedback">
+                            <div *ngIf="AddProofForm.numberSign.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.NUMBER_SIGN_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="releaseDate-column">{{ 'LABEL_PROOF.RELEASE_DATE'| translate }} </label>
+                          <input type="date" id="releaseDate-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.RELEASE_DATE'| translate }}" name="releaseDate-column"
+                            formControlName="releaseDate"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.releaseDate.errors }" />
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.releaseDate.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="AddProofForm.releaseDate.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.RELEASE_DATE_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="signer-column">{{ 'LABEL_PROOF.SIGNER'| translate }} </label>
+                          <input type="text" id="signer-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.SIGNER'| translate }}" name="signer-column"
+                            formControlName="signer"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.signer.errors }" />
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.signer.errors" class="invalid-feedback">
+                            <div *ngIf="AddProofForm.signer.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.SIGNER_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="field-column">{{ 'LABEL_PROOF.FIELD'| translate }}
+                            <span style="color: red">*</span> </label>
+
+                          <ng-select *ngIf="currentLang == 'vn'" name="field-column" formControlName="field"
+                            [items]="listField" [closeOnSelect]="true" [loading]="unitLoading" [searchable]="true"
+                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" bindLabel="name"
+                            bindValue="id" placeholder="{{ 'LABEL_PROOF.FIELD'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.field.errors }">
+                          </ng-select>
+
+                          <ng-select *ngIf="currentLang == 'en'" name="field-column" formControlName="field"
+                            [items]="listField" [closeOnSelect]="true" [loading]="unitLoading" [searchable]="true"
+                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" bindLabel="nameEn"
+                            bindValue="id" placeholder="{{ 'LABEL_PROOF.FIELD'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.field.errors }">
+                          </ng-select>
+
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.field.errors" class="invalid-feedback">
+                            <div *ngIf="AddProofForm.field.errors.required">{{ 'MESSAGE.PROOF_MANAGEMENT.FIELD_REQUIRE'|
+                              translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="releaseBy-column">{{ 'LABEL_PROOF.RELEASE_BY'| translate }}
+                            <span style="color: red">*</span></label>
+
+                          <ng-select *ngIf="currentLang == 'vn'" name="releaseBy-column" formControlName="releaseBy"
+                            [items]="listUnit" [closeOnSelect]="false" [loading]="unitLoading" [searchable]="true"
+                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" bindLabel="unitName"
+                            bindValue="id" placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.releaseBy.errors }">
+                          </ng-select>
+
+                          <ng-select *ngIf="currentLang == 'en'" name="releaseBy-column" formControlName="releaseBy"
+                            notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" [items]="listUnit"
+                            [closeOnSelect]="false" [loading]="unitLoading" [searchable]="true" bindLabel="unitNameEn"
+                            bindValue="id" placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.releaseBy.errors }">
+                          </ng-select>
+
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.releaseBy.errors" class="invalid-feedback">
+                            <div *ngIf="AddProofForm.releaseBy.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.RELEASE_BY_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for="description-column">{{ 'LABEL_PROOF.DESCRIPTION'| translate }} </label>
+                          <textarea class="form-control" id="description-column" rows="1"
+                            placeholder="{{ 'LABEL_PROOF.DESCRIPTION'| translate }}" formControlName="description"
+                            name="description-column"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.description.errors }"></textarea>
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.description.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="AddProofForm.description.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.DESCRIPTION_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label for="description-column">{{ 'LABEL_PROOF.DESCRIPTION_EN'| translate }} </label>
+                          <textarea class="form-control" id="description-column" rows="1"
+                            placeholder="{{ 'LABEL_PROOF.DESCRIPTION_EN'| translate }}" formControlName="descriptionEn"
+                            name="description-column"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.descriptionEn.errors }"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="note-column">{{ 'LABEL_PROOF.NOTE'| translate }} </label>
+                          <input type="text" id="note-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.NOTE'| translate }}" name="note-column"
+                            formControlName="note" />
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="note-column">{{ 'LABEL_PROOF.NOTE_EN'| translate }} </label>
+                          <input type="text" id="note-column" class="form-control"
+                            placeholder="{{ 'LABEL_PROOF.NOTE_EN'| translate }}" name="note-column"
+                            formControlName="noteEn" />
+                        </div>
+                      </div>
+
+                      <!-- Table file -->
+
+                      <div class="col-md-6 col-12">
+                        <fieldset class="form-group">
+                          <label for="file-upload-single">File<span style="color: red">*</span></label>
+                          <div class="custom-file">
+                            <input type="file" formControlName="attachments" class="custom-file-input" type="file"
+                              ng2FileSelect [uploader]="uploader" id="file-upload-single" multiple="true"
+                              (change)="onFileChange($event)" />
+                            <label class="custom-file-label">{{ 'LABEL_CRITERIA.CHOOSE_FILE'| translate }}</label>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="col-md-3 col-12">
+                        <div class="form-group">
+                          <label for="note"></label>
+                          <button class="btn btn-primary" style="margin-top: 24px;" rippleEffect
+                            (click)="openModalAddProof(modalSearchProof)">
+                            <span [class]="'mr-25'"></span>SEARCH
+                          </button>
+                        </div>
+                      </div>
+
+
+                      <div class="col-lg-12 overflow-auto">
+                        <div class="d-flex justify-content-between mb-1" *ngIf="hasFile">
+                          <h4>{{ 'LABEL_CRITERIA.UPLOAD_QUEUE'| translate }}</h4>
+                          <p>{{'LABEL_CRITERIA.QUEUE_LENGTH'| translate }}: {{ uploader?.queue?.length + 1}}</p>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1" *ngIf="!hasFile">
+                          <h4>{{ 'LABEL_CRITERIA.UPLOAD_QUEUE'| translate }}</h4>
+                          <p>{{'LABEL_CRITERIA.QUEUE_LENGTH'| translate }}: {{ uploader?.queue?.length }}</p>
+                        </div>
+
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>{{ 'LABEL_CRITERIA.NO'| translate }}</th>
+                              <th width="50%">{{ 'LABEL_CRITERIA.NAME_FILE'| translate }}</th>
+                              <!-- <th>{{ 'LABEL_CRITERIA.PROGRESS'| translate }}</th> -->
+                              <th>{{ 'LABEL_CRITERIA.ACTIONS'| translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="hasFile">
+                              <td>
+                                0
+                              </td>
+                              <td>
+                                <strong>No name</strong>
+                              </td>
+                              <td nowrap>
+                                <button type="button" class="btn btn-raised btn-outline-danger btn-sm"
+                                  (click)="removeFileSearchWeb()" rippleEffect placement="top"
+                                  ngbTooltip="{{ 'LABEL_CRITERIA.REMOVE'| translate }}">
+                                  <i data-feather="trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                            <tr *ngFor="let item of uploader.queue;let i = index">
+                              <td>
+                                {{ i+1 }}
+                              </td>
+                              <td>
+                                <strong>{{ item?.file?.name }}</strong>
+                              </td>
+                              <!-- <td *ngIf="uploader.options.isHTML5">
+                                <ngb-progressbar type="primary" [value]="item.progress"></ngb-progressbar>
+                              </td> -->
+                              <td nowrap>
+                                <button type="reset" class="btn btn-raised btn-outline-danger btn-sm"
+                                  (click)="item.remove()" rippleEffect placement="top"
+                                  ngbTooltip="{{ 'LABEL_CRITERIA.REMOVE'| translate }}">
+                                  <i data-feather="trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <!-- Table file -->
+
+                      <!-- START OLD FILE -->
+                      <!-- <div *ngIf="!mySwitch" class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="attachments-column">{{ 'LABEL_PROOF.ATTACHMENTS'| translate }}<span
+                              style="color: red">*</span></label>
+                          <input type="file"
+                            accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf,video/mp4,video/x-m4v,video/*"
+                            formControlName="attachments" id="attachments-column" class="form-control-file"
+                            placeholder="{{ 'LABEL_PROOF.ATTACHMENTS'| translate }}" name="attachments-column"
+                            (change)="onFileChange($event)"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.attachments.errors }" />
+                        </div>
+                      </div>
+                      <div *ngIf="mySwitch" class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="attachments-column">{{ 'LABEL_PROOF.ATTACHMENTS'| translate }}<span
+                              style="color: red">*</span></label>
+                          <input type="file"
+                            accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf,video/mp4,video/x-m4v,video/*"
+                            multiple formControlName="attachments" id="attachments-column" class="form-control-file"
+                            placeholder="{{ 'LABEL_PROOF.ATTACHMENTS'| translate }}" name="attachments-column"
+                            (change)="onFileChange($event)"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.attachments.errors }" />
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-12">
+                        <div class="custom-control custom-switch custom-switch-success">
+                          <p class="mb-50">Folder</p>
+                          <input type="checkbox" [ngModelOptions]="{standalone: true}" (change)="changeCheckbox($event)"
+                            [(ngModel)]="mySwitch" class="custom-control-input" id="customSwitch111" />
+                          <label class="custom-control-label" for="customSwitch111">
+                            <span class="switch-icon-left"><i data-feather="check"></i></span>
+                            <span class="switch-icon-right"><i data-feather="x"></i></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-12">
+                        <button class="btn btn-primary ml-1 mt-2" rippleEffect
+                          (click)="openModalAddProof(modalSearchProof)">
+                          <span [data-feather]="'target'" [class]="'mr-25'"></span>SEARCH
+                        </button>
+                      </div>
+
+                      <div class="col-12" *ngIf="haveFileSearchWeb">
+                        <div class="form-group">
+                          <div class="custom-control custom-switch custom-switch-success">
+                            <p id="fileOnLocalStorage" class="mb-50">{{ 'LABEL.HAS_FILE_SEARCH_WEB' | translate }}</p>
+                            <input type="checkbox" [ngModelOptions]="{standalone: true}"
+                              (change)="changeCheckboxFile($event)" [(ngModel)]="useFile" class="custom-control-input"
+                              id="customSwitch1111" />
+                            <label class="custom-control-label" for="customSwitch1111">
+                              <span class="switch-icon-left"><i data-feather="check"></i></span>
+                              <span class="switch-icon-right"><i data-feather="x"></i></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div> -->
+                      <!-- END OLD FILE -->
+
+
+
+
+                      <!-- CẤP QUYỀN -->
+                      <!-- <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="authorization-column">{{ 'LABEL_PROOF.AUTHORIZATION'| translate }} </label>
+                          <ng-select *ngIf="currentLang == 'vn'" name="authorization-column" formControlName="unit"
+                            [items]="listUnit" [closeOnSelect]="false" [loading]="unitLoading" [multiple]="true"
+                            [searchable]="true" bindLabel="unitName"
+                            placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.unit.errors }">
+                          </ng-select>
+
+                          <ng-select *ngIf="currentLang == 'en'" name="authorization-column" formControlName="unit"
+                            [items]="listUnit" [closeOnSelect]="false" [loading]="unitLoading" [multiple]="true"
+                            [searchable]="true" bindLabel="unitNameEn"
+                            placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                            [ngClass]="{ 'is-invalid': addProofFormSubmitted && AddProofForm.unit.errors }">
+                          </ng-select>
+
+                          <div *ngIf="addProofFormSubmitted && AddProofForm.unit.errors" class="invalid-feedback">
+                            <div *ngIf="AddProofForm.unit.errors.required">{{
+                              'MESSAGE.PROOF_MANAGEMENT.AUTHORIZATION_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="col-12 mt-2">
+                      <button type="submit" (click)="addProof()" rippleEffect class="btn btn-primary mr-1">{{
+                        'ACTION.SAVE'| translate }}</button>
+                      <button type="reset" (click)="removeFileSearchWeb()" rippleEffect
+                        class="btn btn-outline-secondary">{{ 'ACTION.RESET'| translate
+                        }}</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <ng-template #modalInput let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{ 'LABEL_PROOF.INPUT_CODE'| translate }}</h5>
+        <button type="button" id="closebutton" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-input-proof-code (emitEvent)="reloadListCode($event)"></app-input-proof-code>
+      </div>
+    </ng-template>
+    <ng-template #modalSearchProof let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_PROOF' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-search-proof></app-search-proof>
+      </div>
+    </ng-template>
+  </div>
+</div>

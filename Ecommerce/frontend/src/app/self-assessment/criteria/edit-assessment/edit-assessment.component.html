@@ -1,0 +1,182 @@
+<div class="content-wrapper p-0">
+    <div class="content-body">
+<!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+          <div class="card-body">
+            <div class="custom-control custom-switch custom-switch-success col-md-6 col-12">
+              <p class="mb-50">{{ 'LABEL.ASSESMENT_REPORT1'| translate }}</p>
+              <input type="checkbox" [(ngModel)]="mySwitch" class="custom-control-input" id="customSwitch111" (change)="onChange()"/>
+              <label class="custom-control-label" for="customSwitch111">
+                <span class="switch-icon-left"><i data-feather="check"></i></span>
+                <span class="switch-icon-right"><i data-feather="x"></i></span>
+              </label>
+            </div>
+            <form [formGroup]="editAssessmentForm" (ngSubmit)="editAssessment()" enctype="multipart/form-data; charset=utf-8">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="">{{ 'LABEL_ASSESSMENT.NAME_VN'| translate }}<span style="color: red">*</span></label>
+                    <input
+                        type="text"
+                        id="login-name-column"
+                        class="form-control"
+                        placeholder="{{ 'LABEL_ASSESSMENT.NAME_VN'| translate }}"
+                        name="login-column"
+                        [maxlength]="256"
+                        formControlName="name"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.name.errors }"
+                      />
+                      <div *ngIf="editAssessmentFormSubmitted && EditAssessmentForm.name.errors" class="invalid-feedback">
+                        <div *ngIf="EditAssessmentForm.name.errors.required">{{ 'MESSAGE.ASSESSMENT.NAME_REQUIRE'| translate }}</div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="">{{ 'LABEL_ASSESSMENT.NAME_EN'| translate }}</label>
+                      <input
+                          type="text"
+                          id="login-name-column"
+                          class="form-control"
+                          placeholder="{{ 'LABEL_ASSESSMENT.NAME_EN'| translate }}"
+                          name="login-column"
+                          [maxlength]="256"
+                          formControlName="nameEn"
+                          
+                        />
+                        <!-- <div *ngIf="editAssessmentFormSubmitted && EditAssessmentForm.nameEn.errors" class="invalid-feedback">
+                          <div *ngIf="EditAssessmentForm.nameEn.errors.required">{{ 'MESSAGE.ASSESSMENT.NAME_REQUIRE'| translate }}</div>
+                        </div> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL.PROGRAM'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listPrograms" formControlName="programId" bindValue="id" bindLabel="name"
+                        placeholder="{{ 'LABEL.PROGRAM'| translate }}" [readonly]="true"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.programId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listPrograms" formControlName="programId" bindValue="id" bindLabel="nameEn"
+                        placeholder="{{ 'LABEL.PROGRAM'| translate }}" [readonly]="true"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.programId.errors }">
+                      </ng-select>
+                      <div *ngIf="editAssessmentFormSubmitted && EditAssessmentForm.programId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="EditAssessmentForm.programId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_PROGRAM'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL_CRITERIA.STANDAR_NAME'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listStandard" formControlName="directoryId" bindValue="id" bindLabel="name"
+                        placeholder="{{ 'LABEL_CRITERIA.STANDAR_NAME'| translate }}" [readonly]="true"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.directoryId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listStandard" formControlName="directoryId" bindValue="id" bindLabel="nameEn"
+                        placeholder="{{ 'LABEL_CRITERIA.STANDAR_NAME'| translate }}" [readonly]="true"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.directoryId.errors }">
+                      </ng-select>
+                      <div *ngIf="editAssessmentFormSubmitted && EditAssessmentForm.directoryId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="EditAssessmentForm.directoryId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_NAME'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL.NAME1'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listCrite" formControlName="criteriaId" bindValue="id" bindLabel="name"
+                        placeholder="{{ 'LABEL.NAME1'| translate }}" [readonly]="true"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.criteriaId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listCrite" formControlName="criteriaId" bindValue="id" bindLabel="nameEn"
+                        placeholder="{{ 'LABEL.NAME1'| translate }}" [readonly]="true"
+                        [ngClass]="{ 'is-invalid': editAssessmentFormSubmitted && EditAssessmentForm.criteriaId.errors }">
+                      </ng-select>
+                      <div *ngIf="editAssessmentFormSubmitted && EditAssessmentForm.criteriaId.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="EditAssessmentForm.criteriaId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_PROGRAM'|
+                          translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="expert">{{ 'LABEL_ASSESSMENT.EXPERT'| translate }}</label>
+                      <ng-select name="expert" formControlName="user" [items]="listUser" [closeOnSelect]="false"
+                        [loading]="userLoading" [multiple]="true" [searchable]="true" bindLabel="email"
+                        placeholder="{{ 'LABEL_ASSESSMENT.EXPERT'| translate }}">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="expert">{{ 'LABEL_ASSESSMENT.VIEWERS'| translate }}</label>
+                      <ng-select name="expert" formControlName="viewers" [items]="listViewers" [closeOnSelect]="false"
+                        [loading]="userLoading" [multiple]="true" [searchable]="true" bindLabel="fullname"
+                        placeholder="{{ 'LABEL_ASSESSMENT.VIEWERS' | translate }}">
+                      </ng-select>
+                    </div>
+                  </div> -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_ASSESSMENT.DESCRIPTION_VN'| translate }}<span style="color: red"></span></label>
+                      <textarea class="form-control" id="basicTextarea" rows="1" placeholder="{{ 'LABEL_ASSESSMENT.DESCRIPTION_VN'| translate }}"
+                      formControlName="description" [maxlength]="2000"></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_ASSESSMENT.DESCRIPTION_EN'| translate }}<span style="color: red"></span></label>
+                      <textarea class="form-control" id="basicTextarea" rows="1" placeholder="{{ 'LABEL_ASSESSMENT.DESCRIPTION_EN'| translate }}"
+                      formControlName="descriptionEn" [maxlength]="2000"
+                      ></textarea>
+                      
+                    </div>
+                </div>
+                <div *ngIf="!mySwitch" class="col-12">
+                  <label for="login-name-column">{{ 'LABEL.FILE'| translate }}<span style="color: red">*</span></label>
+                    <div class="form-group file-input">
+                      <input
+                        type="file"
+                        id="login-name-column"
+                        class="form-control-file"
+                        placeholder="{{ 'LABEL.FILE'| translate }}"
+                        name="login-column"
+                        accept=".docx, .doc" #fileUpload
+                        (change)="onFileChange($event)"/>
+                    </div>
+                    <div class="file-upload">
+                      <label for="login-name-column"><span [data-feather]="'paperclip'"></span>{{data.file || "File not found !!!"}}</label>
+                      <button type="button" class="btn btn-icon rounded-circle btn-outline-primary ml-1" 
+                      (click)="fileUpload.click()" [ngClass]="{ 'is-invalid': !maxSize }" rippleEffect ngbPopover="{{ 'LABEL_ASSESSMENT.FILE'| translate }}" triggers="mouseenter:mouseleave" placement="right"> 
+                        <span [data-feather]="'paperclip'"></span></button>
+                    </div>
+                    <div *ngIf="!maxSize" style="font-size: 0.857rem; color: #ea5455;">
+                      {{'MESSAGE.ASSESSMENT.MAXSIZE'| translate }}
+                    </div>
+                </div>
+                <div class="col-12 mt-1">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                  <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>
+</div>

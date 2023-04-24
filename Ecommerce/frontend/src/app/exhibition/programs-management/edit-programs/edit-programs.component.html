@@ -1,0 +1,129 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form [formGroup]="addProgramsFrom" (ngSubmit)="editProgram()">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="menu-name-column">{{ 'LABEL_PRO.PROGRAM_NAME'| translate }}<span style="color: red">*</span></label>
+                                            <input type="text" id="menu-name-column" class="form-control" placeholder="{{ 'LABEL_PRO.PROGRAM_NAME'| translate }}" name="menu-name-column" formControlName="name" [ngClass]="{ 'is-invalid': addProgramsFormSubmitted && AddProgramFrom.name.errors }" />
+                                            <div *ngIf="addProgramsFormSubmitted && AddProgramFrom.name.errors" class="invalid-feedback">
+                                                <div *ngIf="AddProgramFrom.name.errors.required">{{ 'MESSAGE.PROGRAM_MANAGEMENT.INPUT_NAME'| translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="">{{ 'LABEL_PRO.CATEGORIESEN'| translate }}</label>
+                                            <input type="text" id="login-name-column" class="form-control" placeholder="{{ 'LABEL_PRO.CATEGORIESEN'| translate }}" name="login-column" [maxlength]="50" formControlName="nameEn" 
+                                            />
+                                            <!-- <div *ngIf="addProgramsFormSubmitted && AddProgramFrom.nameEn.errors" class="invalid-feedback">
+                                                <div *ngIf="AddProgramFrom.nameEn.errors.required">{{ 'MESSAGE.PROGRAM_MANAGEMENT.INPUT_NAME'| translate }}</div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">{{ 'LABEL_PRO.ORGANIZATION'| translate }}<span style="color: red">*</span></label>
+                                            <ng-select  *ngIf="currentLang == 'vn'"  [readonly]="true"  (change)="onChangee()"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" id="role-column" [items]="listOrganization" bindValue="id" bindLabel="name" formControlName="organizationId" [searchable]="true" placeholder="{{ 'LABEL_PRO.CATEGORIES'| translate }}" [(ngModel)]="standardSet" [ngClass]="{ 'is-invalid': addProgramsFormSubmitted && AddProgramFrom.organizationId.errors }">
+                                            </ng-select>
+                                            <ng-select  *ngIf="currentLang == 'en'"  [readonly]="true"   (change)="onChangee()"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" id="role-column" [items]="listOrganization" bindValue="id" bindLabel="nameEn" formControlName="organizationId" [searchable]="true" placeholder="{{ 'LABEL_PRO.CATEGORIES'| translate }}" [(ngModel)]="standardSet" [ngClass]="{ 'is-invalid': addProgramsFormSubmitted && AddProgramFrom.organizationId.errors }">
+                                            </ng-select>
+                                            <div *ngIf=" addProgramsFormSubmitted && AddProgramFrom.organizationId.errors " class="invalid-feedback ">
+                                                <div *ngIf="AddProgramFrom.organizationId.errors.required ">{{'MESSAGE.PROGRAM_MANAGEMENT.ORGANIZATION_REQUIRE'| translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="role-column">{{ 'MENU.CATEGORIES'| translate }}<span style="color: red">*</span></label>
+                                            <ng-select  *ngIf="currentLang == 'vn'" [readonly]="true" id="role-column"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" [items]="listCat" bindValue="id" bindLabel="name" formControlName="categoryId" [searchable]="true" placeholder="{{ 'LABEL_PRO.CATEGORIES'| translate }}" [ngClass]="{ 'is-invalid': addProgramsFormSubmitted && AddProgramFrom.organizationId.errors }">
+                                            </ng-select>
+                                            <ng-select  *ngIf="currentLang == 'en'" [readonly]="true" id="role-column"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}" [items]="listCat" bindValue="id" bindLabel="nameEn" formControlName="categoryId" [searchable]="true" placeholder="{{ 'LABEL_PRO.CATEGORIES'| translate }}" [ngClass]="{ 'is-invalid': addProgramsFormSubmitted && AddProgramFrom.organizationId.errors }">
+                                            </ng-select>
+                                            <div *ngIf=" addProgramsFormSubmitted && AddProgramFrom.categoryId.errors " class="invalid-feedback ">
+                                                <div *ngIf="AddProgramFrom.categoryId.errors.required ">{{'MESSAGE.PROGRAM_MANAGEMENT.ORGANIZATION_REQUIRE'| translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12 ">
+                                        <div class="form-group ">
+                                            <label for="url-column ">{{ 'LABEL_PRO.description'| translate }}</label>
+                                            <input type="text " id="description " class="form-control " placeholder="{{ 'LABEL_PRO.description'| translate }} " name="fname-column " formControlName="description" [maxlength]="100 " [ngClass]="{ 'is-invalid': addProgramsFormSubmitted && AddProgramFrom.description.errors }"
+                                            />
+                                            <div *ngIf="addProgramsFormSubmitted && AddProgramFrom.description.errors " class="invalid-feedback ">
+                                                <div *ngIf="AddProgramFrom.description.errors.required ">{{'MESSAGE.CATEGORIES_MANAGEMENT.DESCRIPTION'| translate }}</div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'LABEL_PRO.DESCRIPTION_EN'| translate }}</label>
+                                            <input type="text" id="description" class="form-control" id="basicTextarea" rows="1" placeholder="{{ 'LABEL_ASSESSMENT.DESCRIPTION_EN'| translate }}" formControlName="descriptionEn" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                                        <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'ACTION.RESET'| translate }}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Modal -->
+        <ng-template #modalSM let-modal>
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel160">Chọn Icon</h5>
+                <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" tabindex="0" ngbAutofocus>
+                <section id="feather-icons">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="icon-search-wrapper my-3 mx-auto">
+                                <div class="form-group input-group input-group-merge">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i data-feather="search"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="icons-search" [(ngModel)]="searchText" placeholder="Search Icons..." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap" id="icons-container">
+                        <div (click)="copy(dats.key); modal.dismiss('Cross click')" [id]="i" container="body" placement="top" [ngbTooltip]="dats.key" class="card icon-card cursor-pointer text-center mb-2 mx-50" *ngFor="let dats of listIcon | keyvalue | filter: searchText:'key'; let i = index">
+                            <div class="card-body">
+                                <div class="icon-wrapper">
+                                    <i [data-feather]="dats.key" [size]="24"></i>
+                                </div>
+                                <p class="icon-name text-truncate mb-0 mt-1">{{ dats.key }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="modal.close('Accept click')">Accept</button>
+            </div>
+        </ng-template>
+        <!-- / Modal -->
+    </div>
+</div>

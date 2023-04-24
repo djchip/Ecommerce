@@ -1,0 +1,62 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <!-- User List -->
+    <section id="users-list-wrapper">
+      <!-- users filter start -->
+      <div class="card">
+        <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+        <div class="card-body">
+          <div class="users-list-filter">
+            <!-- <form [formGroup]="addProofForm"> -->
+            <div class="row">
+              <div class="col-md-6 col-12 ml-1">
+                <div class="form-group">
+                  <label for="standard-column">{{ 'LABEL_PROOF.PROGRAM'| translate }}
+                    <span style="color: red">*</span></label>
+
+                  <ng-select *ngIf="currentLang == 'vn'" id="standard-column" [items]="listPrograms" bindLabel="name" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    bindValue="id" [(ngModel)]="idPro" (change)="onChange()" 
+                    placeholder="{{ 'LABEL_PROOF.PROGRAM'| translate }}">
+                  </ng-select>
+
+                  <ng-select *ngIf="currentLang == 'en'" id="standard-column" [items]="listPrograms" bindLabel="nameEn" notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                    bindValue="id" [(ngModel)]="idPro" (change)="onChange()"
+                    placeholder="{{ 'LABEL_PROOF.PROGRAM'| translate }}">
+                  </ng-select>
+                </div>
+              </div>
+
+              <!-- <div class="input-group mb-1 col-md-6">
+                <input  (change)="onInitTree($event, treeFilter.treeModel)" type="submit" >
+            </div> -->
+
+            </div>
+
+            <div class=" col-12">
+              <div class="col-12" >
+                <tree-root #treeFilter [nodes]="nodesFilter" [ngClass]="'tree-wrapper'" [state]="stateDragDrop"
+                  (select)="onSelect($event)" (deselect)="onSelect($event)" [options]="optionsDragDrop"
+                  [focused]="true">
+                  <ng-template #treeNodeTemplate let-node>
+                    <!--For node with no children(last node), give it a function/link-->
+                    <div *ngIf="node.data.isFile">
+                      <span (click)="openTreeproof(node.data.id)">{{ node.data.name }}</span>
+                    </div>
+                    <span *ngIf="!node.data.isFile">
+                      <i [data-feather]="node.data.level == 3 ? 'target' : node.data.level == 2 ? 'aperture' : node.data.level == 1 ? 'archive' : null"
+                        [class]="node.data.level == 3 ? 'text-warning cursor-pointer ml-50' : node.data.level == 2 ? 'text-success cursor-pointer ml-50' : node.data.level == 1 ? 'text-info cursor-pointer ml-50' : null"></i>
+                      {{ node.data.name }}
+                    </span>
+                  </ng-template>
+                </tree-root>
+              </div>
+
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

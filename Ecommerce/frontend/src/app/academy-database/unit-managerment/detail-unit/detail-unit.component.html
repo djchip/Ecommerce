@@ -1,0 +1,286 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- page users view start -->
+    <section *ngIf="objRevert == null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                  <div class="user-avatar-section">
+                    <div class="d-flex justify-content-start">
+                      <div class="mr-1 ml-0">
+                        <div class="rounded-circle p-3 bg-light-success" style="height: 150px; width: 150px;">
+                          <h2 class="d-flex justify-content-center mt-1">
+                            {{ data.unitCode | initials }}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                  <div class="user-info-wrapper">
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="tag" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.UNITNAME'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="currentLang == 'vn'"
+                        [ngStyle]="{'color': dataRevert?.unitName ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.unitName ? dataRevert?.unitName : data?.unitName }}
+                        <b *ngIf="dataRevert?.unitName">---> {{ obj?.unitName }}</b>
+
+                      </p>
+                      <p class="card-text mb-0" *ngIf="currentLang == 'en'"
+                        [ngStyle]="{'color': dataRevert?.unitNameEn ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.unitNameEn ? dataRevert?.unitNameEn : data?.unitNameEn }}
+                        <b *ngIf="dataRevert?.unitNameEn">---> {{ obj?.unitNameEn }}</b>
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="code" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.UNIT_CODE'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.unitCode ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.unitCode ? dataRevert?.unitCode : data?.unitCode }}
+                        <b *ngIf="dataRevert?.unitCode">---> {{ obj?.unitCode }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="align-center" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.CLASSIFY'| translate
+                          }}</span>
+                      </div>
+
+                      <!-- <p class="card-text mb-0" *ngIf="dataRevert?.classify ? dataRevert?.classify : data?.classify as variable"
+                      [ngStyle]="{'color': dataRevert?.listClassify  ? 'indianred' : '#6E6B7B'}">
+                      {{currentLang == 'vn' ? variable.name : variable.nameEn}}
+                  </p> -->
+
+                      <p class="card-text mb-0" *ngFor="let item of listClassify">
+                        <span *ngIf="data.classify == item.id">{{currentLang == 'vn'? item.name : item.nameEn}}</span>
+                      </p>
+
+                      <!-- <p class="card-text mb-0" *ngFor="let item of listClassify" 
+                                                [ngStyle]="{'color': dataRevert?.item.id ? 'indianred' : '#6E6B7B'}">
+                                                {{currentLang == 'vn' ? item?.id.name : item?.id.nameEn}}</p> -->
+
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="edit-3" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.DESCRIPTION'| translate
+                          }}</span>
+                      </div>
+                      <!-- <p class="card-text mb-0">{{currentLang == 'vn'? data.description : data.descriptionEn}}</p> -->
+                      <p class="card-text mb-0" *ngIf="currentLang == 'vn'"
+                        [ngStyle]="{'color': dataRevert?.description ? 'indianred' : '#6E6B7B'}">
+
+                        {{ dataRevert?.description ? dataRevert?.description : data?.description }}
+                        <b *ngIf="dataRevert?.description">---> {{ obj?.description }}</b>
+
+                      </p>
+                      <p class="card-text mb-0" *ngIf="currentLang == 'en'"
+                        [ngStyle]="{'color': dataRevert?.descriptionEn ? 'indianred' : '#6E6B7B'}">
+
+                        {{ dataRevert?.descriptionEn ? dataRevert?.descriptionEn : data?.descriptionEn }}
+                        <b *ngIf="dataRevert?.descriptionEn">---> {{ obj?.descriptionEn }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="calendar" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.CREATED_DATE'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0">{{ data.createdDate |  date: dateFormat}}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="user" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.CREATED_BY'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0">{{ data.createdBy }}</p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="clock" class=" mr-1 "></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0 ">{{
+                          'LABEL_CATE.CATEGORIES_UPDATED'| translate }}</span>
+                      </div>
+                      <p class="card-text mb-0 "
+                        [ngStyle]="{'color': dataRevert?.updatedDate ? 'indianred' : '#6E6B7B'}">
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
+                        {{ (dataRevert?.updatedDate ? dataRevert?.updatedDate : data?.updatedDate) |  date: dateFormat}}
+                        <b *ngIf="dataRevert?.updatedDate">---> {{ obj?.updatedDate }}</b>
+
+                      </p>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="user" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.UPDATE_BY'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0 " [ngStyle]="{'color': dataRevert?.updatedBy ? 'indianred' : '#6E6B7B'}">
+                        {{ dataRevert?.updatedBy ? dataRevert?.updatedBy : data?.updatedBy }}
+                        <b *ngIf="dataRevert?.updatedBy">---> {{ obj?.updatedBy }}</b>
+
+                      </p>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+
+
+
+    <section *ngIf="objRevert != null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th>{{ 'LABEL.properties'| translate }}</th>
+                    <th>{{ 'LABEL.Before_the_update'| translate }}</th>
+                    <th>{{ 'LABEL.After_the_update'| translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="currentLang == 'vn'" [ngClass]="{'table-warning': objRevert.unitName != obj.unitName }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.UNITNAME'| translate }}</span>
+                    </td>
+                    <td>{{ objRevert?.unitName }} </td>
+                    <td>{{obj?.unitName}} </td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.unitNameEn != obj.unitNameEn }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.UNITNAME'| translate }}</span>
+                    </td>
+                    <td>{{objRevert?.unitNameEn}}</td>
+                    <td>{{obj?.unitNameEn}} </td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.unitCode != obj.unitCode}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.UNIT_CODE'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.unitCode}}</td>
+                    <td>{{obj.unitCode}}</td>
+                  </tr>
+
+
+                  <!-- <tr 
+                          [ngClass]="{'table-warning': objRevert.classify != obj.classify}">
+                          <td>
+                              <span class="card-text user-info-title font-weight-bold mb-0">{{
+                                  'LABEL.CLASSIFY'| translate }}</span>
+                          </td>
+                          <td> 
+                 
+                          <p class="card-text mb-0" *ngFor="let item of listClassify" >
+                            <span *ngIf="objRevert.classify == item.id">{{currentLang == 'vn'? item.name : item.nameEn}}</span>
+                          </p>
+                          
+                        </td>
+                          <td>{{obj.unitCode}}</td>
+                      </tr> -->
+
+
+                  <tr *ngIf="currentLang == 'vn'"
+                    [ngClass]="{'table-warning': objRevert.description != obj.description}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.description'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.description}}</td>
+                    <td>{{obj.description}}</td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.descriptionEn != obj.descriptionEn}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.description'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.descriptionEn}}</td>
+                    <td>{{obj.descriptionEn}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.CREATED_DATE'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.createdDate|  date: dateFormat}}</td>
+                    <td>{{obj.createdDate|  date: dateFormat}}</td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.createdBy != obj.createdBy}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.CREATED_BY'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.createdBy}}</td>
+                    <td>{{obj.createdBy}}</td>
+
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.updatedDate != obj.updatedDate}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.CATEGORIES_UPDATED'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.updatedDate|  date: dateFormat}}</td>
+                    <td>{{obj.updatedDate|  date: dateFormat}}</td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.updatedBy != obj.updatedBy}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.UPDATED_BY'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.updatedBy}}</td>
+                    <td>{{obj.updatedBy}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+    <!-- page users view end -->
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<section class="form-control-repeater">
+    <table class="table">
+        <thead class="border-bottom-2">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{{ 'LABEL.STATISTICAL'| translate }}</th>
+            <th scope="col">{{ 'LABEL_ASSESSMENT.CREATED_BY'| translate }}</th>
+            <th scope="col">{{ 'LABEL.CREATE_DATE'| translate }}</th>
+            <!-- <th scope="col">{{ 'LABEL.UNIT_IN_CHARGE'| translate }}</th>
+            <th scope="col">{{'APPLICABLE_YEAR' | translate }}</th> -->
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider" *ngFor="let item of select; let i=index">
+          <tr>
+            <th scope="row">{{i+1}}</th>
+            <td>{{item.name}}</td>
+            <td>{{item.createdBy}}</td>
+            <td>{{item.createdDate | date: dateFormat}}</td>
+            <!-- <td></td>
+            <td></td> -->
+            <td>
+                <button class="btn btn-sm btn-icon rounded-circle btn-outline-danger" (click)="deleteItem(i)"
+                    rippleEffect ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                    triggers="mouseenter:mouseleave" placement="right">
+                    <span [data-feather]="'x'"></span>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <button rippleEffect class="btn btn-gradient-success" (click)="exportReport()" [disabled]="select.length === 0">
+            {{'LABEL.EXPORT_REPORT' | translate}}
+          </button>
+          <button rippleEffect class="btn btn-gradient-info ml-1" (click)="exportForm()" [disabled]="select.length === 0">
+            {{'LABEL.EXPORT_FORM' | translate}}
+          </button>
+        </div>
+      </div>
+</section>

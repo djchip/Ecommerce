@@ -1,0 +1,137 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- User List -->
+    <section id="apex-column-charts">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div
+              class="card-header d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-md-center align-items-start">
+              <div>
+                <h4 class="card-title mb-50">{{'MENU.EXHIBITION' | translate}}</h4>
+              </div>
+              <div class="d-flex align-items-center mt-md-0 mt-1">
+                <div class="btn-group">
+                  <div ngbDropdown>
+                    <button type="button" class="btn btn-outline-primary btn-sm budget-dropdown" ngbDropdownToggle
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>{{ thisYear
+                      }}</button>
+                    <div class="dropdown-menu">
+                      <button class="dropdown-item mr-0" *ngFor="let year of arrayYears" (click)="changeYear(year)">{{
+                        year }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="column-chart" #apexColumnChartRef>
+                <apx-chart [series]="apexColumnChart.series" [chart]="{
+                    type: 'bar',
+                    height: 400,
+                    width: isMenuToggled === false ? apexColumnChartRef.offsetWidth : apexColumnChart.chart.width,
+                    stacked: true,
+                    toolbar: {
+                      show: false
+                    }
+                  }" [xaxis]="apexColumnChart.xaxis" [stroke]="apexColumnChart.stroke"
+                  [tooltip]="apexColumnChart.tooltip" [colors]="apexColumnChart.colors"
+                  [legend]="apexColumnChart.legend" [dataLabels]="apexColumnChart.dataLabels"
+                  [plotOptions]="apexColumnChart.plotOptions" [grid]="apexColumnChart.grid"></apx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Bieu do tron -->
+    <section id="apex-column-charts">
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-end">
+              <h4 class="card-title">{{'MENU.DATABASE' | translate}}</h4>
+              <div class="btn-group">
+                <div ngbDropdown>
+                  <button type="button" class="btn btn-outline-primary btn-sm budget-dropdown" ngbDropdownToggle
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>{{ thisYearDb }}</button>
+                  <div class="dropdown-menu">
+                    <button class="dropdown-item mr-0" *ngFor="let year of arrayYears" (click)="changeYearDatabase(year)">{{ year }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="customerChartoptions" #customerChartoptionsRef>
+                <!-- Apexchart component-->
+                <apx-chart [chart]="{
+                  type: 'pie',
+                  height: 345,
+                  width:
+                    isMenuToggled === false
+                      ? customerChartoptionsRef.offsetWidth
+                      : customerChartoptions.chart.width,
+                  toolbar: {
+                    show: false
+                  }
+                }" [labels]="customerChartoptions.labels" [series]="series"
+                  [dataLabels]="customerChartoptions.dataLabels" [legend]="customerChartoptions.legend"
+                  [stroke]="customerChartoptions.stroke" [colors]="customerChartoptions.colors"></apx-chart>
+                <!-- / Apexchart component-->
+              </div>
+              <div class="pt-25">
+                <div class="d-flex justify-content-between mb-1">
+                  <div class="d-flex align-items-center">
+                    <i data-feather="circle" class="font-medium-1 text-primary"></i>
+                    <span class="font-weight-bold ml-75">{{'LABEL.UPLOADED' | translate}}</span>
+                  </div>
+                  <span>{{ uploaded }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                  <div class="d-flex align-items-center">
+                    <i data-feather="circle" class="font-medium-1 text-warning"></i>
+                    <span class="font-weight-bold ml-75">{{'LABEL.NOT_UPLOADED' | translate}}</span>
+                  </div>
+                  <span>{{ notUploaded }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <i data-feather="circle" class="font-medium-1 text-danger"></i>
+                    <span class="font-weight-bold ml-75">{{'LABEL.TOTAL_DB' | translate}}</span>
+                  </div>
+                  <span>{{ totalDb }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-end">
+              <h4 class="card-title">{{'LABEL.PROGRAMS' | translate}}</h4>
+            </div>
+            <div class="card-body">
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [plotOptions]="chartOptions.plotOptions"
+                  [yaxis]="chartOptions.yaxis"
+                  [xaxis]="chartOptions.xaxis"
+                  [legend]="chartOptions.legend"
+                  [colors]="chartOptions.colors"
+                  [grid]="chartOptions.grid"
+                  [tooltip]="chartOptions.tooltip"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

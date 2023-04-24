@@ -1,0 +1,22 @@
+<div class="row overflow-auto" style="margin-bottom: 50px;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'LABEL.NO'| translate }}</th>
+                <th width="30%">{{ 'LABEL.NAME'| translate }}</th>
+                <th>{{ 'LABEL.CODE'| translate }}</th>
+                <th>{{ 'LABEL.ORG'| translate }}</th>
+                <th>{{ 'LABEL.DES'| translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of obj; let i = index">
+                <td>{{ i+1 }}</td>
+                <td><strong>{{currentLang == 'vn'? item?.name : item?.nameEn}}</strong></td>
+                <td>{{ item.code }}</td>
+                <td>{{currentLang == 'vn'? item?.organizaNam : item?.organizaNamEn}}</td>
+                <td>{{currentLang == 'vn'? item?.description : item?.descriptionEn}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

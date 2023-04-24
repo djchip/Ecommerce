@@ -1,0 +1,144 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <!-- User List -->
+        <section class="users-list-wrapper">
+            <!-- users filter start -->
+            <div class="card">
+                <!-- <h5 class="card-header">Quản lý người dùng</h5> -->
+                <div class="card-body">
+                    <div class="users-list-filter">
+                        <div class="col-md-6 col-12">
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control" placeholder="{{ 'MESSAGE.MENU.SEARCHBOX'| translate }}" aria-label="Nhập mã menu, tên menu" aria-describedby="basic-addon-search1" (keyup.enter)="searchMenu()" [(ngModel)]="keyword" />
+                                <div class="input-group-append" (click)="searchMenu()">
+                                    <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- users filter end -->
+
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="d-flex justify-content-between align-items-center m-1">
+                            <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                  <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  {{ 'LABEL.ENTRIES'| translate }}</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+              <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+<!--                <button class="btn btn-primary ml-1" rippleEffect (click)="addMenu()">-->
+<!--                  <span [data-feather]="'menu'" [class]="'mr-25'"></span>Thêm mới-->
+<!--                </button>-->
+                <button class="btn btn-primary ml-1" rippleEffect (click)="openModalAddMenus(modalAddMenus)">
+                  <span [data-feather]="'user-plus'" [class]="'mr-25'"></span>{{ 'LABEL.ADD'| translate }}
+                </button>
+
+
+              </div>
+            </div>
+          </div>
+          <ngx-datatable
+            [rows]="listMenu"
+            [rowHeight]="50"
+            class="bootstrap core-bootstrap"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [externalPaging]="true"
+            [count]="totalRows"
+            [offset]="currentPage"
+            [limit]="perPage"
+            (page)="setPage($event)"
+          >
+            <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="40"
+              headerClass="header text-center width-5" cellClass="center width-5">
+              <ng-template let-rowIndex="rowIndex" let-row="row"
+                ngx-datatable-cell-template>
+                <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="80" [sortable]="false">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                   <span (click)="editMenus(row.id, modalEditMenus)"
+                         ngbPopover="Cập nhật"
+                         triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit" class="text-primary cursor-pointer ml-50"></i></span>
+                  <span (click)="deleteMenu(row.id)"
+                  ngbPopover="Xóa"
+                  triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash" class="text-danger cursor-pointer ml-50"></i></span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{ 'LABEL.MENU_CODE'| translate }}" prop="menuCode" [width]="200">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                <div class="d-flex align-items-center">
+                  <div class="cell-line-height">
+                    <a class="font-medium-1 d-block" (click)="detailMenu(row.id, modalDetailMenu)"
+                    ><span class="font-weight-bold text-primary">{{ name }}</span></a
+                    >
+                  </div>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{ 'LABEL.MENU_NAME'| translate }}" prop="menuName" [width]="200"></ngx-datatable-column>
+            <ngx-datatable-column name="{{ 'LABEL.LEVE'| translate }}" prop="menuLevel" [width]="200"></ngx-datatable-column>
+            <ngx-datatable-column name="{{ 'LABEL.MENU_FATHER'| translate }}" prop="menuParent" [width]="200"></ngx-datatable-column>
+            <ngx-datatable-column name="{{ 'LABEL.PATH'| translate }}" prop="url" [width]="200"></ngx-datatable-column>
+            <ngx-datatable-column name="translate" prop="translate" [width]="200"></ngx-datatable-column>
+          </ngx-datatable>
+        </div> 
+      </section>
+      <!--/ User List -->
+
+
+      <ng-template #modalAddMenus let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_MENU' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-add-menu (afterCreateMenus)="afterCreateMenu()" ></app-add-menu>
+        </div>
+      </ng-template>
+      <!-- Modal detail user-->
+      <ng-template #modalDetailMenu let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_MENU' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-detail-menu></app-detail-menu>
+        </div>
+      </ng-template>
+      <!-- / Modal -->
+      <!-- Modal edit user-->
+      <ng-template #modalEditMenus let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_MENU' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-edit-menus-group (afterEditMenus)="afterEditMenu()"></app-edit-menus-group>
+        </div>
+      </ng-template>
+      <!-- / Modal -->
+
+    </div>
+  </div>

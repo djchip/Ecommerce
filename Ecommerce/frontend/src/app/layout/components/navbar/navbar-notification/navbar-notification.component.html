@@ -1,0 +1,48 @@
+<li ngbDropdown class="nav-item dropdown-notification mr-25">
+  <a class="nav-link" ngbDropdownToggle id="navbarNotificationDropdown"
+    ><i class="ficon" data-feather="bell"></i
+    ><span *ngIf="messages != undefined && messages.length > 0" class="badge badge-pill badge-danger badge-up">{{
+      messages.length
+    }}</span></a
+  >
+  <ul
+    ngbDropdownMenu
+    aria-labelledby="navbarNotificationDropdown"
+    class="dropdown-menu dropdown-menu-media dropdown-menu-right"
+  >
+    <!-- Notifications header -->
+    <li class="dropdown-menu-header">
+      <div class="dropdown-header d-flex">
+        <h4 class="notification-title mb-0 mr-auto">Thông báo</h4>
+        <div class="badge badge-pill badge-light-primary">
+          {{ messages == undefined? 0 : messages.length }} thông báo mới
+        </div>
+      </div>
+    </li>
+    <!--/ Notifications header -->
+
+    <!-- Notifications content -->
+    <li class="scrollable-container media-list" [perfectScrollbar]>
+      <a class="d-flex" href="javascript:void(0)" *ngFor="let message of messages">
+        <div class="media d-flex align-items-start">
+          <!-- <div class="media-left">
+            <div class="avatar">
+              <img [src]="message.image" alt="avatar" width="32" height="32" />
+            </div>
+          </div> -->
+          <div class="media-body">
+            <p class="media-heading" [innerHTML]="message.contents" (click)="showNotification(message.id, message.contents)"></p>
+            <!-- <small class="notification-text">{{ message.text }}</small> -->
+          </div>
+        </div></a
+      >
+    </li>
+    <!--/ Notifications content -->
+
+    <!-- Notifications footer -->
+    <li class="dropdown-menu-footer">
+      <a class="btn btn-primary btn-block" href="javascript:void(0)" (click)="readAll()">Đã đọc tất cả thông báo</a>
+    </li>
+    <!--/ Notifications footer -->
+  </ul>
+</li>

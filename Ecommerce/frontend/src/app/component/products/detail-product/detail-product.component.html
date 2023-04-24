@@ -1,0 +1,136 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <section class="app-user-view">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card user-card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-9 col-lg-12 mt-2 mt-xl-0">
+                                    <div class="user-info-wrapper">
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="layout" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Tên
+                                                    sản phẩm' }}</span>
+                                            </div>
+                                            <p class="card-text mb-0">
+                                                {{ data.name }}
+                                            </p>
+                                        </div>
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="clock" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Danh
+                                                    mục' }}</span>
+                                            </div>
+                                            <p class="card-text mb-0">{{ data.category.categoryName }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Mô
+                                                    tả'}}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.description }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Giá
+                                                    sản phẩm'}}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.unitPrice }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Giảm
+                                                    giá'}}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.discount }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Số
+                                                    lượng còn lại'}}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.unitsInStock }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Sản
+                                                    phẩm nổi bật'}}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.featured ? 'Có' : 'Không' }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Trạng
+                                                    thái'}}</span>
+                                            </div>
+                                            <div class="badge badge-pill"
+                                                [ngClass]="{'badge-light-success': data.active, 'badge-light-danger': !data.active}">
+                                                <span *ngIf="data.active">
+                                                    {{ 'Active' }}
+                                                </span>
+                                                <span *ngIf="!data.active">
+                                                    {{ 'Not active' }}
+                                                </span>
+                                            </div>   
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Người
+                                                    tạo' }}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.createdBy }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Ngày
+                                                    tạo' }}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.createdDate | date: dateFormat }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Người
+                                                    cập nhật' }}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.updatedBy }}</p>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap mb-1">
+                                            <div class="user-info-title">
+                                                <i data-feather="mail" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">{{ 'Ngày
+                                                    cập nhật' }}</span>
+                                            </div>
+                                            <p class="card-text">{{ data.updatedDate | date: dateFormat }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

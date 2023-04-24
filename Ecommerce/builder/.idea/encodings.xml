@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/java/com/ecommerce/core/controllers/StatisticalController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/java/com/ecommerce/core/service/impl/DocumentServiceImpl.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/resources/fonts/VN_Arial/times.ttf" charset="windows-1258" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/resources/fonts/VN_Arial/timesbd.ttf" charset="windows-1258" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/resources/fonts/VN_Arial/timesbi.ttf" charset="windows-1258" />
+    <file url="file://$PROJECT_DIR$/../core-service/src/main/resources/fonts/VN_Arial/timesi.ttf" charset="windows-1258" />
+    <file url="file://$PROJECT_DIR$/../eureka-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../zuul-apigateway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../zuul-apigateway/src/main/java" charset="UTF-8" />
+    <file url="PROJECT" charset="windows-1258" />
+  </component>
+</project>

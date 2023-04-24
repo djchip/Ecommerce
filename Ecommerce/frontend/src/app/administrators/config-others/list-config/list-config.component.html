@@ -1,0 +1,672 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section class="users-list-wrapper">
+
+      <!-- Document type -->
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">{{'CONTENT_HEADER.DOCUMENT_TYPE_CONFIG' | translate}}</h1>
+          <div class="users-list-filter">
+            <div class="col-md-6 col-12">
+              <div *ngIf="acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control"
+                  placeholder="{{ 'LABEL_APP_PARAM.SEARCHBOX_DOCUMENT_TYPE'| translate }}" aria-label=""
+                  aria-describedby="basic-addon-search1" (keyup.enter)="searchDocumentType()" [(ngModel)]="keywordD" />
+                <div class="input-group-append" (click)="searchDocumentType()">
+                  <span class="input-group-text" id="basic-addon-search1">
+                    <i data-feather="search"></i></span>
+                </div>
+              </div>
+              <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control"
+                  placeholder="{{ 'LABEL_APP_PARAM.SEARCHBOX_DOCUMENT_TYPE'| translate }}" aria-label=""
+                  aria-describedby="basic-addon-search1" [(ngModel)]="keywordD" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon-search1">
+                    <i data-feather="search"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPageD" (change)="changePerpageD()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button *ngIf="acceptAction.delete" class="btn btn-danger ml-1" [disabled]="deleted" rippleEffect (click)="onDeleteMulti()">
+                <span [data-feather]="'trash'" [class]="'mr-25'"></span>{{'ACTION.DELETE' | translate}}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect
+                (click)="openModalAddDocumentType(modalAddDocumentType)">
+                <span [data-feather]="'aperture'" [class]="'mr-25'"></span>{{'ACTION.ADD' |
+                translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <ngx-datatable *ngIf="acceptAction.search" [rows]="rowsD" [rowHeight]="50" class="bootstrap core-bootstrap" [messages]="messages"
+                [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true"
+                [externalPaging]="true" [count]="totalRowsD" [offset]="currentPageD" [limit]="perPageD"
+                (page)="setPageD($event)"
+                [selectionType]="SelectionType.checkbox" (select)="onSelect($event)" (select)="customChkboxOnSelect($event)"
+                >
+
+                <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="40" [sortable]="false"
+                  headerClass="header text-center width-5" cellClass="center width-5">
+                  <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <strong>{{ (currentPageD * perPageD) + rowIndex + 1 }}</strong>
+                  </ng-template>
+                </ngx-datatable-column>
+
+
+                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                [resizeable]="false">
+                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+                  let-selectFn="selectFn">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                      (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+                    <label class="custom-control-label" for="headerChkbxRef"></label>
+                  </div>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                  let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+                    <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+
+
+
+                <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="80" [sortable]="false">
+                  <ng-template ngx-datatable-cell-template let-row="row">
+                    <span *ngIf="acceptAction.update" (click)="editDocumentType(row.id, modalEditDocumentType)"
+                      ngbPopover="{{ 'ACTION.UPDATE'| translate }}" triggers="mouseenter:mouseleave"
+                      placement="right"><i data-feather="edit" class="text-primary cursor-pointer ml-50"></i></span>
+                    <span *ngIf="acceptAction.delete" (click)="deleteDocumentType(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                      triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                        class="text-danger cursor-pointer ml-50"></i></span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_APP_PARAM.DOCUMENT_TYPE_NAME'| translate }} " prop="name"
+                  [width]="200">
+                  <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                    <div class="d-flex align-items-center">
+                      <div class="cell-line-height">
+                        <!-- <a class="font-medium-1 d-block">
+                          <span class="font-weight-bold text-primary">
+                            {{currentLang == 'vn' ? row.name : row.nameEn }}
+                          </span>
+                        </a> -->
+                        <a *ngIf="acceptAction.detail" class="font-medium-1 d-block" (click)="detailDocumentType(row,modalDetailDocumentType)"><span
+                          class="font-weight-bold text-primary">{{currentLang == 'vn'? row.name : row.nameEn}}</span></a>
+                        <a *ngIf="!acceptAction.detail" class="font-medium-1 d-block"><span
+                          class="font-weight-bold text-primary">{{currentLang == 'vn'? row.name : row.nameEn}}</span></a>
+                      </div>
+                    </div>
+
+                    
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.CREATED_BY'| translate }}" prop="createdBy" [width]="200">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.CREATED_DATE'| translate }}" prop="createdDate"
+                  [width]="200">
+                  <ng-template let-createdDate="value" let-row="row" ngx-datatable-cell-template>
+                    <span> {{row.createdDate | date: dateFormat}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.UPDATED_BY'| translate }}" prop="updatedBy" [width]="200">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.UPDATED_DATE'| translate }}" prop="updatedDate"
+                  [width]="200">
+                  <ng-template let-updatedDate="value" let-row="row" ngx-datatable-cell-template>
+                    <span> {{row.updatedDate | date: dateFormat}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Field -->
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">{{'CONTENT_HEADER.FIELD_CONFIG' | translate}}</h1>
+          <div class="users-list-filter">
+            <div class="col-md-6 col-12">
+              <div *ngIf="acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL_APP_PARAM.SEARCHBOX_FIELD'| translate }}"
+                  aria-label="" aria-describedby="basic-addon-search1" (keyup.enter)="searchField()"
+                  [(ngModel)]="keywordF" />
+                <div class="input-group-append" (click)="searchField()">
+                  <span class="input-group-text" id="basic-addon-search1">
+                    <i data-feather="search"></i></span>
+                </div>
+              </div>
+              <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL_APP_PARAM.SEARCHBOX_FIELD'| translate }}"
+                  aria-label="" aria-describedby="basic-addon-search1"
+                  [(ngModel)]="keywordF" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon-search1">
+                    <i data-feather="search"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPageF" (change)="changePerpageF()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button *ngIf="acceptAction.delete" class="btn btn-danger ml-1" [disabled]="deleted" rippleEffect (click)="onDeleteMulti()">
+                <span [data-feather]="'trash'" [class]="'mr-25'"></span>{{'ACTION.DELETE' | translate}}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalAddField(modalAddField)">
+                <span [data-feather]="'aperture'" [class]="'mr-25'"></span>{{'ACTION.ADD' |
+                translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <ngx-datatable *ngIf="acceptAction.search" [rows]="rowsF" [rowHeight]="50" class="bootstrap core-bootstrap" [messages]="messages"
+                [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true"
+                [externalPaging]="true" [count]="totalRowsF" [offset]="currentPageF" [limit]="perPageF"
+                (page)="setPageF($event)"
+                [selectionType]="SelectionType.checkbox" (select)="onSelect($event)" (select)="customChkboxOnSelect($event)"
+                >
+
+                <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="40" [sortable]="false"
+                  headerClass="header text-center width-5" cellClass="center width-5">
+                  <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <strong>{{ (currentPageF * perPageF) + rowIndex + 1 }}</strong>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                [resizeable]="false">
+                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+                  let-selectFn="selectFn">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                      (change)="selectFn(!allRowsSelected)" id="headerChkbxRef2" />
+                    <label class="custom-control-label" for="headerChkbxRef2"></label>
+                  </div>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                  let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" id="rowChkbxRef2{{ rowIndex }}" />
+                    <label class="custom-control-label" for="rowChkbxRef2{{ rowIndex }}"></label>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+
+
+
+                <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="80" [sortable]="false">
+                  <ng-template ngx-datatable-cell-template let-row="row">
+                    <span *ngIf="acceptAction.update" (click)="editField(row.id, modalEditField)" ngbPopover="{{ 'ACTION.UPDATE'| translate }}"
+                      triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit"
+                        class="text-primary cursor-pointer ml-50"></i></span>
+                    <span *ngIf="acceptAction.delete" (click)="deleteField(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                      triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                        class="text-danger cursor-pointer ml-50"></i></span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_APP_PARAM.FIELD_NAME'| translate }}" prop="name" [width]="200">
+                  <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                    <div class="d-flex align-items-center">
+                      <div class="cell-line-height">
+                   
+                        <a *ngIf="acceptAction.detail" class="font-medium-1 d-block" (click)="detailDocumentType(row,modalDetailField)"><span
+                          class="font-weight-bold text-primary">{{currentLang == 'vn'? row.name : row.nameEn}}</span></a>
+                        <a *ngIf="!acceptAction.detail" class="font-medium-1 d-block"><span
+                          class="font-weight-bold text-primary">{{currentLang == 'vn'? row.name : row.nameEn}}</span></a>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.CREATED_BY'| translate }}" prop="createdBy" [width]="200">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.CREATED_DATE'| translate }}" prop="createdDate"
+                  [width]="200">
+                  <ng-template let-createdDate="value" let-row="row" ngx-datatable-cell-template>
+                    <span> {{row.createdDate | date: dateFormat}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.UPDATED_BY'| translate }}" prop="updatedBy" [width]="200">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.UPDATED_DATE'| translate }}" prop="updatedDate"
+                  [width]="200">
+                  <ng-template let-updatedDate="value" let-row="row" ngx-datatable-cell-template>
+                    <span> {{row.updatedDate | date: dateFormat}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Exh code -->
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">{{'CONTENT_HEADER.EXH_CODE_CONFIG' | translate}}</h1>
+          <div class="users-list-filter">
+            <div class="col-md-6 col-12">
+              <div *ngIf="acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL_APP_PARAM.SEARCHBOX_EXH'| translate }}"
+                  aria-label="" aria-describedby="basic-addon-search1" (keyup.enter)="searchExhCode()"
+                  [(ngModel)]="keywordE" />
+                <div class="input-group-append" (click)="searchExhCode()">
+                  <span class="input-group-text" id="basic-addon-search1">
+                    <i data-feather="search"></i></span>
+                </div>
+              </div>
+              <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL_APP_PARAM.SEARCHBOX_EXH'| translate }}"
+                  aria-label="" aria-describedby="basic-addon-search1"
+                  [(ngModel)]="keywordE" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon-search1">
+                    <i data-feather="search"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPageE" (change)="changePerpageE()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button *ngIf="acceptAction.delete" class="btn btn-danger ml-1" [disabled]="deleted" rippleEffect (click)="onDeleteMulti()">
+                <span [data-feather]="'trash'" [class]="'mr-25'"></span>{{'ACTION.DELETE' | translate}}
+              </button>
+              <button *ngIf="acceptAction.add" class="btn btn-primary ml-1" rippleEffect (click)="openModalAddExhCode(modalAddExhCode)">
+                <span [data-feather]="'aperture'" [class]="'mr-25'"></span>{{'ACTION.ADD' |
+                translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <ngx-datatable *ngIf="acceptAction.search" [rows]="rowsE" [rowHeight]="50" class="bootstrap core-bootstrap" [messages]="messages"
+                [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true"
+                [externalPaging]="true" [count]="totalRowsE" [offset]="currentPageE" [limit]="perPageE"
+                (page)="setPageE($event)"
+                [selectionType]="SelectionType.checkbox" (select)="onSelect($event)" (select)="customChkboxOnSelect($event)"
+                >
+
+                <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="40" [sortable]="false"
+                  headerClass="header text-center width-5" cellClass="center width-5">
+                  <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <strong>{{ (currentPageE * perPageE) + rowIndex + 1 }}</strong>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                [resizeable]="false">
+                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+                  let-selectFn="selectFn">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="allRowsSelecte"
+                      (change)="selectFn(!allRowsSelecte)" id="headerChkbxRef1" />
+                    <label class="custom-control-label" for="headerChkbxRef1"></label>
+                  </div>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                  let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" id="rowChkbxRef1{{ rowIndex }}" />
+                    <label class="custom-control-label" for="rowChkbxRef1{{ rowIndex }}"></label>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+
+
+                <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="80" [sortable]="false">
+                  <ng-template ngx-datatable-cell-template let-row="row">
+                      <span *ngIf="acceptAction.update" (click)="editExhCode(row.id, modalEditExhCode)"
+                          ngbPopover="{{ 'ACTION.UPDATE'| translate }}" triggers="mouseenter:mouseleave"
+                          placement="right"><i data-feather="edit"
+                              class="text-primary cursor-pointer ml-50"></i></span>
+                      <span *ngIf="acceptAction.delete" (click)="deleteExhCode(row.id)" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                          triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                              class="text-danger cursor-pointer ml-50"></i></span>
+                  </ng-template>
+              </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_APP_PARAM.EXH_CODE_NAME'| translate }}" prop="name" [width]="200">
+                  <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                    <div class="d-flex align-items-center">
+                      <div class="cell-line-height">
+                        <a *ngIf="acceptAction.detail" class="font-medium-1 d-block" (click)="detailDocumentType(row,modalDetailExhCode)"><span
+                          class="font-weight-bold text-primary">{{ name }}</span></a>
+                        <a *ngIf="!acceptAction.detail" class="font-medium-1 d-block" (click)="detailDocumentType(row,modalDetailExhCode)"><span
+                          class="font-weight-bold text-primary">{{ name }}</span></a>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_PRO.ORGANIZATION'| translate }}" prop="description" [width]="200">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span> {{currentLang == 'vn'? row.orgName : row.orgNameEn}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.CREATED_BY'| translate }}" prop="createdBy" [width]="200">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.CREATED_DATE'| translate }}" prop="createdDate"
+                  [width]="200">
+                  <ng-template let-createdDate="value" let-row="row" ngx-datatable-cell-template>
+                    <span> {{row.createdDate | date: dateFormat}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.UPDATED_BY'| translate }}" prop="updatedBy" [width]="200">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{ 'LABEL_PROOF.UPDATED_DATE'| translate }}" prop="updatedDate"
+                  [width]="200">
+                  <ng-template let-updatedDate="value" let-row="row" ngx-datatable-cell-template>
+                    <span> {{row.updatedDate | date: dateFormat}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Config datetime format -->
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">{{'CONTENT_HEADER.DATE_FORMAT_CONFIG' | translate}}</h1>
+          <!-- <div class="row">
+            <div class="col-md-6 col-12">
+              <label>{{ 'LABEL_APP_PARAM.FORMAT'| translate }}</label>
+                <ng-select id="role-column"
+                  [items]="listDateTimeFormat" 
+                  bindLabel="name" 
+                  bindValue="id"
+                  placeholder="{{ 'LABEL_APP_PARAM.FORMAT'| translate }}">
+                </ng-select>
+            </div>
+          </div> -->
+
+
+          <form [formGroup]="saveDateFormatForm" (ngSubmit)="saveDateFormat()">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <label>{{ 'LABEL_APP_PARAM.FORMAT'| translate }}</label>
+                      <ng-select id="role-column"
+                        [items]="listDateTimeFormat" 
+                        bindLabel="name"
+                        bindValue="id"
+                        formControlName="format"
+                        [(ngModel)]="appParamId"
+                        [ngClass]="{ 'is-invalid': saveDateFormatFormSubmitted && SaveDateFormatForm.format.errors }"
+                        placeholder="{{ 'LABEL_APP_PARAM.FORMAT'| translate }}">
+                      </ng-select>
+
+                      <div *ngIf="saveDateFormatFormSubmitted && SaveDateFormatForm.format.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="SaveDateFormatForm.format.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_DATE_FORMAT'|
+                          translate }}</div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                      <button *ngIf="acceptAction.update" style="display: block;" type="submit" rippleEffect class="btn btn-primary mt-2">{{ 'LABEL.SAVE'| translate }}</button>
+                  </div>
+                </div>
+              </form>
+
+
+
+
+
+          <!-- <div class="row">
+            <div class="col-md-6 col-12">
+              <ngx-datatable [rows]="rowsDT" [rowHeight]="50" class="bootstrap core-bootstrap"
+                [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true"
+                [externalPaging]="true" [count]="totalRowsDT" [offset]="currentPageDT" [limit]="perPageDT"
+                (page)="setPageDT($event)">
+
+                <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="40" [sortable]="false"
+                  headerClass="header text-center width-5" cellClass="center width-5">
+                  <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <strong>{{ (currentPageDT * perPageDT) + rowIndex + 1 }}</strong>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{ 'LABEL_APP_PARAM.FORMAT'| translate }}" prop="name" [width]="200">
+                  <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                    <div class="d-flex align-items-center">
+                      <div class="cell-line-height">
+                        <a class="font-medium-1 d-block">
+                          <span class="font-weight-bold text-primary">
+                            {{row.name}}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+
+            <div class="col-md-6 col-12">
+              <div class="col-12 d-flex justify-content-start justify-content-md-end">
+                <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+                  <button class="btn btn-primary ml-1" [routerLink]="['./date-format']" rippleEffect>
+                    <span [data-feather]="'file-plus'" [class]="'mr-25'"></span>{{'ACTION.CONFIG_DATE_FORMAT' |
+                    translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+    </section>
+    <ng-template #modalAddDocumentType let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_DOCUMENT_TYPE' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-add-document-type (afterCreateDocumentType)="afterCreateDocumentType()"></app-add-document-type>
+      </div>
+    </ng-template>
+
+    <ng-template #modalEditDocumentType let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_DOCUMENT_TYPE' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-edit-document-type (afterEditDocumentType)="afterEditDocumentType()"></app-edit-document-type>
+      </div>
+    </ng-template>
+
+       <ng-template #modalDetailDocumentType let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_DOCUMENT_TYPE' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-detail-documenta [id]="idDetail" [obj]="ObjDetail"></app-detail-documenta>
+        </div>
+      </ng-template>
+   
+
+    <ng-template #modalAddField let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_FIELD' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-add-field (afterCreateField)="afterCreateField()"></app-add-field>
+      </div>
+    </ng-template>
+
+    <ng-template #modalEditField let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_FIELD' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-edit-field (afterEditField)="afterEditField()"></app-edit-field>
+      </div>
+    </ng-template>
+
+    <ng-template #modalDetailField let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_FILED' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-detail-documenta [id]="idDetail" [obj]="ObjDetail"></app-detail-documenta>
+      </div>
+    </ng-template>
+ 
+
+    <ng-template #modalAddExhCode let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_EXH_CODE' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-add-exh-code (afterCreateExhCode)="afterCreateExhCode()"></app-add-exh-code>
+      </div>
+    </ng-template>
+
+    <ng-template #modalEditExhCode let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_EXH_CODE' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-edit-exh-code (afterEditExhCode)="afterEditExhCode()"></app-edit-exh-code>
+      </div>
+    </ng-template>
+
+    <ng-template #modalAddExhCode let-modal>
+      <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_EXH_CODE' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-add-exh-code (afterCreateExhCode)="afterCreateExhCode()"></app-add-exh-code>
+      </div>
+  </ng-template>
+
+  <ng-template #modalEditExhCode let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_EXH_CODE' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+          <app-edit-exh-code (afterEditExhCode)="afterEditExhCode()"></app-edit-exh-code>
+      </div>
+    </ng-template>
+    <ng-template #modalDetailExhCode let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_EXH_CODE' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-detail-documenta [id]="idDetail" [obj]="ObjDetail"></app-detail-documenta>
+      </div>
+    </ng-template>
+  </div>
+</div>

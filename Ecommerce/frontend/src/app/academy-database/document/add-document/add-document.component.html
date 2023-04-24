@@ -1,0 +1,236 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- / Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+            <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+            <div class="card-body">
+              <form [formGroup]="addDocumentForm" (ngSubmit)="addDocument()"
+                enctype="multipart/form-data; charset=utf-8">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL.DOCUMENT_NUMBER'| translate }}</label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL.DOCUMENT_NUMBER'| translate }}" name="login-column" [maxlength]="50"
+                        formControlName="documentNumber"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.documentNumber.errors }" />
+                      <!-- <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.documentNumber.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.documentNumber.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.DOCUMENTNUMBER_REQUIRE'| translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="documentType-column">{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}<span
+                          style="color: red">*</span> </label>
+
+                      <ng-select *ngIf="currentLang == 'vn'" name="documentType-column" formControlName="documentType"
+                        [items]="listDocumentType" [closeOnSelect]="true" [loading]="false" [searchable]="true"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        bindLabel="name" bindValue="id" placeholder="{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.documentType.errors }">
+                      </ng-select>
+
+                      <ng-select *ngIf="currentLang == 'en'" name="documentType-column" formControlName="documentType"
+                        [items]="listDocumentType" [closeOnSelect]="true" [loading]="false" [searchable]="true"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        bindLabel="nameEn" bindValue="id" placeholder="{{ 'LABEL_PROOF.DOCUMENT_TYPE'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.documentType.errors }">
+                      </ng-select>
+
+                      <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.documentType.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.documentType.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.DOCUMENTTYPE_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="password-column">{{ 'LABEL.DOCUMENT_NAME'| translate }}<span
+                          style="color: red">*</span></label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL.DOCUMENT_NAME'| translate }}" name="login-column" [maxlength]="50"
+                        formControlName="documentName"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.documentName.errors }" />
+                      <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.documentName.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.documentName.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.DOCUMENTNAME_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="password-column">{{ 'LABEL.DOCUMENT_NAME_EN'| translate }}</label>
+                      <input type="text" id="login-name-column" class="form-control"
+                        placeholder="{{ 'LABEL.DOCUMENT_NAME_EN'| translate }}" name="login-column" [maxlength]="50"
+                        formControlName="documentNameEn"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.documentNameEn.errors }" />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="email-column">{{ 'LABEL.RELEASE_DATE'| translate }}</label>
+                      <input type="date" id="email-column" class="form-control"
+                        placeholder="{{ 'LABEL.RELEASE_DATE'| translate }}" name="email-column"
+                        formControlName="releaseDate"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.releaseDate.errors }" />
+                      <!-- <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.releaseDate.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.releaseDate.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.RELEASE_REQUIRE'| translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="phone-column">{{ 'LABEL.SIGNER'| translate }} </label>
+                      <input type="text" id="phone-column" class="form-control"
+                        placeholder="{{ 'LABEL.SIGNER'| translate }}" name="phone-column" [maxlength]="50"
+                        formControlName="signer"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.signer.errors }" />
+                      <!-- <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.signer.errors" class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.signer.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.SIGNER_REQUIRE'| translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="field-column">{{ 'LABEL_PROOF.FIELD'| translate }}</label>
+
+                      <ng-select *ngIf="currentLang == 'vn'" name="field-column" formControlName="field"
+                        [items]="listField" [closeOnSelect]="true" [loading]="unitLoading" [searchable]="true"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        bindLabel="name" bindValue="id" placeholder="{{ 'LABEL_PROOF.FIELD'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.field.errors }">
+                      </ng-select>
+
+                      <ng-select *ngIf="currentLang == 'en'" name="field-column" formControlName="field"
+                        [items]="listField" [closeOnSelect]="true" [loading]="unitLoading" [searchable]="true"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        bindLabel="nameEn" bindValue="id" placeholder="{{ 'LABEL_PROOF.FIELD'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.field.errors }">
+                      </ng-select>
+
+                      <!-- <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.field.errors" class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.field.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.FIELD_REQUIRE'| translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="releaseBy-column">{{ 'LABEL_PROOF.RELEASE_BY'| translate }} </label>
+
+                      <ng-select *ngIf="currentLang == 'vn'" name="releaseBy-column" formControlName="releaseBy"
+                        [items]="listUnit" [closeOnSelect]="false" [loading]="false" [searchable]="true"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        bindLabel="unitName" bindValue="id" placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.releaseBy.errors }">
+                      </ng-select>
+
+                      <ng-select *ngIf="currentLang == 'en'" name="releaseBy-column" formControlName="releaseBy"
+                        [items]="listUnit" [closeOnSelect]="false" [loading]="unitLoading" [searchable]="true"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                        bindLabel="unitNameEn" bindValue="id" placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.releaseBy.errors }">
+                      </ng-select>
+
+                      <!-- <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.releaseBy.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.releaseBy.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.UNIT_REQUIRE'| translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+
+                  <!-- <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="authorization-column">{{ 'LABEL_PROOF.AUTHORIZATION'| translate }} </label>
+                      <ng-select *ngIf="currentLang == 'vn'" name="authorization-column" formControlName="unit"
+                        [items]="listUnit" [closeOnSelect]="false" [loading]="unitLoading" [multiple]="true"
+                        [searchable]="true" bindLabel="unitName"
+                        placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.unit.errors }">
+                      </ng-select>
+
+                      <ng-select *ngIf="currentLang == 'en'" name="authorization-column" formControlName="unit"
+                        [items]="listUnit" [closeOnSelect]="false" [loading]="unitLoading" [multiple]="true"
+                        [searchable]="true" bindLabel="unitNameEn"
+                        placeholder="{{ 'LABEL_PROOF.SELECT_UNIT'| translate }}"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.unit.errors }">
+                      </ng-select>
+
+                      
+                    </div>
+                  </div> -->
+
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL.DESCRIPTION'| translate }}</label>
+                      <textarea class="form-control" id="basicTextarea" rows="1"
+                        placeholder="{{ 'LABEL.DESCRIPTION'| translate }}" formControlName="description"
+                        [maxlength]="2000"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.description.errors }"></textarea>
+                      <!-- <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.description.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.description.errors.required">{{
+                          'MESSAGE.DOCUMENT_MANAGEMENT.DESCRIPTION_REQUIRE'| translate }}</div>
+                      </div> -->
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL_PROOF.DESCRIPTION_EN'| translate }}</label>
+                      <textarea class="form-control" id="basicTextarea" rows="1"
+                        placeholder="{{ 'LABEL.DESCRIPTION'| translate }}" formControlName="descriptionEn"
+                        [maxlength]="2000"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.descriptionEn.errors }">
+                      </textarea>
+                      
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="login-name-column">{{ 'LABEL.FILE'| translate }}<span style="color: red">*</span></label>
+                      <input type="file" 
+                        id="login-name-column" 
+                        class="form-control-file"
+                        multiple formControlName="attachments"
+                        placeholder="{{ 'LABEL.FILE'| translate }}" name="login-column"
+                        (change)="onFileChange($event)"
+                        [ngClass]="{ 'is-invalid': addDocumentFormSubmitted && AddDocumentForm.attachments.errors }" />
+                      <div *ngIf="addDocumentFormSubmitted && AddDocumentForm.attachments.errors" 
+                        class="invalid-feedback">
+                        <div *ngIf="AddDocumentForm.attachments.errors.required">{{ 'MESSAGE.DOCUMENT_MANAGEMENT.FILE_REQUIRE'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'LABEL.SAVE'| translate
+                      }}</button>
+                    <button type="reset" rippleEffect class="btn btn-outline-secondary">{{ 'LABEL.RESET'| translate
+                      }}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Basic multiple Column Form section end -->
+  </div>
+</div>

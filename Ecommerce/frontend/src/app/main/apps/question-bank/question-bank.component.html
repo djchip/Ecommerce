@@ -1,0 +1,383 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- User List -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section class="users-list-wrapper">
+      <!-- users filter start -->
+      <div class="card">
+        <h5 class="card-header">Tiêu chí tìm kiếm</h5>
+        <div class="card-body">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="first-name-column">Ý đinh</label>
+                  <ng-select
+                    [items]="intents"
+                    [hideSelected]="true"
+                    [closeOnSelect]="false"
+                    [searchable]="true"
+                    multiple="true"
+                    bindLabel="intentName"
+                    bindValue="intentName"
+                    formControlName="intent"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="first-name-column">Người tạo</label>
+                  <ng-select
+                    [items]="users"
+                    [hideSelected]="true"
+                    [closeOnSelect]="false"
+                    [searchable]="true"
+                    multiple="true"
+                    bindLabel="createdBy"
+                    bindValue="createdBy"
+                    formControlName="user"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="first-name-column">Thực thể</label>
+                  <ng-select
+                    [items]="entitys"
+                    [hideSelected]="true"
+                    [closeOnSelect]="false"
+                    [searchable]="true"
+                    multiple="true"
+                    bindLabel="entityName"
+                    bindValue="entityName"
+                    formControlName="entity"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="first-name-column">Ngày tạo</label>
+                  <div class="form-group row wraper-picker">
+                    <div class="col-12 col-md-6 row wrap-date-time-picker">
+                      <label>Từ</label>
+                      <!-- Custom Day Date Picker -->
+                      <div class="form-group" style="width: 85%">
+                        <div class="input-group">
+                          <input
+                            class="form-control"
+                            placeholder="yyyy-mm-dd"
+                            name="Custom Day Date Picker"
+                            ngbDatepicker
+                            [dayTemplate]="customDay"
+                            [markDisabled]="isDisabled"
+                            #CustomDayDP="ngbDatepicker"
+                            (click)="clearDateMessage()"
+                            formControlName="timeApplyStart"
+                          />
+                          <div class="input-group-append">
+                            <button
+                              class="btn btn-outline-secondary feather icon-calendar"
+                              (click)="CustomDayDP.toggle()"
+                              type="button"
+                              rippleEffect
+                            ></button>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template
+                        #customDay
+                        let-date
+                        let-currentMonth="currentMonth"
+                        let-selected="selected"
+                        let-disabled="disabled"
+                        let-focused="focused"
+                      >
+                        <span
+                          class="custom-day"
+                          [class.weekend]="isWeekend(date)"
+                          [class.focused]="focused"
+                          [class.bg-primary]="selected"
+                          [class.hidden]="date.month !== currentMonth"
+                          [class.text-muted]="disabled"
+                        >
+                          {{ date.day }}
+                        </span>
+                      </ng-template>
+                    </div>
+
+                    <div
+                      class="col-12 col-md-6 row wrap-date-time-picker"
+                      style="justify-content: flex-end; padding-right: 1%"
+                    >
+                      <label>Đến</label>
+                      <div class="form-group" style="width: 85%">
+                        <div class="input-group">
+                          <input
+                            class="form-control"
+                            placeholder="yyyy-mm-dd"
+                            name="Custom Day Date Picker"
+                            (click)="clearDateMessage()"
+                            ngbDatepicker
+                            [dayTemplate]="endDay"
+                            [markDisabled]="isDisabled"
+                            #EndDayDP="ngbDatepicker"
+                            formControlName="timeApplyEnd"
+                          />
+                          <div class="input-group-append">
+                            <button
+                              class="btn btn-outline-secondary feather icon-calendar"
+                              (click)="EndDayDP.toggle()"
+                              type="button"
+                              rippleEffect
+                            ></button>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template
+                        #endDay
+                        let-date
+                        let-currentMonth="currentMonth"
+                        let-selected="selected"
+                        let-disabled="disabled"
+                        let-focused="focused"
+                      >
+                        <span
+                          class="custom-day"
+                          [class.weekend]="isWeekend(date)"
+                          [class.focused]="focused"
+                          [class.bg-primary]="selected"
+                          [class.hidden]="date.month !== currentMonth"
+                          [class.text-muted]="disabled"
+                        >
+                          {{ date.day }}
+                        </span>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <span class="validate-message">{{ dateMessage }}</span>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label for="first-name-column">Chọn từ đồng nghĩa</label>
+                  <ng-select
+                    [items]="synonyms"
+                    [hideSelected]="true"
+                    [closeOnSelect]="false"
+                    [searchable]="true"
+                    multiple="true"
+                    bindValue="synonymContent"
+                    bindLabel="synonymContent"
+                    formControlName="synonym"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <label for="first-name-column"></label>
+                <div class="input-group">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    rippleEffect
+                    (click)="searchIntentList()"
+                  >
+                    <i data-feather="search" class="mr-0 mr-sm-1"></i>
+                    Tìm kiếm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- users filter end -->
+
+      <div
+        class="card"
+        style="
+          border: none !important;
+          box-shadow: none !important;
+          background: none !important ;
+        "
+      >
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <button
+              type="button "
+              class="btn btn-primary float-right"
+              rippleEffect
+              (click)="openModal(modalAdd)"
+            >
+              <i data-feather="plus" class="m-0"></i>Thêm mới
+            </button>
+          </div>
+          <div class="col-md-6 col-12">
+            <button type="button" class="btn btn-danger" rippleEffect>
+              <i data-feather="trash" class="m-0"></i>Xóa
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-2">
+        <h5 class="card-header">Danh sách câu hỏi - ý định</h5>
+        <div class="card-body">
+          <ngx-datatable
+            [rows]="rows"
+            rowHeight="auto"
+            class="bootstrap core-bootstrap"
+            [limit]="perPage"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [externalPaging]="true"
+            [count]="totalRows"
+            [offset]="currentPage"
+            (page)="setPage($event)"
+            [messages]="{
+              emptyMessage: 'Không có dữ liệu',
+              totalMessage: 'bản ghi',
+              selectedMessage: 'được chọn'
+            }"
+          >
+            <ngx-datatable-column
+              name="STT"
+              prop=""
+              [width]="50"
+              [sortable]="false"
+            >
+              <ng-template
+                let-i="rowIndex"
+                let-row="row"
+                let-name="value"
+                ngx-datatable-cell-template
+              >
+                <strong>{{ currentPage * perPage + i + 1 }}</strong>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="70"
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+              name="Chọn"
+            >
+              <ng-template
+                ngx-datatable-cell-template
+                let-rowIndex="rowIndex"
+                let-value="value"
+                let-isSelected="isSelected"
+                ngx-datatable-cell-template
+                let-row="row"
+              >
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    [value]="row.id"
+                    (change)="onCheckboxChange($event, rowIndex)"
+                    id="rowChkbxRef{{ rowIndex }}"
+                    [checked]="row.isChecked"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="rowChkbxRef{{ rowIndex }}"
+                  ></label>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="Thao tác"
+              [width]="150"
+              [sortable]="false"
+            >
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span
+                  ngbPopover="Cập nhật"
+                  triggers="mouseenter:mouseleave"
+                  placement="right"
+                  (click)="editBot(row.id, modalEditBot)"
+                  ><i
+                    data-feather="edit"
+                    class="text-warning cursor-pointer ml-50"
+                  ></i
+                ></span>
+                <span
+                  (click)="deleteBot(row)"
+                  ngbPopover="Xóa"
+                  triggers="mouseenter:mouseleave"
+                  placement="right"
+                  ><i
+                    data-feather="trash"
+                    class="text-danger cursor-pointer ml-50"
+                  ></i
+                ></span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="Tên intent"
+              prop="intentName"
+            ></ngx-datatable-column>
+            <ngx-datatable-column name="Ngày tạo" prop="createdDate">
+              <ng-template let-createDate="value" ngx-datatable-cell-template>
+                {{ createDate | date: "dd-MM-yyyy " }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column
+              name="Người tạo"
+              prop="createdBy"
+              [sortable]="false"
+              [width]="300"
+            >
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              name="Người cập nhật"
+              prop="createdBy"
+              [sortable]="false"
+            >
+            </ngx-datatable-column>
+          </ngx-datatable>
+          <div class="row">
+            <div class="col-md-6 col-12">
+              <div
+                class="d-flex justify-content-between align-items-center m-1"
+              >
+                <label class="d-flex align-items-center"
+                  >Xem
+                  <select class="form-control mx-25">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  bản ghi/trang</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/ User List -->
+  </div>
+</div>
+
+<ng-template #modalAdd let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel1">Thêm mới Indent</h4>
+    <button type="button" class="close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <app-question-bank-add></app-question-bank-add>
+  </div>
+  <div class="modal-footer"></div>
+</ng-template>

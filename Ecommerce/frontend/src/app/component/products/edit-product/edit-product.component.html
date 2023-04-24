@@ -1,0 +1,141 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- / Basic multiple Column Form section start -->
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <!-- <h5 class="card-header">Thêm mới người dùng</h5> -->
+                        <div class="card-body">
+                            <form [formGroup]="editProductForm" (ngSubmit)="editProduct()">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'Tên sản phẩm' }}<span
+                                                    style="color: red">*</span></label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'Tên sản phẩm' }}" name="login-column" [maxlength]="256"
+                                                formControlName="name"
+                                                [ngClass]="{ 'is-invalid': editProductFormSubmitted && EditProductForm.name.errors }" />
+                                            <div *ngIf="editProductFormSubmitted && EditProductForm.name.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="EditProductForm.name.errors.required">{{ 'Tên sản phẩm bắt
+                                                    buộc nhập' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="classify">{{ 'Danh mục' }}<span
+                                                    style="color: red">*</span></label>
+                                            <ng-select id="parent-category" [items]="listCategories"
+                                                bindLabel="categoryName" formControlName="category"
+                                                placeholder="{{ 'Danh mục' }}" notFoundText="{{ 'Not found' }}"
+                                                [ngClass]="{ 'is-invalid': editProductFormSubmitted && EditProductForm.category.errors }">
+                                            </ng-select>
+                                            <div *ngIf="editProductFormSubmitted && EditProductForm.category.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="EditProductForm.category.errors.required">{{ 'Danh mục bắt
+                                                    buộc nhập' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="email-column">{{ 'Mô tả' }} </label>
+                                            <textarea class="form-control" id="basicTextarea" rows="1"
+                                                [maxlength]="2000" placeholder="{{ 'Mô tả' }}"
+                                                formControlName="description"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'Giá sản phẩm' }}<span
+                                                    style="color: red">*</span></label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'Giá sản phẩm' }}" name="login-column" [maxlength]="256"
+                                                formControlName="unitPrice"
+                                                [ngClass]="{ 'is-invalid': editProductFormSubmitted && EditProductForm.unitPrice.errors }" />
+                                            <div *ngIf="editProductFormSubmitted && EditProductForm.unitPrice.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="EditProductForm.unitPrice.errors.required">{{ 'Giá sản phẩm
+                                                    bắt buộc nhập' }}
+                                                </div>
+                                                <div *ngIf="EditProductForm.unitPrice.errors.pattern">{{ 'Giá sản phẩm
+                                                    phải là số nguyên dương' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'Giảm giá' }}</label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'Giảm giá' }}" name="login-column" [maxlength]="256"
+                                                formControlName="discount"
+                                                [ngClass]="{ 'is-invalid': editProductFormSubmitted && EditProductForm.discount.errors }" />
+                                            <div *ngIf="editProductFormSubmitted && EditProductForm.discount.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="EditProductForm.discount.errors.pattern">{{ 'Giảm giá
+                                                    phải là số nguyên dương' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="login-name-column">{{ 'Số lượng' }}<span
+                                                    style="color: red">*</span></label>
+                                            <input type="text" id="login-name-column" class="form-control"
+                                                placeholder="{{ 'Số lượng' }}" name="login-column" [maxlength]="256"
+                                                formControlName="unitsInStock"
+                                                [ngClass]="{ 'is-invalid': editProductFormSubmitted && EditProductForm.unitsInStock.errors }" />
+                                            <div *ngIf="editProductFormSubmitted && EditProductForm.unitsInStock.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="EditProductForm.unitsInStock.errors.required">{{ 'Số lượng
+                                                    bắt buộc nhập' }}</div>
+                                                <div *ngIf="EditProductForm.unitsInStock.errors.pattern">{{ 'Số lượng
+                                                    phải là số nguyên dương' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label class="d-block mb-1">{{ 'Sản phẩm nổi bật' }} <span
+                                                    style="color: red">*</span></label>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="encodeSC1" name="featured"
+                                                    class="custom-control-input" value="true"
+                                                    formControlName="featured" />
+                                                <label class="custom-control-label" for="encodeSC1">{{ 'Có' }}</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="encodeSC" name="featured"
+                                                    class="custom-control-input" value="false"
+                                                    formControlName="featured" />
+                                                <label class="custom-control-label" for="encodeSC">{{ 'Không' }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="submit" rippleEffect
+                                            class="btn btn-primary mr-1">{{'Lưu'}}</button>
+                                        <button type="button" (click)="reset()" rippleEffect
+                                            class="btn btn-outline-secondary">{{'Nhập
+                                            lại'}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Basic multiple Column Form section end -->
+    </div>
+</div>

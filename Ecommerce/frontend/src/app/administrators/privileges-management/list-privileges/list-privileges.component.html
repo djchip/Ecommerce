@@ -1,0 +1,163 @@
+  <div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+      <section class="users-list-wrapper">
+        <div class="card">
+          <div class="card-body">
+            <div class="users-list-filter">
+              <div class="col-md-6 col-12">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" placeholder="{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.SEARCHBOX'| translate }}" aria-label="" 
+                  aria-describedby="basic-addon-search1"
+                  (keyup.enter)="searchRoles()"
+                  [(ngModel)]="keyword"
+                  />
+                  <div class="input-group-append" (click)="searchRoles()">
+                    <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="row">
+            <div class="col-md-6 col-12">
+              <div class="d-flex align-items-center m-1">
+                <label class="d-flex align-items-center"
+                  >{{ 'LABEL.SHOW'| translate }}
+                  <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </label>
+                <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+              <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+                <button class="btn btn-primary ml-1" (click)="openModalAddRoles(modalAddRoles)">
+                  <span [data-feather]="'user-plus'" [class]="'mr-25'"></span>{{'ACTION.ADD' | translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          <ngx-datatable
+            [rows]="rows"
+            [rowHeight]="50"
+            class="bootstrap core-bootstrap"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [scrollbarH]="true"
+            [externalPaging]="true"
+            [count]="totalRows"
+            [offset]="currentPage"
+            [limit]="perPage"
+            (page)="setPage($event)"
+           >
+              <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="20"
+                  headerClass="header text-center width-5" cellClass="center width-5">
+                <ng-template let-rowIndex="rowIndex" let-row="row"
+                  ngx-datatable-cell-template>
+                  <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+                </ng-template>
+              </ngx-datatable-column>
+  
+              <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="50" [sortable]="false">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span (click)="editRolxes(row.id, modalEditRoles, $event)"
+                    ngbPopover="{{ 'ACTION.UPDATE'| translate }}"
+                    triggers="mouseenter:mouseleave" placement="right"><i data-feather="edit" class="text-primary cursor-pointer ml-50"></i></span>
+                    <span (click)="deleteRoles(row.id)"
+                    ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                    triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash" class="text-danger cursor-pointer ml-50"></i></span>
+                </ng-template>
+              </ngx-datatable-column>
+  
+              <ngx-datatable-column name="{{ 'LABEL_PRI.PRIVILEGESCODE'| translate }}" prop="code" [width]="200">
+                <ng-template let-row="row" let-name="row" ngx-datatable-cell-template>
+                  <div class="d-flex align-items-center">
+                    <div class="cell-line-height">
+                      <a class="font-medium-1 d-block" (click)="detailPrivileges(row.id, modalDetailRoles, $event)"
+                        ><span class="font-weight-bold text-primary">{{ row.code }}</span></a
+                      >
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+  
+              <ngx-datatable-column name="{{ 'LABEL_PRI.PRIVILEGESNAME'| translate }}" prop="name" [width]="200">
+                <ng-template let-row="row" let-name="row" ngx-datatable-cell-template>
+                  <div class="d-flex align-items-center">
+                    <div class="cell-line-height">
+                      <span class="ng-star-inserted">{{ row.name }}</span>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+          
+              <ngx-datatable-column name="{{ 'LABEL_PRI.METHOD'| translate }}" prop="roleCode" [width]="200">
+                <ng-template let-row="row" let-name="row" ngx-datatable-cell-template>
+                  <div class="d-flex align-items-center">
+                    <div class="cell-line-height">
+                      <span class="ng-star-inserted">{{ row.method }}</span>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+  
+              <ngx-datatable-column name="{{ 'LABEL_PRI.URL'| translate }}" prop="roleCode" [width]="200">
+                <ng-template let-row="row" let-name="row" ngx-datatable-cell-template>
+                  <div class="d-flex align-items-center">
+                    <div class="cell-line-height">
+                      <span class="ng-star-inserted">{{ row.url }}</span>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </section>
+      
+      <ng-template #modalAddRoles let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.ADD_PRI' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+            <app-add-privileges (afterCreateRoles)="afterCreateRoles()" [childMenus]="dataMenus"></app-add-privileges>
+        </div>
+      </ng-template>
+  
+      <ng-template #modalEditRoles let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.UPDATE_PRI' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+            <app-edit-privileges (afterEditRoles)="afterEditRoles()" [editMenus]="dataMenus"></app-edit-privileges>
+        </div>
+      </ng-template>
+
+      <ng-template #modalDetailRoles let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel160">{{'CONTENT_HEADER.DETAIL_PRI' | translate}}</h5>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+            <app-detail-privileges (afterDetailRoles)="afterDetailRoles()"></app-detail-privileges>
+        </div>
+      </ng-template>
+    </div>
+  </div>

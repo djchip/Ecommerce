@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-6 col-12">
+        <h4>{{ 'LABEL.AUTO_UPLOAD' | translate }}</h4>
+    </div>
+    <div class="col-md-6 col-12" style="display: flex;justify-content: end;">
+        <div class="form-group">
+            <button class="btn btn-success ml-1" rippleEffect (click)="openModalCollectExhibition(modalCollect)"
+                [disabled]="!programId">
+                <span [data-feather]="'file-plus'" [class]="'mr-25'"></span>{{'LABEL.COLLECT_EXHIBITION' | translate}}
+            </button>
+            <button class="btn btn-danger ml-1" rippleEffect (click)="deleteCollection()"
+                [disabled]="selectedTreeList.length == 0">
+                <span [data-feather]="'trash-2'" [class]="'mr-25'"></span>{{'ACTION.DELETE' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-bottom: 50px;">
+    <div class="col-md-6 col-12">
+        <tree-root #treeFilter [ngClass]="'tree-wrapper tree-checkbox'" [focused]="true" [options]="optionsFilter"
+            [nodes]="nodesFilter" (select)="onSelect($event)" (deselect)="onSelect($event)">
+        </tree-root>
+    </div>
+</div>
+
+<ng-template #modalCollect let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'MENU.UPLOAD_EXHIBITION' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-collect-exhibition [programId]="programId" (reloadFolder)="reloadFolder()"></app-collect-exhibition>
+    </div>
+</ng-template>

@@ -1,0 +1,320 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- page users view start -->
+    <section *ngIf="objRevert == null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-4 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                  <div class="user-avatar-section">
+                    <div class="d-flex justify-content-start">
+                      <div class="mr-1 ml-0">
+                        <div class="rounded-circle p-3 bg-light-success mt-3" style="height: 150px; width: 150px;">
+                          <h2 class="d-flex justify-content-center mt-1 text-success">
+                            {{ data.entity?.documentName | initials }}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-8 col-lg-12 mt-2 mt-xl-0">
+                  <div class="user-info-wrapper">
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="tag" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.DOCUMENT_NUMBER'|
+                          translate }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{ data?.entity?.documentNumber }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{ data?.documentNumber}}</p>
+
+
+                      <!-- <p class="card-text mb-0">{{ data?.entity?.documentNumber }}</p> -->
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="file" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.DOCUMENT_NAME'|
+                          translate }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.documentName :
+                        data.entity?.documentNameEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.documentName :
+                        data?.documentNameEn }}</p>
+
+                      <!-- <p class="card-text mb-0">{{ currentLang == 'vn' ? data?.entity?.documentName : data?.entity?.documentNameEn}}</p> -->
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="type" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.DOCUMENT_TYPE'|
+                          translate }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ?
+                        data?.entity?.documentTypeName :
+                        data.entity?.documentTypeNameEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.documentTypeName :
+                        data?.documentTypeNameEn }}</p>
+
+                      <!-- <p class="card-text mb-0">{{ currentLang == 'vn' ? data?.entity?.documentTypeName : data?.entity?.documentTypeNameEn }}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="calendar" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.RELEASE_DATE'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{ data?.entity?.releaseDate |date:"dd-MM-yyyy"}}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{ data?.releaseDate |date:"dd-MM-yyyy"}} </p>
+
+
+                      <!-- <p class="card-text mb-0">{{ data?.entity?.releaseDate | date:'dd/MM/yyyy'}}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i data-feather="star" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.SIGNER'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{ data?.entity?.signer}}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{ data?.signer }}</p>
+
+
+                      <!-- <p class="card-text mb-0">{{ data?.entity?.signer}}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i data-feather="list" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.FIELD'| translate
+                          }}</span>
+                      </div>
+
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.fieldName :
+                        data.entity?.fieldNameEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.fieldName :
+                        data?.fieldNameEn }}</p>
+
+                      <!-- <p class="card-text mb-0">{{ currentLang == 'vn' ? data?.entity?.fieldName : data?.entity?.fieldNameEn }}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i data-feather="grid" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL_PROOF.AUTHORIZATION'|
+                          translate }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.releaseByName :
+                        data.entity?.releaseByNameEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.releaseByName :
+                        data?.releaseByNameEn }}</p>
+
+
+                      <!-- <p class="card-text mb-0">{{ currentLang == 'vn' ? data?.entity?.releaseByName : data?.entity?.releaseByNameEn}}</p> -->
+                    </div>
+                    <div class="d-flex flex-wrap my-50">
+                      <div class="user-info-title">
+                        <i data-feather="twitch" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">{{ 'LABEL.DESCRIPTION'| translate
+                          }}</span>
+                      </div>
+                      <p class="card-text mb-0" *ngIf="id != null">{{currentLang == 'vn' ? data?.entity?.description :
+                        data.entity?.descriptionEn }}</p>
+                      <p class="card-text mb-0" *ngIf="id == null">{{currentLang == 'vn' ? data?.description :
+                        data?.descriptionEn }}</p>
+
+                      <!-- <p class="card-text mb-0">{{ currentLang == 'vn' ? data?.entity?.description : data?.entity?.descriptionEn }}</p> -->
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                      <div class="user-info-title">
+                        <i data-feather="link" class="mr-1"></i>
+                        <span class="card-text user-info-title font-weight-bold mb-0">File</span>
+                      </div>
+                      <a (click)="onDownloadFile()" ngbPopover="{{ 'LABEL.DOWNLOAD'| translate }}"
+                        triggers="mouseenter:mouseleave" placement="right"><i data-feather="download"
+                          class="mr-1"></i></a>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <ng-container *ngFor="let item of data.file; let i = index;">
+                        <div class="col-12 ml-1">
+                          <span>{{item.fileName}}</span>
+                        </div>
+                      </ng-container>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+
+    <section *ngIf="objRevert != null" class="app-user-view">
+      <!-- User Card & Plan Starts -->
+      <div class="row">
+        <!-- User Card starts-->
+        <div class="col-xl-12 col-lg-12">
+          <div class="card user-card">
+            <!-- <h5 class="card-header">Thông tin người dùng</h5> -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th>{{ 'LABEL.properties'| translate }}</th>
+                    <th>{{ 'LABEL.Before_the_update'| translate }}</th>
+                    <th>{{ 'LABEL.After_the_update'| translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr [ngClass]="{'table-warning': objRevert.documentNumber != obj.documentNumber }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.DOCUMENT_NUMBER'| translate }}</span>
+                    </td>
+                    <td>{{ objRevert?.documentNumber }} </td>
+                    <td>{{obj?.documentNumber}} </td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'vn'"
+                    [ngClass]="{'table-warning': objRevert.documentName != obj.documentName }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.DOCUMENT_NAME'| translate }}</span>
+                    </td>
+                    <td>{{objRevert?.documentName}}</td>
+                    <td>{{obj?.documentName}} </td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.documentNameEn != obj.documentNameEn }">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.DOCUMENT_NAME'| translate }}</span>
+                    </td>
+                    <td>{{objRevert?.documentNameEn}}</td>
+                    <td>{{obj?.documentNameEn}} </td>
+                  </tr>
+
+
+
+                  <tr>
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.RELEASE_DATE'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.releaseDate|date:"dd-MM-yyyy"}}</td>
+                    <td>{{obj.releaseDate|date:"dd-MM-yyyy"}}</td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning': objRevert.signer != obj.signer}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.SIGNER'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.signer}}</td>
+                    <td>{{obj.signer}}</td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'vn'" [ngClass]="{'table-warning': objRevert.fieldName != obj.fieldName}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.FIELD'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.fieldName}}</td>
+                    <td>{{obj.fieldName}}</td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.fieldNameEn != obj.fieldNameEn}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.FIELD'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.fieldNameEn}}</td>
+                    <td>{{obj.fieldNameEn}}</td>
+                  </tr>
+
+                  <tr [ngClass]="{'table-warning':dataRevert?.unit != null}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_PROOF.AUTHORIZATION'| translate }}</span>
+                    </td>
+                    <td>
+                      <ul *ngFor="let units of objRevert.unit" class="card-text mb-0">
+                        <li>{{currentLang == 'vn' ? units?.unitName : units?.unitNameEn}}</li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul *ngFor="let units of obj.unit" class="card-text mb-0">
+                        <li>{{currentLang == 'vn' ? units?.unitName : units?.unitNameEn}}</li>
+                      </ul>
+                    </td>
+
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'vn'"
+                    [ngClass]="{'table-warning': objRevert.description != obj.description}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.DESCRIPTION'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.description}}</td>
+                    <td>{{obj.description}}</td>
+                  </tr>
+
+                  <tr *ngIf="currentLang == 'en'"
+                    [ngClass]="{'table-warning': objRevert.descriptionEn != obj.descriptionEn}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL.DESCRIPTION'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.descriptionEn}}</td>
+                    <td>{{obj.descriptionEn}}</td>
+                  </tr>
+
+
+
+                  <tr [ngClass]="{'table-warning': objRevert.createdBy != obj.createdBy}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.CREATED_BY'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.createdBy}}</td>
+                    <td>{{obj.createdBy}}</td>
+
+                  </tr>
+
+
+                  <tr [ngClass]="{'table-warning': objRevert.updatedBy != obj.updatedBy}">
+                    <td>
+                      <span class="card-text user-info-title font-weight-bold mb-0">{{
+                        'LABEL_CATE.UPDATED_BY'| translate }}</span>
+                    </td>
+                    <td>{{objRevert.updatedBy}}</td>
+                    <td>{{obj.updatedBy}}</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /User Card Ends-->
+    </section>
+
+    <!-- page users view end -->
+  </div>
+</div>

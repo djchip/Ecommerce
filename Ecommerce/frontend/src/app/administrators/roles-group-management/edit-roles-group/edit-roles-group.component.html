@@ -1,0 +1,82 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+<!-- / Basic multiple Column Form section start -->
+<section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Cập nhật người dùng</h5> -->
+          <div class="card-body">
+            <form [formGroup]="addRolesForm" (ngSubmit)="editRoles()">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-code-column">{{ 'LABEL.ROLE_GROUP_CODE'| translate }} <span style="color: red">*</span></label>
+                          <input
+                            type="text"
+                            id="role-group-code-column"
+                            class="form-control"
+                            placeholder="{{ 'LABEL.ROLE_GROUP_CODE'| translate }}"
+                            name="role-group-code-column"
+                            formControlName="roleCode"
+                            disabled
+                          />
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.roleCode.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.roleCode.errors.required">{{ 'MESSAGE.ROLES_GROUP.ROLE_GROUP_CODE_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-name-column">{{ 'LABEL.ROLE_GROUP_NAME'| translate }} <span style="color: red">*</span></label>
+                          <input
+                            type="text"
+                            id="role-group-name-column"
+                            class="form-control"
+                            placeholder="{{ 'LABEL.ROLE_GROUP_NAME'| translate }}"
+                            name="role-group-name-column"
+                            [maxlength]="100"
+                            formControlName="roleName"
+                            [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.roleName.errors }"
+                          />
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.roleName.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.roleName.errors.required">{{ 'MESSAGE.ROLES_GROUP.ROLE_GROUP_NAME_REQUIRE'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label for="role-group-name-column">{{ 'LABEL.ROLE_GROUP_NAME_EN'| translate }}</label>
+                        <input
+                          type="text"
+                          id="role-group-name-column"
+                          class="form-control"
+                          placeholder="{{ 'LABEL.ROLE_GROUP_NAME_EN'| translate }}"
+                          name="role-group-name-column"
+                          [maxlength]="100"
+                          formControlName="roleNameEn"
+                         
+                        />
+                        <!-- <div *ngIf="addRolesFormSubmitted && AddRolesForm.roleNameEn.errors" 
+                          class="invalid-feedback">
+                          <div *ngIf="AddRolesForm.roleNameEn.errors.required">{{ 'MESSAGE.ROLES_GROUP.ROLE_GROUP_NAME_REQUIRE'| translate }}</div>
+                        </div> -->
+                      </div>
+                  </div>
+                <div class="col-12">
+                  <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                  <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>
+</div>

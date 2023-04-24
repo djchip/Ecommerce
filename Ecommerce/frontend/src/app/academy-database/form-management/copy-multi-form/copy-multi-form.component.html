@@ -1,0 +1,54 @@
+<div class="content-wrapper container-xxl p-0">
+  <!-- / Basic multiple Column Form section start -->
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row overflow-auto" style="margin-bottom: 50px;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>{{ 'LABEL.FORM_NAME'| translate }}</th>
+                    <th>{{ 'LABEL.FORM_FILE'| translate }}</th>
+                    <th>{{ 'LABEL.FORM_UNIT'| translate }}</th>
+                    <th>{{ 'LABEL.FORM_YEAR'| translate }}</th>
+                    <th>{{ 'LABEL.FORM_TIME_UPLOAD_DB'| translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of rows; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.fileName }}</td>
+                    <td><span *ngFor="let unit of item.units">{{ unit.unitName }},</span></td>
+                    <td>
+                      <input type="text" 
+                        class="form-control" 
+                        placeholder="{{ 'LABEL.FORM_YEAR'| translate }}"
+                        [maxlength]="4" 
+                        mask="0000"
+                        [(ngModel)]="item.yearOfApplication" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control" [(ngModel)]="item.uploadTime"
+                        placeholder="{{ 'LABEL.FORM_TIME_UPLOAD_DB'| translate }}" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 ">
+          <button type="submit" (click)="copyMulti()" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'|
+            translate }}</button>
+          <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{
+            'ACTION.RESET'| translate }}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>

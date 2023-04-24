@@ -1,0 +1,138 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+<!-- / Basic multiple Column Form section start -->
+<section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <!-- <h5 class="card-header">Cập nhật người dùng</h5> -->
+          <div class="card-body">
+            <form [formGroup]="addRolesForm" (ngSubmit)="editRoles()">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-code-column">{{ 'LABEL_PRI.PRIVILEGESCODE'| translate }} <span style="color: red">*</span></label>
+                          <input
+                            type="text"
+                            id="role-group-code-column"
+                            class="form-control"
+                            placeholder="{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.INPUT_CODE'| translate }}"
+                            name="role-group-code-column"
+                            formControlName="code"
+                          />
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.code.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.code.errors.required">{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.REQUIRE_CODE'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-code-column">{{ 'LABEL_PRI.PRIVILEGESNAME'| translate }} <span style="color: red">*</span></label>
+                          <input
+                            type="text"
+                            id="role-group-code-column"
+                            class="form-control"
+                            placeholder="{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.INPUT_NAME'| translate }}"
+                            name="role-group-code-column"
+                            [maxlength]="100"
+                            formControlName="name"
+                            [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.name.errors }"
+                          />
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.name.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.name.errors.required">{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.REQUIRE_NAME'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-code-column">{{ 'LABEL_PRI.MENUID'| translate }} <span style="color: red">*</span></label>
+                          <ng-select id="role-column"
+                              [items]="editMenus" 
+                              bindLabel="menuName" 
+                              bindValue="id"
+                              formControlName="menuID"
+                              (change)="onChange($event)"
+                              placeholder="{{ 'ACTION.CHOOSE'| translate }}"
+                              [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.method.errors }">
+                          </ng-select>
+                          <!-- <select class="form-control" formControlName="menuID" [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.url.errors }" (change)="onChange($event.target.value)">
+                            <option value="">-- {{ 'ACTION.CHOOSE'| translate }} --</option>
+                            <option *ngFor="let chil of editMenus; let i = index" [value]="editMenus[i].id" [selected]="editMenus[i].id == menuID">
+                                {{editMenus[i].title}}
+                              </option>
+                          </select> -->
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.menuID.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.menuID.errors.required">{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.REQUIRE_FUNC'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-code-column">{{ 'LABEL_PRI.METHOD'| translate }} <span style="color: red">*</span></label>
+                          <!-- <input
+                            type="text"
+                            id="role-group-code-column"
+                            class="form-control"
+                            placeholder="Nhập method"
+                            name="role-group-code-column"
+                            formControlName="method"
+                            [maxlength]="20"
+                            [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.method.errors }"
+                          /> -->
+                          <ng-select id="role-column"
+                              [items]="dataMethod" 
+                              bindLabel="name" 
+                              bindValue="id"
+                              formControlName="method"
+                              placeholder="{{ 'ACTION.CHOOSE'| translate }}"
+                              [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.method.errors }">
+                          </ng-select>
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.method.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.method.errors.required">{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.REQUIRE_METHOD'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="role-group-code-column">{{ 'LABEL_PRI.URL'| translate }} <span style="color: red">*</span></label>
+                          <input
+                            type="text"
+                            id="role-group-code-column"
+                            class="form-control"
+                            placeholder="{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.INPUT_URL'| translate }}"
+                            name="role-group-code-column"
+                            formControlName="url"
+                            [maxlength]="100"
+                            [ngClass]="{ 'is-invalid': addRolesFormSubmitted && AddRolesForm.url.errors }"
+                            
+                          />
+                          <div *ngIf="addRolesFormSubmitted && AddRolesForm.url.errors" 
+                            class="invalid-feedback">
+                            <div *ngIf="AddRolesForm.url.errors.required">{{ 'MESSAGE.PRIVILEGES_MANAGEMENT.REQUIRE_URL'| translate }}</div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                    <button type="submit" rippleEffect class="btn btn-primary mr-1">{{ 'ACTION.SAVE'| translate }}</button>
+                    <button type="button" rippleEffect class="btn btn-outline-secondary" (click)="resetForm()">{{ 'ACTION.RESET'| translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Basic multiple Column Form section end -->
+</div>
+</div>

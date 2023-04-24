@@ -1,0 +1,477 @@
+<section class="form-control-repeater">
+    <div class="row" style="min-height: 600px;">
+        <!-- Invoice repeater -->
+        <div class="col-3 shadow bg-body-tertiary rounded position-static">
+            <div class="position-fixed col-3" style="margin-left: -15px;">
+                <div class="row">
+                    <div class="col-11">
+                        <div class="form-group file-input">
+                            <input
+                              type="file"
+                              id="login-name-column"
+                              class="form-control-file"
+                              placeholder="{{ 'LABEL.FILE'| translate }}"
+                              name="login-column"
+                              accept=".xlsx" #fileUpload (change)="onChangeFile($event)"/>
+                        </div>
+                        <div class="file-upload">
+                            <button type="button" class="btn btn-sm btn-icon rounded-circle btn-outline-primary mr-1" 
+                            (click)="fileUpload.click()" rippleEffect ngbPopover="{{ 'LABEL.FILE_TEMPLATE'| translate }}" triggers="mouseenter:mouseleave" placement="right"> 
+                            <span [data-feather]="'paperclip'"></span></button>
+                            <label for="login-name-column">{{fileTemp || ""}}</label>
+                        </div>
+                        <div *ngIf="fileTemp">
+                            <div class="col-11">
+                                <div class="form-group">
+                                    <label for="menu-name-column">{{ 'LABEL.ROW_START' | translate }}<span style="color: red">*</span></label>
+                                    <input type="number" id="menu-name-column" class="form-control" (change)="onChangeRow()"
+                                        placeholder="{{ 'LABEL.ROW_START' | translate }}" name="rowStart" [(ngModel)]="rowStart"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="menu-name-column">{{ 'LABEL.ROW_HEADER' | translate }}<span style="color: red">*</span></label>
+                                    <input type="number" id="menu-name-column" class="form-control" (change)="onChangeRow()"
+                                        placeholder="{{ 'LABEL.ROW_HEADER' | translate }}" name="rowHeader" [(ngModel)]="rowHeader"/>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button *ngIf="!isLoad" type="button" class="btn btn-sm btn-icon rounded-circle btn-outline-success" [disabled]="isDisabled" 
+                                rippleEffect ngbPopover="{{ 'LABEL.LOAD' | translate }}" triggers="mouseenter:mouseleave" placement="right" (click)="onLoad()"> 
+                                <span [data-feather]="'refresh-cw'"></span></button>
+                                <button *ngIf="isLoad" class="btn btn-sm btn-icon rounded-circle btn-outline-success" disabled type="button" rippleEffect>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <span class="sr-only">Loading...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-11 mt-1">
+                        <div class="form-group">
+                            <label for="menu-name-column">{{ 'LABEL.CHOOSE_DB' | translate }}</label>
+                            <ng-select id="role-column" [items]="listForm"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                id="database" name="database" [(ngModel)]="formKey"
+                                bindLabel="name" placeholder="{{ 'LABEL.DATABASES' | translate}}"
+                                (change)="onChangeDb()">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <form [formGroup]="addRPForm" (ngSubmit)="addStatisticalReport()">
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="form-group">
+                                <label for="menu-name-column">{{'LABEL.NAME_OF_STATISTICAL_REPORT' | translate }}<span style="color: red">*</span></label>
+                                <input type="text" id="menu-name-column" class="form-control" [maxlength]="256"
+                                    placeholder="{{'LABEL.NAME_OF_STATISTICAL_REPORT' | translate }}" name="menu-name-column" formControlName="name" 
+                                    [ngClass]="{ 'is-invalid': addRPFormSubmitted && AddRPForm.name.errors }"/>
+                                    <div *ngIf="addRPFormSubmitted && AddRPForm.name.errors"
+                                        class="invalid-feedback">
+                                        <div *ngIf="AddRPForm.name.errors.required">{{ 'MESSAGE.REPORT.REQUIRE_NAME'| translate }}</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="form-group">
+                                <label for="menu-name-column">{{'LABEL.NAME_OF_STATISTICAL_REPORT_ENG' | translate }}</label>
+                                <input type="text" id="menu-name-column" class="form-control" [maxlength]="256"
+                                    placeholder="{{'LABEL.NAME_OF_STATISTICAL_REPORT_ENG' | translate }}" name="menu-name-column" formControlName="nameEn"/>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="form-group">
+                                <div class="custom-control custom-control-success custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="itemSTT" formControlName="isNo"/>
+                                    <label class="custom-control-label" for="itemSTT">{{ 'LABEL.NUMERICAL_ORDER' | translate }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button type="submit" rippleEffect class="btn btn-primary ml-1">{{ 'ACTION.SAVE'| translate}}</button>
+                            <button type="reset" (click)="onReSet()" rippleEffect class="btn btn-gradient-secondary ml-1">{{ 'ACTION.RESET'| translate}}</button>
+                        </div>
+                    </div>
+                    <div class="col-11">
+                        <div class="demo-spacing-0">
+                            <!-- ngb-alert component -->
+                            <ngb-alert [type]="'danger'" *ngIf="isCheck" class="mt-1" [dismissible]="false">
+                              <div class="alert-body">
+                                <span [data-feather]="'info'" [class]="'mr-50 align-middle'"></span>
+                                <span>{{ 'MESSAGE.REPORT.NAME_COL'| translate }}</span>
+                              </div>
+                            </ngb-alert>
+                            <!--/ ngb-alert component -->
+                          </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-9">
+            <!-- <core-card-snippet [snippetCode]="_snippetCodeInvoiceRepeater"> -->
+            <div class="row">
+                <div class="position-fixed shadow bg-white rounded pr-1 ml-1" style="z-index: 1000;">
+                    <button class="btn btn-sm btn-icon rounded-circle btn-warning" type="button" (click)="addItem()"
+                    ngbPopover="{{ 'LABEL.ADD_COLUMN'| translate }}" triggers="mouseenter:mouseleave" placement="bottom" rippleEffect>
+                        <i data-feather="plus-circle"></i>
+                    </button>
+                    <b class="text-warning ml-1">{{'LABEL.ADD_COLUMN' | translate }}</b>
+                </div>
+            </div>
+            <div class="card-body mt-1">
+                <form class="invoice-repeater">
+                    <div *ngFor="let item of items; let i = index">
+                        <div class="row d-flex align-items-end">
+                            <div class="col-md-1 col-12">
+                                <div class="form-group row">
+                                    <button class="btn btn-icon rounded-circle btn-gradient-secondary btn-sm mb-1"
+                                        type="button" (click)="item.isCollapsed = !item.isCollapsed" ngDefaultControl [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="item.isCollapsed" [attr.aria-expanded]="!item.isCollapsed"
+                                        ngbPopover="click" triggers="mouseenter:mouseleave" placement="bottom" rippleEffect>
+                                        {{i + 1}}
+                                    </button>
+                                    <div *ngIf="item.isCollapsed">
+                                        <i class="text-success" data-feather="chevrons-down"></i>
+                                    </div>
+                                    <div *ngIf="!item.isCollapsed">
+                                        <i class="text-success" data-feather="chevrons-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="itemName{{ i }}">{{ 'LABEL.NAME_OF_COLUMN' | translate}} {{i+1}}<span
+                                            style="color: red"> *</span></label>
+                                    <input type="text" class="form-control" [(ngModel)]="item.itemName"
+                                        name="itemName{{ i }}" id="itemName{{ i }}" placeholder="Vn" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="itemNameEn{{ i }}">{{ 'LABEL.NAME_OF_COLUMN' | translate}} {{i+1}} (EN)</label>
+                                    <input type="text" class="form-control" [(ngModel)]="item.itemNameEn"
+                                        name="itemNameEn{{ i }}" id="itemNameEn{{ i }}" placeholder="En" />
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-md-2 col-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-control-success custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="itemUnit{{i}}"
+                                            [checked]="item.itemUnit" name="itemUnit{{i}}"
+                                            (change)="item.itemUnit = !item.itemUnit" [(ngModel)]="item.itemUnit" />
+                                        <label class="custom-control-label" for="itemUnit{{i}}">{{ 'LABEL.IN_UNITS' | translate}}</label>
+                                    </div>
+                                    <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listCal"
+                                        id="itemCost{{ i }}" name="itemCost{{ i }}" [(ngModel)]="item.itemCost"
+                                        bindLabel="name" bindValue="value" placeholder="" [readonly]="!item.itemUnit">
+                                    </ng-select>
+                                    <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listCal"
+                                        id="itemCost{{ i }}" name="itemCost{{ i }}" [(ngModel)]="item.itemCost"
+                                        bindLabel="nameEn" bindValue="value" placeholder="" [readonly]="!item.itemUnit">
+                                    </ng-select>
+                                </div>
+                            </div> -->
+
+                            <div class="col-md-2 col-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-control-success custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="itemSynthetic{{i}}"
+                                            [checked]="item.itemSynthetic" name="itemSynthetic{{i}}"
+                                            (change)="item.itemSynthetic = !item.itemSynthetic"
+                                            [(ngModel)]="item.itemSynthetic" />
+                                        <label class="custom-control-label" for="itemSynthetic{{i}}">{{ 'LABEL.SYNTHESIS' | translate}}</label>
+                                    </div>
+                                    <ng-select *ngIf="currentLang == 'vn'" id="role-column" [items]="listCal"
+                                        id="itemQuantity{{ i }}" name="itemQuantity{{ i }}"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                        [(ngModel)]="item.itemQuantity" bindLabel="name" bindValue="value"
+                                        placeholder="" [readonly]="!item.itemSynthetic">
+                                    </ng-select>
+                                    <ng-select *ngIf="currentLang == 'en'" id="role-column" [items]="listCal"
+                                        id="itemQuantity{{ i }}" name="itemQuantity{{ i }}"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                        [(ngModel)]="item.itemQuantity" bindLabel="nameEn" bindValue="value"
+                                        placeholder="" [readonly]="!item.itemSynthetic">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-12">
+                                <div class="form-group">
+                                    <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteItem(i)"
+                                        rippleEffect>
+                                        <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div [ngbCollapse]="item.isCollapsed">
+                            <div class="col-md-6 col-12">
+                                <div class="form-group ml-5">
+                                    <div
+                                        class="custom-control custom-control-secondary custom-radio custom-control-inline">
+                                        <input type="radio" id="itemRadio{{i}}" name="itemRadio{{i}}"
+                                            class="custom-control-input" value="CSDL" checked
+                                            [(ngModel)]="item.itemRadio" (change)="onChange(i)" />
+                                        <label class="custom-control-label" for="itemRadio{{i}}">{{ 'LABEL.CHOOSE_IN_DATABASES' | translate}}</label>
+                                    </div>
+                                    <div
+                                        class="custom-control custom-control-secondary custom-radio custom-control-inline">
+                                        <input type="radio" id="itemR{{i}}" name="itemRadio{{i}}"
+                                            class="custom-control-input" value="BC" [(ngModel)]="item.itemRadio"
+                                            (change)="onChange(i)" />
+                                        <label class="custom-control-label" for="itemR{{i}}">{{ 'LABEL.CHOOSE_IN_REPORT' | translate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- If Radio CSDL checked -->
+                            <div *ngIf="item.itemRadio === 'CSDL'">
+                                <div class="row">
+                                    <div class="ml-2 mb-1">
+                                        <button class="btn btn-sm btn-icon btn-outline-primary" type="button"
+                                            (click)="addItemDbName(i)" rippleEffect>
+                                            +
+                                        </button>
+                                        <span class="ml-1">{{ 'LABEL.CHOOSE_DATABASES_APPLICABLE_YEAR' | translate}}<span
+                                                style="color: red"> *</span></span>
+                                    </div>
+                                </div>
+                                <div *ngFor="let db of items[i].itemDb; let d = index">
+                                    <div class="row ml-3">
+                                        <div class="col-md-3 col-12">
+                                            <div class="form-group">
+                                                <!-- <input type="text" class="form-control form-control-sm"
+                                                    [(ngModel)]="db.itemDbName" name="itemDbName{{ i }}"
+                                                    id="itemDbName{{ i }}" placeholder="{{ 'LABEL.DATABASES' | translate}}" /> -->
+                                                <ng-select id="role-column" [items]="listForm"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                    id="itemDbName{{i}}{{d}}" name="itemDbName{{i}}{{d}}" [(ngModel)]="db.itemDbName"
+                                                    bindLabel="name" bindValue="id" placeholder="{{ 'LABEL.DATABASES' | translate}}"
+                                                    (change)="onChangeForm(i)">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-2 col-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control form-control-sm"
+                                                    [(ngModel)]="db.itemDbYear" name="itemDbName{{ i }}"
+                                                    id="itemDbName{{ i }}" placeholder="{{ 'LABEL.YEAR' | translate}}" />
+                                            </div>
+                                        </div> -->
+                                        <div class="col-md-1 col-12">
+                                            <div class="form-group">
+                                                <button class="btn btn-sm btn-outline-danger text-nowrap px-1"
+                                                    (click)="deleteItemDb(i, d)" rippleEffect>
+                                                    x
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <span class="ml-3" *ngIf="item.itemDb.length > 0">Chọn trường thông tin thống kê<span style="color: red">*</span></span> -->
+                                <div class=" row ml-3 mb-1" *ngIf="item.itemDb.length > 0">
+                                    <span>{{ 'LABEL.CHOOSE_STATISTIC_INFORMATION_FIELD' | translate}}<span style="color: red"> *</span></span>
+                                    <button class="btn btn-sm btn-icon rounded-circle btn-success ml-1" type="button"
+                                        (click)="addItemFieldDb(i)" rippleEffect>
+                                        +
+                                    </button>
+                                </div>
+                                <div *ngIf="item.itemDb.length > 0">
+                                    <ng-container *ngFor="let fd of item.itemFieldDb; let f = index">
+                                        <div class="row ml-3">
+                                            <div class="col-md-3 col-12">
+                                                <div class="form-group">
+                                                    <!-- <input type="text" class="form-control form-control"
+                                                        [(ngModel)]="fd.itemFieldName" name="itemFieldName{{ i }}{{f}}"
+                                                        id="itemFieldName{{ i }}{{f}}" placeholder="{{ 'LABEL.INFOMATION_FIELD' | translate}}" /> -->
+                                                        <ng-select id="role-column" [items]="items[i].itemLabel"
+                                                            id="itemFieldName{{ i }}{{f}}" name="itemFieldName{{ i }}{{f}}" [(ngModel)]="fd.itemFieldName"
+                                                            bindLabel="value" bindValue="id" placeholder="{{ 'LABEL.INFOMATION_FIELD' | translate}}">
+                                                        </ng-select>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-md-3 col-12">
+                                                <ng-select *ngIf="currentLang == 'vn'"
+                                                    id="role-column" [items]="columnCal" id="itemFieldCalculate{{ i }}{{f}}"
+                                                    name="itemFieldCalculate{{ i }}{{f}}" [(ngModel)]="fd.itemFieldCalculate"
+                                                    bindLabel="name" bindValue="value" placeholder="{{ 'LABEL.THE_FORMULAS_OF_CALCULATING' | translate}}">
+                                                </ng-select>
+                                                <ng-select *ngIf="currentLang == 'en'"
+                                                    id="role-column" [items]="columnCal" id="itemFieldCalculate{{ i }}{{f}}"
+                                                    name="itemFieldCalculate{{ i }}{{f}}" [(ngModel)]="fd.itemFieldCalculate"
+                                                    bindLabel="nameEn" bindValue="value" placeholder="{{ 'LABEL.THE_FORMULAS_OF_CALCULATING' | translate}}">
+                                                </ng-select>
+                                            </div> -->
+                                            <div class="col-md-1 col-12">
+                                                <div class="form-group">
+                                                    <button class="btn btn-sm btn-outline-danger text-nowrap px-1"
+                                                        (click)="deleteItemFieldDb(i, f)" rippleEffect>
+                                                        x
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="item.itemDb.length > 0 && item.itemFieldDb.length > 1" class="ml-3">
+                                    <span>{{ 'LABEL.THE_FORMULAS_OF_CALCULATING_FOR_COLUMN' | translate}} {{i + 1}}<span style="color: red"> *</span></span>
+                                    <div class="col-md-3 col-12 mt-1">
+                                        <div class="form-group">
+                                            <!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="item.itemCalculate"
+                                                name="itemCalculate{{ i }}{{f}}" id="itemCalculate{{ i }}{{f}}" placeholder="Tính tỉ lệ" /> -->
+                                            <ng-select *ngIf="currentLang == 'vn' && item.itemFieldDb.length > 2"
+                                                id="role-column" [items]="columnCal" id="itemCalculate{{ i }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                bindLabel="name" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'en' && item.itemFieldDb.length > 2"
+                                                id="role-column" [items]="columnCal" id="itemCalculate{{ i }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                bindLabel="nameEn" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'vn' && item.itemFieldDb.length === 2"
+                                                id="role-column" [items]="columnCalFull" id="itemCalculate{{ i }}"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"
+                                                bindLabel="name" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'en' && item.itemFieldDb.length === 2"
+                                                id="role-column" [items]="columnCalFull" id="itemCalculate{{ i }}"  notFoundText="{{ 'LABEL_CRITERIA.NO_ITEM_FOULD'| translate }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"
+                                                bindLabel="nameEn" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Radio BC checked -->
+                            <div *ngIf="item.itemRadio === 'BC'">
+                                <div class="row">
+                                    <div class="ml-2 mb-1">
+                                        <button class="btn btn-sm btn-icon rounded-circle btn-outline-success"
+                                            type="button" (click)="addItemFieldRC(i)" rippleEffect>
+                                            +
+                                        </button>
+                                        <span class="ml-1">{{ 'LABEL.CHOOSE_STATISTIC_INFORMATION_FIELD' | translate}} <span
+                                                style="color: red"> *</span></span>
+                                    </div>
+                                </div>
+                                <div *ngFor="let fr of items[i].itemFieldRC; let r = index">
+                                    <div class="row ml-3">
+                                        <div class="col-md-3 col-12">
+                                            <div class="form-group">
+                                                <!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="fr.itemFieldName"
+                                                    name="itemDbName{{ i }}" id="itemDbName{{ i }}" placeholder="Cột" /> -->
+                                                <!-- <ng-select id="role-column" [items]="items" id="itemFieldName{{ i }}" name="itemFieldName{{ i }}"
+                                                    [(ngModel)]="fr.itemFieldName" bindValue="itemName" placeholder="Cột" class="ng-select-size-sm">
+                                                    <ng-template ng-label-tmp let-item="item" let-index="index">
+                                                        Cột {{$index}}
+                                                    </ng-template>
+                                                </ng-select> -->
+                                                <select [(ngModel)]="fr.itemFieldNameRC" name="itemFieldNameRC{{i}}{{r}}"
+                                                    class="select-text form-control form-control-sm">
+                                                    <option class="dropdown-item" disabled selected value="undefined">{{'LABEL.COLUMN' | translate }}</option>
+                                                    <!-- <option *ngFor="let col of items; let x = index; let lastItem = last;" [ngValue]="x"
+                                                    class="dropdown-item">
+                                                        <ng-container *ngIf="!lastItem">
+                                                            {{'LABEL.COLUMN' | translate }} {{x+1}}
+                                                        </ng-container>
+                                                    </option> -->
+                                                    <ng-container *ngFor="let col of items; let x = index; let lastItem = last;">
+                                                        <option *ngIf="!lastItem" [ngValue]="x"
+                                                        class="dropdown-item">
+                                                            {{'LABEL.COLUMN' | translate }} {{x+1}} - {{col.itemName}}
+                                                        </option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 col-12">
+                                            <div class="form-group">
+                                                <button class="btn btn-sm btn-outline-danger text-nowrap px-1"
+                                                    (click)="deleteItemFieldRC(i, r)" rippleEffect>
+                                                    x
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="item.itemFieldRC.length > 1" class="ml-3">
+                                    <span>{{ 'LABEL.THE_FORMULAS_OF_CALCULATING_FOR_COLUMN' | translate}} {{i + 1}}<span style="color: red">*</span></span>
+                                    <div class="col-md-3 col-12 mt-1">
+                                        <div class="form-group">
+                                            <!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="item.itemCalculate"
+                                                name="itemCalculate{{ i }}{{f}}" id="itemCalculate{{ i }}{{f}}" placeholder="Tính tỉ lệ" /> -->
+                                            <ng-select *ngIf="currentLang == 'vn' && item.itemFieldRC.length > 2"
+                                                id="role-column" [items]="columnCal" id="itemCalculate{{ i }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"
+                                                bindLabel="name" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'en' && item.itemFieldRC.length > 2"
+                                                id="role-column" [items]="columnCal" id="itemCalculate{{ i }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"
+                                                bindLabel="nameEn" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'vn' && item.itemFieldRC.length === 2"
+                                                id="role-column" [items]="columnCalFull" id="itemCalculate{{ i }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"
+                                                bindLabel="name" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                            <ng-select *ngIf="currentLang == 'en' && item.itemFieldRC.length === 2"
+                                                id="role-column" [items]="columnCalFull" id="itemCalculate{{ i }}"
+                                                name="itemCalculate{{ i }}" [(ngModel)]="item.itemCalculate"
+                                                bindLabel="nameEn" bindValue="value" placeholder="{{ 'LABEL.RATE_CACULATION' | translate}}"
+                                                class="ng-select-size-sm">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                </form>
+                <!-- <pre class="p-1 text-white mt-1">
+              <div  *ngFor="let item of items; let i = index">
+                Index: {{ i }}
+                Item Name: {{ item.itemName }}
+                Cost: {{ item.itemCost }}
+                Quantity: {{ item.itemQuantity }}
+                Unit: {{item.itemUnit}}
+                Synthetic: {{item.itemSynthetic}}
+                Radio: {{item.itemRadio}}
+                Calculate: {{item.itemCalculate}}
+                <div *ngIf="item.itemRadio === 'CSDL'">
+                    <ng-container *ngFor="let db of items[i].itemDb; let d = index">
+                        ---------CSDL---------
+                        Index: {{d}}
+                        Name: {{db.itemDbName}}
+                        Year: {{db.itemDbYear}}
+                    </ng-container>
+                    <div *ngIf="item.itemDb.length > 0">
+                        <ng-container *ngFor="let fd of item.itemFieldDb; let f = index">
+                            ---------Field---------
+                            Index: {{f}}
+                            Name: {{fd.itemFieldName}}
+                            Calculate: {{fd.itemFieldCalculate}}
+                        </ng-container>
+                    </div>
+                </div>
+                <div *ngIf="item.itemRadio === 'BC'">
+                    <ng-container *ngFor="let fr of item.itemFieldRC; let r = index">
+                        --------------RC------------
+                        Index: {{r}}
+                        Name: {{fr.itemFieldNameRC}}
+                    </ng-container>
+                </div>
+                ------------------------------------
+                </div>
+            </pre> -->
+            </div>
+            <!-- </core-card-snippet> -->
+        </div>
+        <!--/ Invoice repeater -->
+    </div>
+</section>

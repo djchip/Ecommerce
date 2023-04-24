@@ -1,0 +1,195 @@
+<div class="content-wrapper p-0">
+  <div class="content-body">
+    <!-- <core-card (events)="emittedEvents($event)" [actions]="['collapse', 'expand', 'close']"> -->
+    <h4 class="card-title">{{'LABEL_DB.DB_OBJECT' | translate}}</h4>
+    <section class="users-list-wrapper">
+      <div class="card">
+        <div class="card-body">
+          <div class="users-list-filter row">
+            <div class="col-md-4 col-12">
+              <label>{{ 'LABEL.FORM_NAME'| translate }}</label>
+              <div *ngIf="acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL.FORM_NAME'| translate }}"
+                  aria-label="Tên biểu mẫu" aria-describedby="basic-addon-search1" (keyup.enter)="searchForm()"
+                  [(ngModel)]="name" />
+                <div class="input-group-append" (click)="searchForm()">
+                  <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                </div>
+              </div>
+              <div *ngIf="!acceptAction.search" class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL.FORM_NAME'| translate }}"
+                  aria-label="Tên biểu mẫu" aria-describedby="basic-addon-search1" [(ngModel)]="name" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="acceptAction.search" class="col-md-4 col-12">
+              <label>{{ 'LABEL.FORM_YEAR'| translate }}</label>
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="{{ 'LABEL.FORM_YEAR'| translate }}"
+                  aria-label="Năm áp dụng" aria-describedby="basic-addon-search1" (keyup.enter)="searchForm()"
+                  [(ngModel)]="yearOfApplication" />
+                <div class="input-group-append" (click)="searchForm()">
+                  <span class="input-group-text" id="basic-addon-search1"><i data-feather="search"></i></span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="acceptAction.search" class="col-md-4 col-12">
+              <label>{{ 'LABEL.FORM_TIME_UPLOAD_DB'| translate }}</label>
+              <div class="input-group mb-2">
+                <input type="date" class="form-control" placeholder="{{ 'LABEL.FORM_TIME_UPLOAD_DB'| translate }}"
+                  aria-label="Hạn upload CSDL" aria-describedby="basic-addon-search1" (change)="searchForm()"
+                  [(ngModel)]="uploadTime" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <div class="d-flex  align-items-center m-1">
+              <label class="d-flex align-items-center">{{ 'LABEL.SHOW'| translate }}
+                <select class="form-control mx-25" [(ngModel)]="perPage" (change)="changePerpage()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <label>{{ 'LABEL.ENTRIES'| translate }}</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button class="btn btn-warning mr-2" rippleEffect (click)="downloadMultipleDatabase()"
+                [disabled]="canDownloadDb">
+                <span [data-feather]="'download'" [class]="'mr-25'"></span>{{ 'LABEL.DOWNLOAD_DB'| translate }}
+              </button>
+            </div>
+            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button class="btn btn-info mr-2" rippleEffect (click)="downloadMultipleForm()"
+                [disabled]="canDownloadForm">
+                <span [data-feather]="'download-cloud'" [class]="'mr-25'"></span>{{ 'MESSAGE.FORM.DOWNLOAD_FORM'|
+                translate }}
+              </button>
+            </div>
+            <div *ngIf="acceptAction.delete" class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+              <button class="btn btn-danger mr-2" rippleEffect (click)="deleteMultipleDatabase()"
+                [disabled]="canDelete">
+                <span [data-feather]="'trash-2'" [class]="'mr-25'"></span>{{ 'LABEL_LOG.DELETE'| translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <ngx-datatable *ngIf="acceptAction.search" [rows]="rows" [rowHeight]="50" class="bootstrap core-bootstrap"
+          [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" [scrollbarH]="true"
+          [externalPaging]="true" [count]="totalRows" [offset]="currentPage" [limit]="perPage" (page)="setPage($event)"
+          (select)="onSelect($event)" [messages]="messages" [selectionType]="SelectionType.checkbox">
+
+          <ngx-datatable-column name="{{ 'LABEL.NO'| translate }}" [width]="50" headerClass="header text-center width-5"
+            cellClass="center width-5">
+            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              <strong>{{ (currentPage * perPage) + rowIndex + 1 }}</strong>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+            [resizeable]="false">
+            <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+              let-selectFn="selectFn">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                  (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+                <label class="custom-control-label" for="headerChkbxRef"></label>
+              </div>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+              let-isSelected="isSelected" let-row="row" let-onCheckboxChangeFn="onCheckboxChangeFn">
+              <div>
+                <ng-container>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="isSelected"
+                      (change)="onCheckboxChangeFn($event)" id="rowChkbxRef{{ rowIndex }}" />
+                    <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+
+          <ngx-datatable-column name="{{ 'LABEL.ACTION'| translate }}" [width]="250" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngIf="acceptAction.add" (click)="openModalUpload(row.id, modalUpload)"
+                ngbPopover="{{ 'MESSAGE.FORM.UPLOAD_DATABASE'| translate }}" triggers="mouseenter:mouseleave"
+                placement="right"><i data-feather="upload" class="text-success cursor-pointer ml-50"></i></span>
+              <span (click)="deleteForm(row)" *ngIf="row.status == 1 && acceptAction.delete" ngbPopover="{{ 'ACTION.DELETE'| translate }}"
+                triggers="mouseenter:mouseleave" placement="right"><i data-feather="trash"
+                  class="text-danger cursor-pointer ml-50"></i>
+              </span>
+              <span (click)="downloadForm(row.id, row.fileName)"
+                ngbPopover="{{ 'MESSAGE.FORM.DOWNLOAD_FORM'| translate }}" triggers="mouseenter:mouseleave"
+                placement="right"><i data-feather="download" class="text-info cursor-pointer ml-50"></i></span>
+              <span (click)="downloadDatabase(row.id, row.pathFileDatabase)" *ngIf="row.status == 1"
+                ngbPopover="{{ 'MESSAGE.FORM.DOWNLOAD_DATABASE'| translate }}" triggers="mouseenter:mouseleave"
+                placement="right">
+                <i data-feather="download-cloud" class="text-warning cursor-pointer ml-50"></i>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.FORM_NAME'| translate }}" prop="name" [width]="200">
+            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <div class="cell-line-height">
+                  <a class="cell-line-height" (click)="detailForm(row, modalDetailMenu6)"><span
+                      class="cell-line-height">{{currentLang == 'vn'? row.name : row.nameEn}}</span></a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.FORM_YEAR'| translate }}" prop="yearOfApplication" [width]="250">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div class="d-flex align-items-center">
+                <div class="cell-line-height">
+                  <a class="cell-line-height"><span>{{ row.yearOfApplication }}</span></a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.FORM_TIME_UPLOAD_DB'| translate }}" prop="uploadTime" [width]="300">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <a class="cell-line-height"><span class="font-weight-bold">{{ row.uploadTime | date: "dd-MM-yyyy"
+                  }}</span></a>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="{{ 'LABEL.STATUS'| translate }}" prop="status" [width]="300">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <a class="badge badge-pill">
+                <span [ngClass]="{'text-success': row.status == '1', 'text-danger': row.status == '0'}">
+                  {{ (row.status == 0 ? 'LABEL.NOT_UPLOADED' : row.status == 1 ? 'LABEL.UPLOADED' : '') | translate}}
+                </span></a>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </section>
+    <!-- </core-card> -->
+
+    <ng-template #modalUpload let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel160">{{'LABEL_DB.DB_OBJECT' | translate}}</h5>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" tabindex="0" ngbAutofocus>
+        <app-upload-database (afterUpload)="afterUpload()" [copyId]="copyId"></app-upload-database>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

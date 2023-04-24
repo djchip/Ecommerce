@@ -1,0 +1,121 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <section id="multiple-column-form">
+      <div class="row match-height">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="importFG">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'LABEL_PRO.ORGANIZATION'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" (clear)="resetCat()" (change)="onChangee()" id="role-column" [items]="listOrganization" bindLabel="name" formControlName="organizationId"
+                        bindValue="id" required placeholder="{{ 'LABEL_PRO.ORGANIZATION'| translate }}"
+                        [ngClass]="{ 'is-invalid': ImportSubmitted && ImportFG.organizationId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'"  (clear)="resetCat()" (change)="onChangee()"id="role-column" [items]="listOrganization" bindLabel="nameEn" formControlName="organizationId"
+                      bindValue="id" required placeholder="{{ 'LABEL_PRO.ORGANIZATION'| translate }}"
+                      [ngClass]="{ 'is-invalid': ImportSubmitted && ImportFG.organizationId.errors }">
+                    </ng-select>
+
+                      <div *ngIf="ImportSubmitted && ImportFG.organizationId.errors" class="invalid-feedback">
+                        <div *ngIf="ImportFG.organizationId.errors.required">{{
+                          'MESSAGE.DIRECTORY.REQUIRE_ORGANIZATION'| translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="role-column">{{ 'MENU.CATEGORIES'| translate }}<span style="color: red">*</span></label>
+                      <ng-select *ngIf="currentLang == 'vn'" [readonly]="disableCat" id="role-column" [items]="listCat" bindLabel="name" formControlName="categoryId"
+                        bindValue="id" required placeholder="{{ 'MENU.CATEGORIES'| translate }}"
+                        [ngClass]="{ 'is-invalid': ImportSubmitted && ImportFG.categoryId.errors }">
+                      </ng-select>
+                      <ng-select *ngIf="currentLang == 'en'"  [readonly]="disableCat" id="role-column" [items]="listCat" bindLabel="nameEn" formControlName="categoryId"
+                        bindValue="id" required placeholder=" {{ 'MENU.CATEGORIES'| translate }}"
+                        [ngClass]="{ 'is-invalid': ImportSubmitted && ImportFG.categoryId.errors }">
+                      </ng-select>
+                      <div *ngIf="ImportSubmitted && ImportFG.categoryId.errors" class="invalid-feedback">
+                        <div *ngIf="ImportFG.categoryId.errors.required">{{ 'MESSAGE.DIRECTORY.REQUIRE_ORGANIZATION' | translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+
+                  <fieldset class="form-group">
+                    <label for="file-upload-single">File:</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" type="file" ng2FileSelect [uploader]="uploader"
+                        id="file-upload-single" />
+                      <label class="custom-file-label">{{ 'LABEL_CRITERIA.CHOOSE_FILE'| translate }}</label>
+                    </div>
+                  </fieldset>
+
+                  <div class="col-lg-12 overflow-auto">
+                    <div class="d-flex justify-content-between mb-1">
+                      <h4>{{ 'LABEL_CRITERIA.UPLOAD_QUEUE'| translate }}</h4>
+                      <p>{{'LABEL_CRITERIA.QUEUE_LENGTH'| translate }}: {{ uploader?.queue?.length }}</p>
+                    </div>
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th width="50%">{{ 'LABEL_CRITERIA.NAME_FILE'| translate }}</th>
+                          <th>{{ 'LABEL_CRITERIA.SIZE_FILE'| translate }}</th>
+                          <th>{{ 'LABEL_CRITERIA.PROGRESS'| translate }}</th>
+                          <th>{{ 'LABEL_CRITERIA.STATUS'| translate }}</th>
+                          <th>{{ 'LABEL_CRITERIA.ACTIONS'| translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader.queue;let i = index">
+                          <td>
+                            <strong>{{ item?.file?.name }}</strong>
+                          </td>
+                          <td *ngIf="uploader.options.isHTML5" nowrap>
+                            {{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB
+                          </td>
+                          <td *ngIf="uploader.options.isHTML5">
+                            <ngb-progressbar type="primary" [value]="item.progress"></ngb-progressbar>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><i data-feather="check"></i></span>
+                            <span *ngIf="item.isCancel"><i data-feather="slash"></i></span>
+                            <span *ngIf="item.isError"><i data-feather="x-circle"></i></span>
+                          </td>
+                          <td nowrap>
+                            <button type="submit" class="btn btn-raised btn-outline-success btn-sm mr-50"
+                              (click)="import(i)"
+                              [disabled]="item.isReady || item.isUploading || item.isSuccess" rippleEffect
+                              placement="top" ngbTooltip="{{ 'LABEL_CRITERIA.UPLOAD'| translate }}">
+                              <span data-feather="upload"></span>
+                            </button>
+                            <button type="reset" class="btn btn-raised btn-outline-danger btn-sm"
+                              (click)="item.remove()" rippleEffect placement="top"
+                              ngbTooltip="{{ 'LABEL_CRITERIA.REMOVE'| translate }}">
+                              <i data-feather="trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-12" style="margin-top: 10px;">
+                  <button type="reset" (click)="clear()" rippleEffect class="btn btn-outline-secondary">{{ 'LABEL_CRITERIA.RESET'|
+                    translate }}</button>
+                  <button (click)="downloadMyFile()" rippleEffect class="btn btn-primary ml-2">
+                    <i class="fa fa-download"></i> {{ 'LABEL_CRITERIA.DOWNLOAD'| translate }}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
